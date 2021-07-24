@@ -23,12 +23,12 @@
   <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":true,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
-<meta name="description" content="现在市面上的博客平台有很多，比方说博客园、简书、CSDN等等，功能完善，专注写作即可，而且还有社区，用户交流也很方便，但是这些平台都或多或少有一定限制，还有各种广告。由此，我们可以自己搭建一个博客网站，但是自己搭建又要买服务器还有域名，还要自己制作网站，而且还要定期进行维护，不光花钱还费时间，不过还有一个办法，就是把博客放到GitHub page上面，这样只要专注写作就行了，不需要定期维护，然后再">
+<meta name="description" content="更新于2021年：由于hexo和next主题的版本更新，本文大部分内容已经过时，配置内容仅供参考  现在市面上的博客平台有很多，比方说博客园、简书、CSDN等等，功能完善，专注写作即可，而且还有社区，用户交流也很方便，但是这些平台都或多或少有一定限制，还有各种广告。由此，我们可以自己搭建一个博客网站，但是自己搭建又要买服务器还有域名，还要自己制作网站，而且还要定期进行维护，不光花钱还费时间，不">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo博客搭建">
 <meta property="og:url" content="http://yoursite.com/2019/12/hexo/index.html">
 <meta property="og:site_name" content="魔法海螺">
-<meta property="og:description" content="现在市面上的博客平台有很多，比方说博客园、简书、CSDN等等，功能完善，专注写作即可，而且还有社区，用户交流也很方便，但是这些平台都或多或少有一定限制，还有各种广告。由此，我们可以自己搭建一个博客网站，但是自己搭建又要买服务器还有域名，还要自己制作网站，而且还要定期进行维护，不光花钱还费时间，不过还有一个办法，就是把博客放到GitHub page上面，这样只要专注写作就行了，不需要定期维护，然后再">
+<meta property="og:description" content="更新于2021年：由于hexo和next主题的版本更新，本文大部分内容已经过时，配置内容仅供参考  现在市面上的博客平台有很多，比方说博客园、简书、CSDN等等，功能完善，专注写作即可，而且还有社区，用户交流也很方便，但是这些平台都或多或少有一定限制，还有各种广告。由此，我们可以自己搭建一个博客网站，但是自己搭建又要买服务器还有域名，还要自己制作网站，而且还要定期进行维护，不光花钱还费时间，不">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-12-24T07:40:03.000Z">
 <meta property="article:modified_time" content="2019-12-24T07:40:03.000Z">
@@ -268,7 +268,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>现在市面上的博客平台有很多，比方说博客园、简书、CSDN等等，功能完善，专注写作即可，而且还有社区，用户交流也很方便，但是这些平台都或多或少有一定限制，还有各种广告。由此，我们可以自己搭建一个博客网站，但是自己搭建又要买服务器还有域名，还要自己制作网站，而且还要定期进行维护，不光花钱还费时间，不过还有一个办法，就是把博客放到GitHub page上面，这样只要专注写作就行了，不需要定期维护，然后再套上Hexo这个博客框架，可以直接生成一个漂亮的网站，这样搭建一个博客就容易多了。<span id="more"></span></p>
+        <blockquote>
+<p> <strong>更新于2021年：由于hexo和next主题的版本更新，本文大部分内容已经过时，配置内容仅供参考</strong></p>
+</blockquote>
+<p>现在市面上的博客平台有很多，比方说博客园、简书、CSDN等等，功能完善，专注写作即可，而且还有社区，用户交流也很方便，但是这些平台都或多或少有一定限制，还有各种广告。由此，我们可以自己搭建一个博客网站，但是自己搭建又要买服务器还有域名，还要自己制作网站，而且还要定期进行维护，不光花钱还费时间，不过还有一个办法，就是把博客放到GitHub page上面，这样只要专注写作就行了，不需要定期维护，然后再套上Hexo这个博客框架，可以直接生成一个漂亮的网站，这样搭建一个博客就容易多了。<span id="more"></span></p>
 <p><strong>Hexo简介</strong><br>Hexo是一款基于Node.js的静态博客框架，依赖少易于安装使用，可以方便的生成静态网页托管在GitHub和Coding上，是搭建博客的首选框架。官网对Hexo的介绍是快速、简洁且高效的博客框架。</p>
 <h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><p><strong>安装Node.js</strong></p>
 <p>Node.js 为大多数平台提供了官方的安装程序。可以去官网<a target="_blank" rel="noopener" href="https://nodejs.org/zh-cn/download/">下载 | Node.js</a>下载</p>
