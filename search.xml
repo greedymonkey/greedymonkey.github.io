@@ -1,0 +1,2495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>banner图滚动的两种方式</title>
+    <url>/2019/12/banner/</url>
+    <content><![CDATA[<h2 id="利用CSS动画效果制作循环滚动的动画"><a href="#利用CSS动画效果制作循环滚动的动画" class="headerlink" title="利用CSS动画效果制作循环滚动的动画"></a>利用CSS动画效果制作循环滚动的动画</h2><h3 id="设置图片宽度"><a href="#设置图片宽度" class="headerlink" title="设置图片宽度"></a>设置图片宽度</h3><p>以1920px的图片为例，首先要用一个div将滚动的banner图包起来，比如像下面这样：<span id="more"></span></p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html">&lt;div id&#x3D;&quot;banner&quot;&gt;
+    &lt;img src&#x3D;&quot;..&#x2F;img&#x2F;banner.jpg&quot; &#x2F;&gt;
+&lt;&#x2F;div&gt;</code></pre>
+
+<p>接下来对图片宽度和高度进行调整：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">&lt;style type&#x3D;&quot;text&#x2F;css&quot; &gt;
+	*&#123;
+		margin: 0;
+		padding: 0;
+	&#125;
+	#banner&#123;
+		width: 100%;  &#x2F;*宽度为浏览器的100%*&#x2F;
+		height: 500px;  &#x2F;*原则上,高度&#x3D;图片高度*&#x2F;
+		overflow:hidden;
+		position: relative;
+	&#125;
+	#banner img&#123;
+		width: 1920px; &#x2F;*宽度为图片的实际宽度*&#x2F;
+		height: 100%; &#x2F;*高度充满父容器*&#x2F;
+                
+		&#x2F;*使用绝对定位,让图片在父容器中绝对居中*&#x2F;
+		position: absolute;
+		left: 50%;
+		margin-left: -960px;
+	&#125;
+&lt;&#x2F;style&gt;</code></pre>
+
+<h3 id="使用动画实现滚动功能"><a href="#使用动画实现滚动功能" class="headerlink" title="使用动画实现滚动功能"></a>使用动画实现滚动功能</h3><p>下面是使用动画实现滚动的示意图：</p>
+<img data-src="https://raw.githubusercontent.com/greedymonkey/image/master/1118132-20170320153203705-1337859536.png" class="banner-roll" width="800" height="350" title="动画实现banner滚动" alt="动画实现banner滚动">
+
+<p>具体实现方法如下：</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html">&lt;div id&#x3D;&quot;banner&quot;&gt;
+    &lt;div id&#x3D;&quot;banner_in&quot;&gt;
+        &lt;img src&#x3D;&quot;..&#x2F;img&#x2F;banner1.png&quot; &#x2F;&gt;&lt;!--为了去掉图片之间的缝隙--&gt;
+        &lt;img src&#x3D;&quot;..&#x2F;img&#x2F;banner2.png&quot; &#x2F;&gt;&lt;!--为了去掉图片之间的缝隙--&gt;
+        &lt;img src&#x3D;&quot;..&#x2F;img&#x2F;banner3.png&quot; &#x2F;&gt;&lt;!--为了去掉图片之间的缝隙--&gt;
+        &lt;img src&#x3D;&quot;..&#x2F;img&#x2F;banner1.png&quot; &#x2F;&gt;
+    &lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;</code></pre>
+
+<p>下面是CSS代码：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">&lt;style type&#x3D;&quot;text&#x2F;css&quot;&gt;
+*&#123;
+    margin: 0px;
+    padding: 0px;
+&#125;
+#banner&#123;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+&#125;
+#banner_in&#123;
+    width: 7680px;
+    height: 500px;
+    position: relative;
+    -webkit-animation: banner 8s ease infinite;
+&#125;
+
+@-webkit-keyframes banner&#123;
+    0%&#123;
+        left: 0px;
+    &#125;
+    10%&#123;
+        left: 0px;
+    &#125;
+    30%&#123;
+        left: -1920px;
+    &#125;
+    40%&#123;
+        left: -1920px;
+    &#125;
+    70%&#123;
+        left: -3840px;
+    &#125;
+    80%&#123;
+        left: -3840px;
+    &#125;
+    100%&#123;
+        left: -5760px;
+    &#125;
+&#125;
+&lt;&#x2F;style&gt;</code></pre>
+
+<p>至此，一个使用动画功能做出来的banner滚动就实现了，如果要暂停滚动可以利用鼠标hover事件设置动画的状态属性，以达到暂停banner滚动的目的。</p>
+<h2 id="利用CSS和JavaScript实现banner滚动和点击切换"><a href="#利用CSS和JavaScript实现banner滚动和点击切换" class="headerlink" title="利用CSS和JavaScript实现banner滚动和点击切换"></a>利用CSS和JavaScript实现banner滚动和点击切换</h2><p>​       上面利用CSS使banner滚动的方法虽然比较简单，但是如果想看其中一张banner的时候，只能等他慢慢滚动显示出来，不能直接切换，但是如果用CSS+JS的方法就可以直接跳转到想看的banner了。</p>
+<p>先上HTML代码：</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html">&lt;div id&#x3D;&quot;banner&quot;&gt;
+　　&lt;div id&#x3D;&quot;inside&quot;&gt;
+      &lt;img src&#x3D;&quot;img&#x2F;banner1.png&quot; id&#x3D;&quot;img1&quot; &#x2F;&gt;&lt;img src&#x3D;&quot;img&#x2F;banner2.png&quot; id&#x3D;&quot;img2&quot; &#x2F;&gt;&lt;img src&#x3D;&quot;img&#x2F;banner3.png&quot; id&#x3D;&quot;img3&quot; &#x2F;&gt;&lt;img src&#x3D;&quot;img&#x2F;banner4.png&quot; id&#x3D;&quot;img4&quot; &#x2F;&gt;&lt;img src&#x3D;&quot;img&#x2F;banner1.png&quot; id&#x3D;&quot;img5&quot; &#x2F;&gt;
+   &lt;&#x2F;div&gt;
+&lt;!--切换banner按钮--&gt;
+    &lt;ul id&#x3D;&quot;bannerNum&quot;&gt;
+      &lt;li onclick&#x3D;&quot;changeBanner(1)&quot;&gt;1&lt;&#x2F;li&gt;
+      &lt;li onclick&#x3D;&quot;changeBanner(2)&quot;&gt;2&lt;&#x2F;li&gt;
+      &lt;li onclick&#x3D;&quot;changeBanner(3)&quot;&gt;3&lt;&#x2F;li&gt;
+      &lt;li onclick&#x3D;&quot;changeBanner(4)&quot;&gt;4&lt;&#x2F;li&gt;
+    &lt;&#x2F;ul&gt;
+&lt;&#x2F;div&gt;</code></pre>
+
+<p>再稍微调整一下样式：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">&lt;style type&#x3D;&quot;text&#x2F;css&quot;&gt;
+  *&#123;
+    padding: 0px;
+    margin: 0px;
+  &#125;
+  #banner&#123;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+  &#125;
+  #banner #inside&#123;
+    width: 9600px;
+    position: relative;
+    left: 50%;
+    margin-left: -960px;
+    transition: all 1s ease;
+  &#125;
+  #banner img&#123;
+    width: 1920px;
+  &#125;
+  #bannerNum&#123;
+    padding: 0px;
+    list-style: none;
+    overflow: hidden;
+    width: 160px;
+    position: absolute;
+    bottom: 30px;
+    right: 50px;
+  &#125;
+  #bannerNum li&#123;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    text-align: center;
+    line-height: 30px;
+    margin: 0px 5px;
+    float: left;
+    cursor: pointer;
+  &#125;
+&lt;&#x2F;style&gt;</code></pre>
+
+<h3 id="实现滚动和切换"><a href="#实现滚动和切换" class="headerlink" title="实现滚动和切换"></a>实现滚动和切换</h3><p>接下来用JS使图片滚动起来，并且可以自由切换当前显示的图片。</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">&lt;script&gt;
+　　var n &#x3D; 1;
+　　var inside;
+　　window.onload &#x3D; function()&#123;
+　　inside &#x3D; document.getElementById(&quot;inside&quot;);
+
+　　var interval &#x3D; setInterval(function()&#123;
+　　　　inside.style.transition &#x3D; &quot;all 1s ease&quot;;
+　　　　n++;
+　　　　switch (n)&#123;
+　　　　case 1:
+　　　　inside.style.transition &#x3D; &quot;none&quot;;
+　　　　inside.style.marginLeft &#x3D; (-960)+&quot;px&quot;;
+　　　　break;
+　　　　case 2:
+　　　　inside.style.marginLeft &#x3D; (-960-1920)+&quot;px&quot;;
+　　　　break;
+　　　　case 3:
+　　　　inside.style.marginLeft &#x3D; (-960-1920*2)+&quot;px&quot;;
+　　　　break;
+　　　　case 4:
+　　　　inside.style.marginLeft &#x3D; (-960-1920*3)+&quot;px&quot;;
+　　　　break;
+　　　　case 5:
+　　　　inside.style.marginLeft &#x3D; (-960-1920*4)+&quot;px&quot;;
+　　　　n &#x3D; 0;
+　　　　break;
+　　　　default:
+　　　　break;
+　　　　&#125;
+　　　　&#125;,2000);
+　　&#125;
+
+　　function changeBanner(num)&#123;
+　　　　inside.style.transition &#x3D; &quot;none&quot;;
+　　　　switch (num)&#123;
+　　　　case 1:
+　　　　inside.style.marginLeft &#x3D; (-960)+&quot;px&quot;;
+　　　　break;
+　　　　case 2:
+　　　　inside.style.marginLeft &#x3D; (-960-1920)+&quot;px&quot;;
+　　　　break;
+　　　　case 3:
+　　　　inside.style.marginLeft &#x3D; (-960-1920*2)+&quot;px&quot;;
+　　　　break;
+　　　　case 4:
+　　　　inside.style.marginLeft &#x3D; (-960-1920*3)+&quot;px&quot;;
+　　　　break;
+　　　　default:
+　　　　break;
+　　　　&#125;
+
+　　   n &#x3D; num-1;
+　　&#125;
+&lt;&#x2F;script&gt;</code></pre>
+
+<p>下面是我用div代替图片做的一个简单demo：</p>
+]]></content>
+      <categories>
+        <category>css</category>
+      </categories>
+      <tags>
+        <tag>CSS</tag>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【转】弹性盒子（Flex Box）布局语法教程</title>
+    <url>/2020/01/flex-layout/</url>
+    <content><![CDATA[<p>网页布局（layout）是 CSS 的一个重点应用。</p>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071001.gif?raw=true" alt="img"></p>
+<p>布局的传统解决方案，基于<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/box_model">盒状模型</a>，依赖 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/display"><code>display</code></a> 属性 + <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/position"><code>position</code></a>属性 + <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/float"><code>float</code></a>属性。它对于那些特殊布局非常不方便，比如，<a href="https://css-tricks.com/centering-css-complete-guide/">垂直居中</a>就不容易实现。<span id="more"></span></p>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071002.png?raw=true" alt="img"></p>
+<p>2009年，W3C 提出了一种新的方案—-Flex 布局，可以简便、完整、响应式地实现各种页面布局。目前，它已经得到了所有浏览器的支持，这意味着，现在就能很安全地使用这项功能。</p>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071003.jpg?raw=true" alt="img"></p>
+<p>Flex 布局将成为未来布局的首选方案。本文介绍它的语法，<a href="http://www.ruanyifeng.com/blog/2015/07/flex-examples.html">下一篇文章</a>给出常见布局的 Flex 写法。网友 <a href="http://vgee.cn/">JailBreak</a> 为本文的所有示例制作了 <a href="http://static.vgee.cn/static/index.html">Demo</a>，也可以参考。</p>
+<p>以下内容主要参考了下面两篇文章：<a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">A Complete Guide to Flexbox</a> 和 <a href="https://scotch.io/tutorials/a-visual-guide-to-css3-flexbox-properties">A Visual Guide to CSS3 Flexbox Properties</a>。</p>
+<h2 id="一、Flex-布局是什么？"><a href="#一、Flex-布局是什么？" class="headerlink" title="一、Flex 布局是什么？"></a>一、Flex 布局是什么？</h2><p>Flex 是 Flexible Box 的缩写，意为”弹性布局”，用来为盒状模型提供最大的灵活性。</p>
+<p>任何一个容器都可以指定为 Flex 布局。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.box&#123;
+  display: flex;
+&#125;</code></pre>
+</blockquote>
+<p>行内元素也可以使用 Flex 布局。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.box&#123;
+  display: inline-flex;
+&#125;</code></pre>
+</blockquote>
+<p>Webkit 内核的浏览器，必须加上<code>-webkit</code>前缀。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.box&#123;
+  display: -webkit-flex; &#x2F;* Safari *&#x2F;
+  display: flex;
+&#125;</code></pre>
+</blockquote>
+<p>注意，设为 Flex 布局以后，子元素的<code>float</code>、<code>clear</code>和<code>vertical-align</code>属性将失效。</p>
+<h2 id="二、基本概念"><a href="#二、基本概念" class="headerlink" title="二、基本概念"></a>二、基本概念</h2><p>采用 Flex 布局的元素，称为 Flex 容器（flex container），简称”容器”。它的所有子元素自动成为容器成员，称为 Flex 项目（flex item），简称”项目”。</p>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071004.png?raw=true" alt="img"></p>
+<p>容器默认存在两根轴：水平的主轴（main axis）和垂直的交叉轴（cross axis）。主轴的开始位置（与边框的交叉点）叫做<code>main start</code>，结束位置叫做<code>main end</code>；交叉轴的开始位置叫做<code>cross start</code>，结束位置叫做<code>cross end</code>。</p>
+<p>项目默认沿主轴排列。单个项目占据的主轴空间叫做<code>main size</code>，占据的交叉轴空间叫做<code>cross size</code>。</p>
+<h2 id="三、容器的属性"><a href="#三、容器的属性" class="headerlink" title="三、容器的属性"></a>三、容器的属性</h2><p>以下6个属性设置在容器上。</p>
+<blockquote>
+<ul>
+<li>flex-direction</li>
+<li>flex-wrap</li>
+<li>flex-flow</li>
+<li>justify-content</li>
+<li>align-items</li>
+<li>align-content</li>
+</ul>
+</blockquote>
+<h3 id="3-1-flex-direction属性"><a href="#3-1-flex-direction属性" class="headerlink" title="3.1 flex-direction属性"></a>3.1 flex-direction属性</h3><p><code>flex-direction</code>属性决定主轴的方向（即项目的排列方向）。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.box &#123;
+  flex-direction: row | row-reverse | column | column-reverse;
+&#125;</code></pre>
+</blockquote>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071005.png?raw=true" alt="img"></p>
+<p>它可能有4个值。</p>
+<blockquote>
+<ul>
+<li><code>row</code>（默认值）：主轴为水平方向，起点在左端。</li>
+<li><code>row-reverse</code>：主轴为水平方向，起点在右端。</li>
+<li><code>column</code>：主轴为垂直方向，起点在上沿。</li>
+<li><code>column-reverse</code>：主轴为垂直方向，起点在下沿。</li>
+</ul>
+</blockquote>
+<h3 id="3-2-flex-wrap属性"><a href="#3-2-flex-wrap属性" class="headerlink" title="3.2 flex-wrap属性"></a>3.2 flex-wrap属性</h3><p>默认情况下，项目都排在一条线（又称”轴线”）上。<code>flex-wrap</code>属性定义，如果一条轴线排不下，如何换行。</p>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071006.png?raw=true" alt="img"></p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.box&#123;
+  flex-wrap: nowrap | wrap | wrap-reverse;
+&#125;</code></pre>
+</blockquote>
+<p>它可能取三个值。</p>
+<p>（1）<code>nowrap</code>（默认）：不换行。</p>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071007.png?raw=true" alt="img"></p>
+<p>（2）<code>wrap</code>：换行，第一行在上方。</p>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071008.jpg?raw=true" alt="img"></p>
+<p>（3）<code>wrap-reverse</code>：换行，第一行在下方。</p>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071009.jpg?raw=true" alt="img"></p>
+<h3 id="3-3-flex-flow"><a href="#3-3-flex-flow" class="headerlink" title="3.3 flex-flow"></a>3.3 flex-flow</h3><p><code>flex-flow</code>属性是<code>flex-direction</code>属性和<code>flex-wrap</code>属性的简写形式，默认值为<code>row nowrap</code>。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.box &#123;
+  flex-flow: &lt;flex-direction&gt; || &lt;flex-wrap&gt;;
+&#125;</code></pre>
+</blockquote>
+<h3 id="3-4-justify-content属性"><a href="#3-4-justify-content属性" class="headerlink" title="3.4 justify-content属性"></a>3.4 justify-content属性</h3><p><code>justify-content</code>属性定义了项目在主轴上的对齐方式。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.box &#123;
+  justify-content: flex-start | flex-end | center | space-between | space-around;
+&#125;</code></pre>
+</blockquote>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071010.png?raw=true" alt="img"></p>
+<p>它可能取5个值，具体对齐方式与轴的方向有关。下面假设主轴为从左到右。</p>
+<blockquote>
+<ul>
+<li><code>flex-start</code>（默认值）：左对齐</li>
+<li><code>flex-end</code>：右对齐</li>
+<li><code>center</code>： 居中</li>
+<li><code>space-between</code>：两端对齐，项目之间的间隔都相等。</li>
+<li><code>space-around</code>：每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。</li>
+</ul>
+</blockquote>
+<h3 id="3-5-align-items属性"><a href="#3-5-align-items属性" class="headerlink" title="3.5 align-items属性"></a>3.5 align-items属性</h3><p><code>align-items</code>属性定义项目在交叉轴上如何对齐。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.box &#123;
+  align-items: flex-start | flex-end | center | baseline | stretch;
+&#125;</code></pre>
+</blockquote>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071011.png?raw=true" alt="img"></p>
+<p>它可能取5个值。具体的对齐方式与交叉轴的方向有关，下面假设交叉轴从上到下。</p>
+<blockquote>
+<ul>
+<li><code>flex-start</code>：交叉轴的起点对齐。</li>
+<li><code>flex-end</code>：交叉轴的终点对齐。</li>
+<li><code>center</code>：交叉轴的中点对齐。</li>
+<li><code>baseline</code>: 项目的第一行文字的基线对齐。</li>
+<li><code>stretch</code>（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。</li>
+</ul>
+</blockquote>
+<h3 id="3-6-align-content属性"><a href="#3-6-align-content属性" class="headerlink" title="3.6 align-content属性"></a>3.6 align-content属性</h3><p><code>align-content</code>属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.box &#123;
+  align-content: flex-start | flex-end | center | space-between | space-around | stretch;
+&#125;</code></pre>
+</blockquote>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071012.png?raw=true" alt="img"></p>
+<p>该属性可能取6个值。</p>
+<blockquote>
+<ul>
+<li><code>flex-start</code>：与交叉轴的起点对齐。</li>
+<li><code>flex-end</code>：与交叉轴的终点对齐。</li>
+<li><code>center</code>：与交叉轴的中点对齐。</li>
+<li><code>space-between</code>：与交叉轴两端对齐，轴线之间的间隔平均分布。</li>
+<li><code>space-around</code>：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。</li>
+<li><code>stretch</code>（默认值）：轴线占满整个交叉轴。</li>
+</ul>
+</blockquote>
+<h2 id="四、项目的属性"><a href="#四、项目的属性" class="headerlink" title="四、项目的属性"></a>四、项目的属性</h2><p>以下6个属性设置在项目上。</p>
+<blockquote>
+<ul>
+<li><code>order</code></li>
+<li><code>flex-grow</code></li>
+<li><code>flex-shrink</code></li>
+<li><code>flex-basis</code></li>
+<li><code>flex</code></li>
+<li><code>align-self</code></li>
+</ul>
+</blockquote>
+<h3 id="4-1-order属性"><a href="#4-1-order属性" class="headerlink" title="4.1 order属性"></a>4.1 order属性</h3><p><code>order</code>属性定义项目的排列顺序。数值越小，排列越靠前，默认为0。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.item &#123;
+  order: &lt;integer&gt;;
+&#125;</code></pre>
+</blockquote>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071013.png?raw=true" alt="img"></p>
+<h3 id="4-2-flex-grow属性"><a href="#4-2-flex-grow属性" class="headerlink" title="4.2 flex-grow属性"></a>4.2 flex-grow属性</h3><p><code>flex-grow</code>属性定义项目的放大比例，默认为<code>0</code>，即如果存在剩余空间，也不放大。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.item &#123;
+  flex-grow: &lt;number&gt;; &#x2F;* default 0 *&#x2F;
+&#125;</code></pre>
+</blockquote>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071014.png?raw=true" alt="img"></p>
+<p>如果所有项目的<code>flex-grow</code>属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的<code>flex-grow</code>属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍。</p>
+<h3 id="4-3-flex-shrink属性"><a href="#4-3-flex-shrink属性" class="headerlink" title="4.3 flex-shrink属性"></a>4.3 flex-shrink属性</h3><p><code>flex-shrink</code>属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.item &#123;
+  flex-shrink: &lt;number&gt;; &#x2F;* default 1 *&#x2F;
+&#125;</code></pre>
+</blockquote>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071015.jpg?raw=true" alt="img"></p>
+<p>如果所有项目的<code>flex-shrink</code>属性都为1，当空间不足时，都将等比例缩小。如果一个项目的<code>flex-shrink</code>属性为0，其他项目都为1，则空间不足时，前者不缩小。</p>
+<p>负值对该属性无效。</p>
+<h3 id="4-4-flex-basis属性"><a href="#4-4-flex-basis属性" class="headerlink" title="4.4 flex-basis属性"></a>4.4 flex-basis属性</h3><p><code>flex-basis</code>属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为<code>auto</code>，即项目的本来大小。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.item &#123;
+  flex-basis: &lt;length&gt; | auto; &#x2F;* default auto *&#x2F;
+&#125;</code></pre>
+</blockquote>
+<p>它可以设为跟<code>width</code>或<code>height</code>属性一样的值（比如350px），则项目将占据固定空间。</p>
+<h3 id="4-5-flex属性"><a href="#4-5-flex属性" class="headerlink" title="4.5 flex属性"></a>4.5 flex属性</h3><p><code>flex</code>属性是<code>flex-grow</code>, <code>flex-shrink</code> 和 <code>flex-basis</code>的简写，默认值为<code>0 1 auto</code>。后两个属性可选。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.item &#123;
+  flex: none | [ &lt;&#39;flex-grow&#39;&gt; &lt;&#39;flex-shrink&#39;&gt;? || &lt;&#39;flex-basis&#39;&gt; ]
+&#125;</code></pre>
+</blockquote>
+<p>该属性有两个快捷值：<code>auto</code> (<code>1 1 auto</code>) 和 none (<code>0 0 auto</code>)。</p>
+<p>建议优先使用这个属性，而不是单独写三个分离的属性，因为浏览器会推算相关值。</p>
+<h3 id="4-6-align-self属性"><a href="#4-6-align-self属性" class="headerlink" title="4.6 align-self属性"></a>4.6 align-self属性</h3><p><code>align-self</code>属性允许单个项目有与其他项目不一样的对齐方式，可覆盖<code>align-items</code>属性。默认值为<code>auto</code>，表示继承父元素的<code>align-items</code>属性，如果没有父元素，则等同于<code>stretch</code>。</p>
+<blockquote>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">.item &#123;
+  align-self: auto | flex-start | flex-end | center | baseline | stretch;
+&#125;</code></pre>
+</blockquote>
+<p><img data-src="https://github.com/greedymonkey/image/blob/master/flex/bg2015071016.png?raw=true" alt="img"></p>
+<p>该属性可能取6个值，除了auto，其他都与align-items属性完全一致。</p>
+<p>（完）</p>
+<p><strong>转自</strong> </p>
+<p><a href="http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html">阮一峰的语法日志——Flex 布局教程：语法篇</a></p>
+<p><strong>附</strong> </p>
+<p>英文版flex布局教程 <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">A Complete Guide to Flexbox</a></p>
+<p> <a href="http://www.ruanyifeng.com/blog/2015/07/flex-examples.html">Flex 布局教程：实例篇</a> </p>
+]]></content>
+      <tags>
+        <tag>CSS</tag>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【转】恶俗古风自动生成器</title>
+    <url>/2020/01/gufeng/</url>
+    <content><![CDATA[<p>转自 <a href="https://www.jianshu.com/p/f893291674ca">传送门</a></p>
+<p>原 po：<span id="more"></span></p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">关键词：朱砂 天下 杀伐 人家 韶华 风华 繁华 血染 墨染 白衣 素衣 嫁衣 倾城 孤城 空城 旧城
+ 旧人 伊人 心疼 春风 古琴 无情 迷离 奈何 断弦 焚尽 散乱 陌路 乱世 笑靥 浅笑 明眸 轻叹 烟火 
+一生 三生 浮生 桃花 梨花 落花 烟花 离殇 情殇 爱殇 剑殇 灼伤 仓皇 匆忙 陌上 清商 焚香 墨香 
+微凉 断肠 痴狂 凄凉 黄梁 未央 成双 无恙 虚妄 凝霜 洛阳 长安 江南 忘川 千年 纸伞 烟雨 回眸 
+公子 红尘 红颜 红衣 红豆 红线 青丝 青史 青冢 白发 白首 白骨 黄土 黄泉 碧落 紫陌情深缘浅 情深不寿 
+莫失莫忘 阴阳相隔 如花美眷 似水流年 眉目如画 曲终人散 繁华落尽 不诉离殇 一世长安
+基本句式：
+1.xx，xx，xx了xx。 
+2.xxxx，xxxx，不过是一场xxxx。
+3.你说xxxx，我说xxxx，最后不过xxxx。
+4.xx，xx，许我一场xxxx。
+5一x一x一xx，半x半x半xx。
+6.你说xxxx xxxx，后来xxxx xxxx。
+7.xxxx，xxxx，终不敌xxxx。
+注意事项：
+1.使用一个句式时一定要多重复几次，形成看起来异常高端的排比句。
+2.［殇］这个字恶俗到爆，一定要多用。
+3.不要随意用连词，就让这些动词名词形容词堆在一起，发生奇妙的反应。
+4.填句子千万不能有逻辑性！填句子千万不能有逻辑性！填句子千万不能有逻辑性！重要的事情说三遍。
+例句：
+1.江南烟雨，陌上白衣，不过是一场情深缘浅。伊人回眸，繁华落尽，不过是一场烟火迷离。浮生微凉，白骨成双，不过是一场三世离殇。
+2.旧城，未央，许我一场墨染清商。乱世，无情，许我一场白衣仓皇。忘川，千年，许我一场奈何成双。
+end
+【简直丧心病狂精神污染，po主去吐一吐。】</code></pre>
+
+<p>考虑到，不要逻辑，那么最适合随机函数了。<br> 于是我们得到了一位 Ruby 古风诗人（共 22 行），他每秒都能生产一句古风句子</p>
+<pre class="line-numbers language-ruby" data-language="ruby"><code class="language-ruby">@two_chars_words &#x3D; %w&quot;朱砂 天下 杀伐 人家 韶华 风华 繁华 血染 墨染 白衣 素衣 嫁衣 倾城 孤城 空城 旧城 旧人 伊人 心疼 春风 古琴 无情 迷离 奈何 断弦 焚尽 散乱 陌路 乱世 笑靥 浅笑 明眸 轻叹 烟火 一生 三生 浮生 桃花 梨花 落花 烟花 离殇 情殇 爱殇 剑殇 灼伤 仓皇 匆忙 陌上 清商 焚香 墨香 微凉 断肠 痴狂 凄凉 黄梁 未央 成双 无恙 虚妄 凝霜 洛阳 长安 江南 忘川 千年 纸伞 烟雨 回眸 公子 红尘 红颜 红衣 红豆 红线 青丝 青史 青冢 白发 白首 白骨 黄土 黄泉 碧落 紫陌&quot;
+@four_chars_words &#x3D; %w&quot;情深缘浅 情深不寿 莫失莫忘 阴阳相隔 如花美眷 似水流年 眉目如画 曲终人散 繁华落尽 不诉离殇 一世长安&quot;
+@sentence_model &#x3D; %w&quot;xx，xx，xx了xx。 xxxx，xxxx，不过是一场xxxx。 你说xxxx，我说xxxx，最后不过xxxx。 xx，xx，许我一场xxxx。 一x一x一xx，半x半x半xx。 你说xxxxxxxx，后来xxxxxxxx。 xxxx，xxxx，终不敌xxxx。&quot;
+
+def get_sentence
+  model &#x3D; @sentence_model.sample(1)[0].clone
+  while model.include?&#39;xxxx&#39;
+    model.sub!(&#x2F;xxxx&#x2F;, @four_chars_words.sample(1)[0])
+  end
+  while model.include?&#39;xx&#39;
+    model.sub!(&#x2F;xx&#x2F;, @two_chars_words.sample(1)[0])
+  end
+  while model.include?&#39;x&#39;
+    model.sub!(&#x2F;x&#x2F;, @two_chars_words.sample(1)[0][rand(0..1)])
+  end
+  puts model
+end
+
+while true
+  get_sentence
+  sleep 1
+end</code></pre>
+
+<p>我们来欣赏一些例句：</p>
+<pre class="line-numbers language-undefined" data-language="undefined"><code class="language-undefined">你说一世长安情深不寿，后来莫失莫忘莫失莫忘。
+你说繁华落尽似水流年，后来阴阳相隔曲终人散。
+心疼，繁华，许我一场一世长安。
+空城，无恙，墨染了忘川。
+白首，乱世，许我一场繁华落尽。
+你说阴阳相隔，我说一世长安，最后不过一世长安。
+如花美眷，情深缘浅，终不敌一世长安。
+千年，红颜，旧城了灼伤。
+你说如花美眷，我说情深缘浅，最后不过情深不寿。
+莫失莫忘，曲终人散，不过是一场繁华落尽。
+情深不寿，如花美眷，终不敌一世长安。
+奈何，灼伤，离殇了一生。
+奈何，空城，红豆了陌上。
+轻叹，纸伞，梨花了梨花。
+繁华落尽，曲终人散，不过是一场莫失莫忘。
+你说一世长安眉目如画，后来如花美眷阴阳相隔。
+你说情深缘浅，我说不诉离殇，最后不过如花美眷。
+不诉离殇，不诉离殇，终不敌繁华落尽。
+繁华落尽，一世长安，终不敌情深缘浅。
+繁华落尽，莫失莫忘，不过是一场一世长安。
+轻叹，明眸，明眸了白发。
+似水流年，曲终人散，终不敌曲终人散。
+你说阴阳相隔不诉离殇，后来眉目如画繁华落尽。
+朱砂，嫁衣，许我一场繁华落尽。
+你说不诉离殇，我说莫失莫忘，最后不过如花美眷。
+一伤一首一明眸，半伞半繁半陌上。
+你说繁华落尽眉目如画，后来情深缘浅眉目如画。
+眉目如画，曲终人散，不过是一场如花美眷。
+一灼一人一焚香，半迷半衣半散乱。
+阴阳相隔，莫失莫忘，终不敌莫失莫忘。
+白衣，红豆，青史了天下。
+伊人，奈何，奈何了公子。
+你说情深不寿，我说莫失莫忘，最后不过似水流年。
+你说不诉离殇莫失莫忘，后来如花美眷情深不寿。
+白发，浅笑，许我一场不诉离殇。
+似水流年，莫失莫忘，终不敌似水流年。
+情深不寿，一世长安，终不敌情深不寿。
+一世长安，繁华落尽，终不敌莫失莫忘。
+如花美眷，情深缘浅，不过是一场情深不寿。
+你说繁华落尽如花美眷，后来如花美眷情深不寿。
+黄泉，陌上，许我一场似水流年。
+眉目如画，眉目如画，不过是一场曲终人散。
+曲终人散，繁华落尽，终不敌曲终人散。
+你说曲终人散，我说眉目如画，最后不过繁华落尽。</code></pre>
+
+<p>其实句式是次要的，词才是关键。刚导入了一些句式，发现意外地合拍，比如「情殇的素衣，比人家不知道砂到灼伤去了。」「说现在已经黄土了，就把我心疼一番。」「陌里不觉城已年，未央岂是为无情。」「青为什么这么忘川，城和微凉红过多少次了啊」</p>
+<p><em><strong>PS：原链接好像也是转载的，但是找不到原po了，等有时间自己整一个玩玩。</strong></em></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/07/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new &quot;My New Post&quot;</code></pre>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo server</code></pre>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo generate</code></pre>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo deploy</code></pre>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>JavaScript OOP proto与prototype原型图</title>
+    <url>/2020/01/js-OOP/</url>
+    <content><![CDATA[<p>1.prototype(函数的原型):函数才有prototype.prototype是一个对象，指向了当前构造函数的引用地址。<span id="more"></span></p>
+<p>2._proto_(对象的原型对象)：所有对象都有_proto_属性。当用构造函数实例化一个对象时，会将新对象的_proto_属性指上构造函数的prototype.<br> zhangsan._proto_==Person.prototype<br> 所有对象，最终都会指向Object()的prototype</p>
+<p><strong>【原型链】</strong><br> 1.通过构造函数 new出的对象，新对象的_proto_指向构造函数的prototype<br> 2.所有函数的_proto_指上Function的prototype<br> 3.非构造函数 new出的对象（{} new Object() 对象的prototype）的_proto_指向Object的prototype<br> 4.Object的_proto_指向null</p>
+<p><img data-src="" alt="img"></p>
+]]></content>
+      <tags>
+        <tag>web</tag>
+        <tag>JS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JavaScript事件</title>
+    <url>/2020/01/js-event/</url>
+    <content><![CDATA[<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><p>JavaScript事件其实是发生在HTML元素上的事件，可以是浏览器行为，也可以是用户行为。</p>
+<p>以下是 HTML 事件的实例：</p>
+<ul>
+<li>HTML 页面完成加载</li>
+<li>HTML input 的内容被更改时</li>
+<li>HTML 按钮被点击</li>
+</ul>
+<p>在事件触发时，可以用JavaScript 执行一些代码。<span id="more"></span><br>HTML 元素中可以添加事件属性，事件通常与函数结合使用，函数不会在事件发生前被执行 (如用户点击按钮)。<br>HTML的事件有鼠标事件、键盘事件、表单事件、动画事件、拖动事件等等很多种，更多事件可以去<a href="https://www.runoob.com/jsref/dom-obj-event.html">这里</a>查看。</p>
+<p>下面说一下关于<strong>键盘事件</strong>的几个问题：</p>
+<p>1、执行顺序：keydown-keypress-keyup<br>2、长按时，会循环执行keydown-keypress<br>3、有keydown事件，不一定有keyup事件（事件触发过程中，鼠标移走点击别的地方，可能没有keyup事件）<br>4、keypress事件只能捕获字母、数字、符号键（空格和回车也是），不能捕获功能键，<br>keydown和keyup基本可以捕获所有功能键（特殊除外）<br>keypress 区分大小写，keydown和keyup不区分；<br>keydown和keyup区分主键盘和小键盘，keypress不区分<br>keypress 只能捕获单键，keydown和keyup可以捕获组合键</p>
+<p><strong>确定键盘触发按键的方法：</strong><br>在触发函数中，传入参数e，代表按键事件；<br>通过e.keyCode确认按键ASCII码值，进而确定按键；<br>兼容浏览器系统的写法：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">var evn &#x3D; e||event; &#x2F;&#x2F;取到键盘事件
+var code &#x3D; evn.keyCode||evn.which||evn.charCode; &#x2F;&#x2F;取到按键编码</code></pre>
+
+<h3 id="DOM模型与事件"><a href="#DOM模型与事件" class="headerlink" title="DOM模型与事件"></a>DOM模型与事件</h3><h4 id="DOM模型："><a href="#DOM模型：" class="headerlink" title="DOM模型："></a>DOM模型：</h4><p>在HTML中，每个元素都是一个节点，文档的所有节点组成了DOM 树，DOM又分为几个级别，分别是：</p>
+<p>DOM1：DOM1 级由两个模块组成：DOM核心（DOM Core）和DOM HTML。</p>
+<p>DOM2：<br>在DOM1的基础上扩充了:<br>1、鼠标和用户界面事件、范围、遍历等细分模块<br>2、通过对象接口增加了对CSS（Cascading Style Sheets，层叠样式表）的支持<br>3、DOM核心模块也经过扩展开始支持XML 命名空间</p>
+<p>DOM3：<br>1、以统一方式加载和保存文档的方法——在DOM 加载和保存（DOM Load and Save）模块中定义<br> 2、验证文档的方法——在DOM 验证（DOM Validation）模块中定义<br> 3、开始支持XML 1.0 规范</p>
+<p>DOM0：首先确定的是在DOM标准中并没有DOM 0级的。我们所说的DOM0事件模型其实就是指的是还没有DOM规范的时候给起 的一个名字，DOM0通过on来绑定事件；而DOM2通过addEventListener来绑定事件，DOM2有捕获、目标、冒泡三个事件阶段。</p>
+<p>下面具体说一下DOM0事件模型和DOM2事件模型：</p>
+<h4 id="DOM0事件模型"><a href="#DOM0事件模型" class="headerlink" title="DOM0事件模型"></a>DOM0事件模型</h4><p>DOM0模型分为两种：</p>
+<p>一种是<strong>内联模型：</strong>直接将函数名作为html标签的某个事件属性的属性值<br>eg：<code>&lt;button onclick=&quot;func()&quot;&gt;&lt;/button&gt;</code><br><strong>缺点：</strong>违反了W3C关于html与JS分离的基本原则<br>另一种是<strong>脚本模型：</strong>在JS脚本中通过事件属性进行绑定<br>eg：<code>window.onload = function()&#123;&#125;</code><br>局限性：同一节点只能绑定一个同类型事件</p>
+<h4 id="DOM2事件模型"><a href="#DOM2事件模型" class="headerlink" title="DOM2事件模型"></a>DOM2事件模型</h4><p><strong>1、添加事件绑定：</strong><br>IE10之前：<code>btn.attachEvent(&quot;onclick&quot;,函数);</code><br>其他浏览器：<code>btn.addEventListener(&quot;click&quot;,函数,true/false)</code><br>　　其中，第一个参数为事件<br>　　第三个参数：false为默认，表示事件冒泡；true表示事件捕获<br>兼容写法：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">if(btn.attachEvent)&#123;
+　　btn.attachEvent();
+&#125;else&#123;
+　　btn.addEventListener();
+&#125;</code></pre>
+
+<p><strong>优点：同一节点可以添加多个同类型事件的监听器</strong><br><strong>2、取消事件绑定：</strong><br>注：如果要取消事件绑定，那么在绑定事件时，<br>回调函数必须使用有名函数，而不能使用匿名函数，<br>因为在取消事件绑定时，需要传入函数名：<br><code>.removeEventListener(&quot;click&quot;,函数名)</code><br><code>.datachEvent(&quot;onclick&quot;,函数名)</code></p>
+<p>由此可以看出，DOM0和DOM2一个很大区别是DOM0模型的元素绑定多个click最后只执行最后一个click，前面的会被后面的覆盖掉；而DOM2模型的元素绑定可以多个click，不会被覆盖，都会被执行。</p>
+<h3 id="JS中的事件流"><a href="#JS中的事件流" class="headerlink" title="JS中的事件流"></a>JS中的事件流</h3><p><img data-src="" alt="img"></p>
+<p>这里有六个套在一起的div，下面解释冒泡和捕获时会用到：</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html">&lt;div id&#x3D;&quot;div1&quot; style&#x3D;&quot;height: 600px;width: 600px;background-color: aqua;&quot;&gt;第一层
+  &lt;div id&#x3D;&quot;div2&quot; style&#x3D;&quot;height: 500px;width: 500px;background-color: blueviolet;&quot;&gt;第二层
+    &lt;div id&#x3D;&quot;div3&quot; style&#x3D;&quot;height: 400px;width: 400px;background-color: chartreuse;&quot;&gt;第三层
+      &lt;div id&#x3D;&quot;div4&quot; style&#x3D;&quot;height: 300px;width: 300px;background-color: darkorange;&quot;&gt;第四层
+        &lt;div id&#x3D;&quot;div5&quot; style&#x3D;&quot;height: 200px;width: 200px;background-color: firebrick;&quot;&gt;第五层
+          &lt;div id&#x3D;&quot;div6&quot; style&#x3D;&quot;height: 100px;width: 100px;background-color: gray;&quot;&gt;第六层&lt;&#x2F;div&gt;
+        &lt;&#x2F;div&gt;
+      &lt;&#x2F;div&gt;
+    &lt;&#x2F;div&gt;
+  &lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;</code></pre>
+
+<p>1、<strong>事件冒泡：</strong><br>当某DOM元素触发某事件时，会从当前DOM元素开始，逐个触发其祖先元素的同类型事件，直到DOM根节点<br>DOM0模型均为事件冒泡，IE中使用<code>.attachEvent()</code>添加的事件均为冒泡；<br>其他浏览器使用<code>.addEventListener()</code>添加的事件当第三个参数为false时，为冒泡</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">&lt;script&gt;
+  var div1 &#x3D; document.getElementById(&#39;div1&#39;),
+  div2 &#x3D; document.getElementById(&#39;div2&#39;),
+  div3 &#x3D; document.getElementById(&#39;div3&#39;),
+  div4 &#x3D; document.getElementById(&#39;div4&#39;),
+  div5 &#x3D; document.getElementById(&#39;div5&#39;),
+  div6 &#x3D; document.getElementById(&#39;div6&#39;);
+  div1.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第一层&quot;)
+  &#125;, false);
+  div2.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第二层&quot;)
+  &#125;, false);
+  div3.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第三层&quot;)
+  &#125;, false);
+  div4.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第四层&quot;)
+  &#125;, false);
+  div5.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第五层&quot;)
+  &#125;, false);
+  div6.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第六层&quot;)
+  &#125;, false);
+&lt;&#x2F;script&gt;</code></pre>
+
+<p>点击中间最小的第六层div时，控制台打印出的结果是这样的：</p>
+<p><img data-src="" alt="img"></p>
+<p>2、<strong>事件捕获：</strong><br>当某DOM元素触发某事件时，会从DOM根节点开始，逐个触发器祖先元素的同类型事件，直到触发到当前元素为止<br>只有使用<code>.addEventListener()</code>添加事件并设置第三个参数为true时才为捕获</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">&lt;script&gt;
+  var div1 &#x3D; document.getElementById(&#39;div1&#39;),
+  div2 &#x3D; document.getElementById(&#39;div2&#39;),
+  div3 &#x3D; document.getElementById(&#39;div3&#39;),
+  div4 &#x3D; document.getElementById(&#39;div4&#39;),
+  div5 &#x3D; document.getElementById(&#39;div5&#39;),
+  div6 &#x3D; document.getElementById(&#39;div6&#39;);
+  div1.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第一层&quot;)
+  &#125;, true);
+  div2.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第二层&quot;)
+  &#125;, true);
+  div3.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第三层&quot;)
+  &#125;, true);
+  div4.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第四层&quot;)
+  &#125;, true);
+  div5.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第五层&quot;)
+  &#125;, true);
+  div6.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第六层&quot;)
+  &#125;, true);
+&lt;&#x2F;script&gt;</code></pre>
+
+<p>点击中间最小的第六层div时，控制台打印出的结果是这样的：</p>
+<p><img data-src="" alt="img"></p>
+<p>3、<strong>阻断事件冒泡\捕获：</strong><br>阻断捕获只会触发根节点；<br>IE浏览器中将<code>e.cancleBubble</code>属性设为<code>true</code>，<br>其他浏览器调用<code>e.stopPropagation();</code>方法<br>兼容写法:</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">function myParagraphEventHandler(e) &#123;
+　　e &#x3D; e || window.event;
+　　if (e.stopPropagation) &#123;
+　　e.stopPropagation(); &#x2F;&#x2F;IE以外 
+　　&#125; else &#123;
+　　e.cancelBubble &#x3D; true; &#x2F;&#x2F;IE 
+　　&#125;
+&#125;</code></pre>
+
+<p><strong>4、取消事件的默认行为：</strong><br>IE浏览器中：将<code>e.returnValue</code>属性设为<code>false</code>；<br>其他浏览器：调用<code>e.preventDefault();</code>方法<br>兼容写法：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">function eventHandler(e) &#123;
+　　e &#x3D; e || window.event;
+　　&#x2F;&#x2F; 防止默认行为 
+　　if (e.preventDefault) &#123;
+　　e.preventDefault(); &#x2F;&#x2F;IE以外 
+　　&#125; else &#123;
+　　e.returnValue &#x3D; false; &#x2F;&#x2F;IE 
+　　&#125;
+&#125;</code></pre>
+
+<p>参考链接：</p>
+<p><a href="https://www.jianshu.com/p/eee5e4a54048">DOM分级详解</a></p>
+<p><a href="https://www.cnblogs.com/greedymonkey/p/6704249.html">JS中的事件</a></p>
+<p><a href="https://www.cnblogs.com/soyxiaobi/p/9498357.html">彻底弄懂JS事件委托的概念和作用</a></p>
+<p><a href="https://www.jb51.net/article/99094.htm">DOM 事件的深入浅出（一）</a></p>
+]]></content>
+      <tags>
+        <tag>web</tag>
+        <tag>JS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS面向对象基础</title>
+    <url>/2020/01/js-object/</url>
+    <content><![CDATA[<h3 id="OOP-面向对象编程-基础"><a href="#OOP-面向对象编程-基础" class="headerlink" title="OOP(面向对象编程)基础"></a>OOP(面向对象编程)基础</h3><p><strong>语言的分类：</strong><br>1、面向机器：汇编语言<br>2、面向过程：C语言<br>3、面向对象：java、C++、PHP等<span id="more"></span><br>面向过程与面向对象<strong>区别：</strong><br><strong>面向过程：</strong>专注于如何去解决一个问题的过程，编程特点是用一个个函数去实现过程操作，没有类与对象的概念<br><strong>面向对象：</strong>专注于由哪一个对象实体去解决这个问题，编程特点是出现了类，由类生成对象<br>面向对象的三大特征：<strong>继承、封装、多态</strong></p>
+<h3 id="类和对象的关系"><a href="#类和对象的关系" class="headerlink" title="类和对象的关系"></a>类和对象的关系</h3><p><strong>类：</strong><br>一群有相同特征（属性）和行为（方法）的集合 ；</p>
+<p><strong>对象</strong> ：<br>从类中，拿出的具有确定属性值和方法(行为)的个体</p>
+<p><strong>类和对象的关系：</strong><br>类是对象的抽象化，对象是类的具体化；类是抽象的，对象是具体的<br>通俗来说： 类是一个抽象概念，表示具有相同属性和行为的集合，但是类仅仅表明这类群体具有相同的属性，但是没有具体的属性值,而对象是对类的属性进行具体赋值后，而得到的一个具体的个体</p>
+<p><strong>使用类来创建对象</strong></p>
+<p>1、创建一个类（构造函数），类名必须每个单词的首字母大写</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">function 类名(属性1)&#123;
+  this.属性 &#x3D; 属性1;
+  this.方法 &#x3D; function()&#123;&#125;;
+  &#x2F;&#x2F;this 指向即将调用当前构造函数的对象
+&#125;</code></pre>
+
+<p>2、同过类实例化出一个新的对象：（实例化对象时会执行构造函数）<br><code>var obj = new 类名(属性1value);</code><br>原构造函数中this指向新创建的obj对象<br>obj.方法(); 调用方法<br>obj.属性(); 调用属性</p>
+<p><strong>两个重要的属性：</strong><br>1、constructor：<br>返回当前对象的构造函数，（只有对象才有，返回的是构造函数-类）<br><code>zhangsan.constructor == Person true</code><br>对象的constructor，位于__proto__原型对象上<br>2、instanceof<br>用来测试一个对象在其原型链中是否存在一个构造函数的 prototype 属性。<br><code>object(要检测的对象).constructor(某个构造函数)</code></p>
+<h3 id="广义对象和狭义对象"><a href="#广义对象和狭义对象" class="headerlink" title="广义对象和狭义对象"></a>广义对象和狭义对象</h3><p>狭义对象：只有属性、方法，除此之外没有任何东西<br><code>var obj = &#123;&#125;; var obj = new Object();</code><br>广义对象：除了用字面量声明的基本数据类型之外，换句话说，能够添加属性与方法的变量，就是对象;<br><code>var s = &quot;1&quot;;</code> 不是对象，  <code>var s = new String(&quot;1&quot;);</code> 是对象</p>
+<p><strong>【成员属性与成员方法】</strong><br>在构造函数中，通过”this.属性”声明，或者实例化出对象后，通过”对象.属性”追加的，都属于成员属性或成员方法，成员属性/方法,是属于实例化出的这个对象，通过”对象.属性”调用<br><strong>【静态属性与静态方法】</strong><br>通过”类名.属性名”，”类名.方法名”声明的变量，称为静态属性、静态方法，也叫类属性、类方法<br>成员属性是属于实例化出的对象的，会出现在新对象的属性上，类属性是属于构造函数自己的，不会出现在新对象属性上</p>
+<h3 id="JS中的对象"><a href="#JS中的对象" class="headerlink" title="JS中的对象"></a>JS中的对象</h3><p>JS提供的内置对象有 array、boolean、number、string、date、math、regexp 。通常我们认为JavaScript的对象是键值对的容器。</p>
+<p>虽然JavaScript 是面向对象的语言，但 JavaScript 不使用类。在 JavaScript 中，不会创建类，也不会通过类来创建对象（就像在其他面向对象的语言中那样）。<br>JavaScript 基于 prototype，而不是基于类的。</p>
+<p>JS创建新对象有两种不同的方法：</p>
+<ul>
+<li>定义并创建对象的实例</li>
+<li>使用函数来定义对象，然后创建新的对象实例</li>
+</ul>
+<h4 id="直接创建对象实例"><a href="#直接创建对象实例" class="headerlink" title="直接创建对象实例"></a>直接创建对象实例</h4><p>有两种方式直接创建对象，一种是使用字符通过键值对的方式创建：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">var person &#x3D; &#123;
+    name:&quot;鲲虚菜&quot;,
+    age:20,
+    sex:&quot;男&quot;,
+    hobby:function()&#123;
+          return &quot;喜欢唱跳rap，打篮球&quot;;
+      &#125;
+&#125;;</code></pre>
+
+<p>另一种是先创建对象，然后再添加属性和属性值：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">person&#x3D;new Object();
+person.name&#x3D;&quot;鲲虚菜&quot;;
+person.age&#x3D;20;
+person.sex&#x3D;&quot;男&quot;;
+person.hobby&#x3D;function()&#123;
+  return &quot;喜欢唱跳rap，打篮球&quot;;
+&#125;</code></pre>
+
+<h4 id="通过函数构造对象"><a href="#通过函数构造对象" class="headerlink" title="通过函数构造对象"></a>通过函数构造对象</h4><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">function person(name,age,sex,hobby)&#123;
+    this.name&#x3D;name;
+    this.age&#x3D;age;
+    this.sex&#x3D;sex;
+    this.hobby&#x3D;hobby;
+    
+    this.changeHobby&#x3D;changeHobby;
+    function changeHobby(hobby)&#123;
+      this.hobby&#x3D;hobby;
+    &#125;
+&#125;
+var xkc&#x3D;new person(&quot;鲲虚菜&quot;,20,&quot;男&quot;);
+xkc.changeHobby(&quot;喜欢唱跳rap，打篮球&quot;);</code></pre>
+
+<h4 id="对象属性和方法的访问"><a href="#对象属性和方法的访问" class="headerlink" title="对象属性和方法的访问"></a>对象属性和方法的访问</h4><p>对象属性访问方式有两种，一种是对象名.属性名，还有一种是对象名[属性名]，例：<code>person.name;</code>，<code>person[&quot;name&quot;];</code></p>
+<h4 id="JS对象的循环遍历"><a href="#JS对象的循环遍历" class="headerlink" title="JS对象的循环遍历"></a>JS对象的循环遍历</h4><p>可以使用 for…in 语句循环遍历对象的属性。</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html">&lt;p&gt;点击下面的按钮，循环遍历对象 &quot;person&quot; 的属性。&lt;&#x2F;p&gt;
+&lt;button onclick&#x3D;&quot;showPerson()&quot;&gt;点击这里&lt;&#x2F;button&gt;
+&lt;p id&#x3D;&quot;demo&quot;&gt;&lt;&#x2F;p&gt;
+&lt;script&gt;
+function showPerson()&#123;
+  var x;
+  var txt&#x3D;&quot;&quot;;
+  var person &#x3D; &#123;
+    name:&quot;鲲虚菜&quot;,
+    age:20,
+    sex:&quot;男&quot;,
+  &#125;;
+  for (x in person)&#123;
+     txt&#x3D;txt + person[x];
+  &#125;
+  document.getElementById(&quot;demo&quot;).innerHTML&#x3D;txt;
+&#125;
+&lt;&#x2F;script&gt;</code></pre>
+
+
+
+<h4 id="JS对象属性的删除"><a href="#JS对象属性的删除" class="headerlink" title="JS对象属性的删除"></a>JS对象属性的删除</h4><p>对象无需手动删除，JS提供了一种主动释放对象内存的方法(即对象无用后，自动删除)<br>删除对象的属性：<code>delete 对象名.属性名</code></p>
+<h3 id="对象是引用数据类型"><a href="#对象是引用数据类型" class="headerlink" title="对象是引用数据类型"></a>对象是引用数据类型</h3><p>也就是说，当new出一个对象时，这个obj变量存储的实际上是对象的地址，在对象赋值时，赋的也是地址。</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">function Person()&#123;&#125;
+var zhangsan &#x3D; new Person(); &#x2F;&#x2F;zhangsan对象实际存的是地址
+var lisi &#x3D; zhangsan; &#x2F;&#x2F;赋值时，实际是将zhangsan存的地址给了lisi
+lisi.name &#x3D; &quot;李四&quot;; &#x2F;&#x2F;李四通过地址修改了对象
+console.log(zhangsan.name); &#x2F;&#x2F;张三再通过地址打开对象，实际已经改变了</code></pre>
+
+<p>引用数据类型，赋值时传递的是引用（地址）；基本数据类型，赋值时传递的是数据（值）</p>
+<p><img data-src="" alt="img"></p>
+]]></content>
+      <tags>
+        <tag>web</tag>
+        <tag>JS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS 常见循环、分支、嵌套练习</title>
+    <url>/2020/01/js-practice/</url>
+    <content><![CDATA[<h3 id="数字判断："><a href="#数字判断：" class="headerlink" title="数字判断："></a>数字判断：</h3><h4 id="给出一个不低于两位的数字，判断是否是正整数，如果是将此数字反向输出"><a href="#给出一个不低于两位的数字，判断是否是正整数，如果是将此数字反向输出" class="headerlink" title="给出一个不低于两位的数字，判断是否是正整数，如果是将此数字反向输出"></a>给出一个不低于两位的数字，判断是否是正整数，如果是将此数字反向输出</h4><p><strong>思路：</strong><br>判断是否为一个数字：Number(num)结果不为NaN，说明为数字<span id="more"></span><br>判断一个数字为正数：Number(num)&gt;0为正数<br>判断一个数字为整数：parseInt(num)==parseFloat(num)，不是小数</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">var num;
+while (true)&#123;
+  num&#x3D;prompt(&quot;&quot;);
+&#x2F;&#x2F;        Number(num)&gt;0  肯定为正数
+&#x2F;&#x2F;        parseInt(num)&#x3D;&#x3D;parseFloat(num)  肯定不是小数
+  if (Number(num)&gt;0&amp;&amp;parseInt(num)&#x3D;&#x3D;parseFloat(num)) &#123;
+     break;
+  &#125;
+&#125;
+while (num&gt;0)&#123;
+  var a &#x3D; parseInt(num%10);
+  document.write(a);
+  num&#x3D;parseInt(num&#x2F;10);
+&#125;</code></pre>
+
+<h3 id="日期判断："><a href="#日期判断：" class="headerlink" title="日期判断："></a>日期判断：</h3><h4 id="判断是否是闰年"><a href="#判断是否是闰年" class="headerlink" title="判断是否是闰年"></a>判断是否是闰年</h4><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">var year&#x3D;prompt(&quot;输入年份&quot;);
+document.write(year%4&#x3D;&#x3D;0&amp;&amp;year%100!&#x3D;0||year%400&#x3D;&#x3D;0?&quot;是闰年&quot;:&quot;不是闰年&quot;);</code></pre>
+
+<h4 id="输入年月日，判断这一天是这一年的第几天"><a href="#输入年月日，判断这一天是这一年的第几天" class="headerlink" title="输入年月日，判断这一天是这一年的第几天"></a>输入年月日，判断这一天是这一年的第几天</h4><p>下面两种方法都假设当年是平年，即2月28天。</p>
+<p>方法一：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">var year &#x3D; parseInt(prompt(&quot;请输入年份&quot;));
+var month &#x3D; parseInt(prompt(&quot;请输入月份&quot;));
+var day &#x3D; parseInt(prompt(&quot;请输入日期&quot;));
+  &#x2F;*假设都是平年，2月28天*&#x2F;
+var sum&#x3D;0;
+for(var i&#x3D;1;i&lt;month;i++)&#123;
+  if(i&#x3D;&#x3D;1||i&#x3D;&#x3D;3||i&#x3D;&#x3D;5||i&#x3D;&#x3D;7||i&#x3D;&#x3D;8||i&#x3D;&#x3D;10||i&#x3D;&#x3D;12)&#123;
+    sum+&#x3D;31;
+  &#125;else if(i&#x3D;&#x3D;4||i&#x3D;&#x3D;6||i&#x3D;&#x3D;9||i&#x3D;&#x3D;11)&#123;
+    sum+&#x3D;30;
+  &#125;else if(i&#x3D;&#x3D;2)&#123;
+    sum+&#x3D;28;
+  &#125;
+&#125;
+if((year%4&#x3D;&#x3D;0&amp;&amp;year%100!&#x3D;0||year%400&#x3D;&#x3D;0)&amp;&amp;month&gt;2)&#123;
+  sum+&#x3D;(day+1);
+&#125;else&#123;
+  sum+&#x3D;day;
+&#125;
+document.write(&quot;您输入的&quot;+year+&quot;-&quot;+month+&quot;-&quot;+day+&quot;为该年的第&quot;+sum+&quot;天&quot;);</code></pre>
+
+<p>方法二：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">var year &#x3D; parseInt(prompt(&quot;请输入年份&quot;));
+var month &#x3D; parseInt(prompt(&quot;请输入月份&quot;));
+var day &#x3D; parseInt(prompt(&quot;请输入日期&quot;));
+    &#x2F;*假设都是平年，2月28天*&#x2F;
+var sum&#x3D;0;
+switch (month-1)&#123;
+    case 11:          &#x2F;&#x2F;每个case后没有break，可以实现天数的累加
+      sum+&#x3D;30;
+    case 10:
+      sum+&#x3D;31;
+    case 9:
+      sum+&#x3D;30;
+    case 8:
+      sum+&#x3D;31;
+    case 7:
+      sum+&#x3D;31;
+    case 6:
+      sum+&#x3D;30;
+    case 5:
+      sum+&#x3D;31;
+    case 4:
+      sum+&#x3D;30;
+    case 3:
+      sum+&#x3D;31;
+    case 2:
+      sum+&#x3D;28;
+    case 1:
+      sum+&#x3D;31;
+    case 0:
+      sum+&#x3D;0;
+&#125;         
+if((year%4&#x3D;&#x3D;0&amp;&amp;year%100!&#x3D;0||year%400&#x3D;&#x3D;0)&amp;&amp;month&gt;2)&#123;
+    sum+&#x3D;(day+1);
+&#125;else&#123;
+    sum+&#x3D;day;
+&#125;
+document.write(&quot;您输入的&quot;+year+&quot;-&quot;+month+&quot;-&quot;+day+&quot;为该年的第&quot;+sum+&quot;天&quot;);</code></pre>
+
+<h3 id="图形输出："><a href="#图形输出：" class="headerlink" title="图形输出："></a>图形输出：</h3><h4 id="利用嵌套循环输出以下图形："><a href="#利用嵌套循环输出以下图形：" class="headerlink" title="利用嵌套循环输出以下图形："></a>利用嵌套循环输出以下图形：</h4><table>
+<thead>
+<tr>
+<th align="center">长方形</th>
+<th align="center">直角三角形</th>
+<th align="center">平行四边形</th>
+<th align="center">菱形</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">****<br />****<br />****<br />****<br />****<br /></td>
+<td align="center">*<br/>**<br/>***<br/>****<br/>*****</td>
+<td align="center">*****<br/>&nbsp;*****<br/>&nbsp;&nbsp;*****<br/>&nbsp;&nbsp;&nbsp;*****<br/>&nbsp;&nbsp;&nbsp;&nbsp;*****</td>
+<td align="center">&nbsp;&nbsp;&nbsp;&nbsp;*<br/>&nbsp;&nbsp;&nbsp;***<br/>&nbsp;&nbsp;*****<br/>*******<br/>&nbsp;&nbsp;*****<br/>&nbsp;&nbsp;&nbsp;***<br/>&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+</tr>
+</tbody></table>
+<p><strong>思路：</strong><br>1、确定图形一共几行，即为外层的循环次数<br>2、确定每行有几种元素，代表有几个内层循环<br>3、确定每种元素的个数，即为每个内层循环的次数</p>
+<p><strong>通常，找出每种元素个数，与行号的关系式，即为当前内层循环的最大值（从1开始循环）</strong></p>
+<p><strong>长方形：</strong></p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">document.write(&quot;长方形&quot;+&quot;&lt;br &#x2F;&gt;&quot;);
+for (i&#x3D;1;i&lt;&#x3D;5;i++) &#123;
+  for (j&#x3D;1;j&lt;&#x3D;4;j++) &#123;
+    document.write(&quot;*&quot;);
+  &#125;
+  document.write(&quot;&lt;br &#x2F;&gt;&quot;);
+&#125;</code></pre>
+
+<p><strong>直角三角形：</strong></p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">document.write(&quot;三角形&quot;+&quot;&lt;br &#x2F;&gt;&quot;);
+for (i&#x3D;1;i&lt;&#x3D;5;i++) &#123;
+  for (j&#x3D;1;j&lt;&#x3D;i;j++) &#123;
+    document.write(&quot;*&quot;);
+  &#125;
+  document.write(&quot;&lt;br &#x2F;&gt;&quot;);
+&#125;</code></pre>
+
+<p><strong>平行四边形：</strong></p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">document.write(&quot;平行四边形&quot;+&quot;&lt;br &#x2F;&gt;&quot;);
+for (i&#x3D;1;i&lt;&#x3D;5;i++) &#123;
+  for (n&#x3D;1;n&lt;&#x3D;i;n++) &#123;
+    document.write(&quot;&amp;nbsp;&quot;);
+  &#125;
+  for (j&#x3D;1;j&lt;&#x3D;5;j++) &#123;
+    document.write(&quot;*&quot;);
+  &#125;
+  document.write(&quot;&lt;br &#x2F;&gt;&quot;);
+&#125;</code></pre>
+
+<p><strong>菱形：</strong></p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">document.write(&quot;菱形&quot;+&quot;&lt;br &#x2F;&gt;&quot;);
+for (var i&#x3D;1;i&lt;&#x3D;4;i++) &#123;
+  &#x2F;&#x2F;输出空格
+  for(var k&#x3D;1;k&lt;&#x3D;4-i;k++)&#123;
+    document.write(&quot;&lt;span style&#x3D;&#39;display: inline-block;width: 7px;&#39;&gt;&lt;&#x2F;span&gt;&quot;);
+  &#125;
+  &#x2F;&#x2F;输出*
+  for(var j&#x3D;1;j&lt;&#x3D;2*i-1;j++)&#123;
+    document.write(&quot;*&quot;);
+  &#125;
+  document.write(&quot;&lt;br&#x2F;&gt;&quot;);
+&#125;
+for (var i&#x3D;1;i&lt;&#x3D;3;i++) &#123;
+  &#x2F;&#x2F;输出空格
+  for(var k&#x3D;1;k&lt;&#x3D;i;k++)&#123;
+    document.write(&quot;&lt;span style&#x3D;&#39;display: inline-block;width: 7px;&#39;&gt;&lt;&#x2F;span&gt;&quot;);
+  &#125;
+  &#x2F;&#x2F;输出*
+  for(var j&#x3D;1;j&lt;&#x3D;7-2*i;j++)&#123;
+    document.write(&quot;*&quot;);
+  &#125;
+  document.write(&quot;&lt;br&#x2F;&gt;&quot;);
+&#125;</code></pre>
+
+<h4 id="打印数字等边三角形："><a href="#打印数字等边三角形：" class="headerlink" title="打印数字等边三角形："></a>打印数字等边三角形：</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;121<br>&nbsp;&nbsp;&nbsp;&nbsp;12321<br>&nbsp;&nbsp;&nbsp;1234321<br>&nbsp;&nbsp;123454321<br>12345654321</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">for(var i&#x3D;1;i&lt;&#x3D;4;i++)&#123;
+  &#x2F;&#x2F; 空格
+  for(var k&#x3D;1;k&lt;&#x3D;4-i;k++)&#123;
+    document.write(&quot;&lt;span style&#x3D;&#39;display: inline-block;width: 8px;&#39;&gt;&lt;&#x2F;span&gt;&quot;);
+  &#125;
+  var n &#x3D; 1;
+  &#x2F;&#x2F; 递增
+  for(var j&#x3D;1;j&lt;&#x3D;i;j++)&#123;
+    document.write(n);
+    n++;
+  &#125;
+  n-&#x3D;2;
+  &#x2F;&#x2F; 递减
+  for(var m&#x3D;1;m&lt;&#x3D;i-1;m++)&#123;
+    document.write(n);
+    n--;
+  &#125;
+  &#x2F;&#x2F; 换行
+  document.write(&quot;&lt;br&#x2F;&gt;&quot;);
+ &#125;</code></pre>
+
+<h4 id="九九乘法表："><a href="#九九乘法表：" class="headerlink" title="九九乘法表："></a>九九乘法表：</h4><p><img data-src="" alt="img"></p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">document.write(&quot;&lt;table width&#x3D;&#39;700&#39;&gt;&quot;)
+for(var i&#x3D;1;i&lt;&#x3D;9;i++)&#123;
+  document.write(&quot;&lt;tr&gt;&quot;)
+  for(var j&#x3D;1;j&lt;&#x3D;i;j++)&#123;
+    document.write(&quot;&lt;td&gt;&quot;+i+&quot;*&quot;+j+&quot;&#x3D;&quot;+i*j+&quot;&lt;&#x2F;td&gt;&quot;);
+  &#125;
+  document.write(&quot;&lt;&#x2F;tr&gt;&quot;)
+&#125;
+document.write(&quot;&lt;&#x2F;table&gt;&quot;)
+document.write(&quot;&lt;br &#x2F;&gt;&lt;br &#x2F;&gt;&lt;br &#x2F;&gt;&lt;br &#x2F;&gt;&lt;br &#x2F;&gt;&lt;br &#x2F;&gt;&lt;br &#x2F;&gt;&lt;br &#x2F;&gt;&lt;br &#x2F;&gt;&lt;br &#x2F;&gt;&lt;br &#x2F;&gt;&quot;);</code></pre>]]></content>
+      <tags>
+        <tag>web</tag>
+        <tag>JS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS中this详解</title>
+    <url>/2020/01/js-this/</url>
+    <content><![CDATA[<h3 id="this详解"><a href="#this详解" class="headerlink" title="this详解"></a>this详解</h3><p>1、谁最终调用函数，this指向谁，<strong>this指向永远只可能是对象</strong>，不可能是函数<br>this指向谁不取决于this写在哪，而且取决于函数在哪调用<br>this指向的对象，我们称之为函数的上下文context，也叫函数的调用者<span id="more"></span></p>
+<p>2、<strong>this指向的规律</strong>（与<strong>函数调用的方式</strong>息息相关）<br>this指向的情况，取决于函数调用的方式有哪些：<br>①通过函数名（）直接调用:this指向window</p>
+<p>②通过对象.函数名（）调用:this指向这个对象</p>
+<p>③函数作为数组的一个元素，通过数组下标调用的：this指向这个数组</p>
+<p>④函数作为window内置函数的回调函数调用：this指向window<br><strong>例如setInterval、setTimeout等</strong></p>
+<p>⑤函数作为构造函数，用new关键字调用时，this指向新new出的对象</p>
+<p><strong>不同情况举例：</strong></p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">&#x2F;&#x2F;通过函数名()直接调用,this指向window
+    function func()&#123;
+        console.log(this);
+    &#125;
+    func();
+    
+&#x2F;&#x2F;通过对象.函数名（）调用:this指向这个对象
+    &#x2F;&#x2F;狭义对象
+    var obj &#x3D; &#123;
+        name:&quot;obj&quot;,
+        func1 : func,
+    &#125;; &#x2F;&#x2F;this 指向obj
+    obj.func1();
+    &#x2F;&#x2F;广义对象
+        document.getElementById(&quot;div&quot;).onclick &#x3D; function()&#123;
+        this.style.backgroundColor &#x3D; &quot;red&quot;;
+    &#125;  &#x2F;&#x2F;this指向div
+        
+&#x2F;&#x2F;函数作为数组的一个元素，通过数组下标调用的：this指向这个数组
+    var arr &#x3D; [func,1,2,3];
+    arr[0](); &#x2F;&#x2F;this指向arr
+        
+&#x2F;&#x2F;函数作为window内置函数的回调函数调用：this指向window
+    setTimeout(func,1000);  &#x2F;&#x2F;this指向window
+        
+&#x2F;&#x2F;函数作为构造函数，用new关键字调用时，this指向新new出的对象
+    var obj &#x3D; new func();  &#x2F;&#x2F;this指向新new出的obj
+        
+            </code></pre>]]></content>
+      <tags>
+        <tag>web</tag>
+        <tag>JS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CSS预处理语言less和Sass基础教程</title>
+    <url>/2020/01/less-sass/</url>
+    <content><![CDATA[<p>因为CSS是一门描述性语言，代码中基本没有逻辑性，所以会存在大量重复代码，不便于维护和扩展。因此CSS预处理器就诞生了：less和Sass都是CSS的预处理语言，先用预编译语言进行样式设计，然后再进行编译，生成CSS文件来使用，这些语言的出现让CSS编写起来更加方便快捷，更易于维护。<span id="more"></span></p>
+<h3 id="less的基础教程"><a href="#less的基础教程" class="headerlink" title="less的基础教程"></a>less的基础教程</h3><p>Less 是一门 CSS 预处理语言，它扩展了 CSS 语言，增加了变量、Mixin、函数等特性，使 CSS 更易维护和扩展。<br>Less 可以运行在 Node 或浏览器端。</p>
+<h4 id="less变量"><a href="#less变量" class="headerlink" title="less变量"></a>less变量</h4><p>声明变量：使用@变量名: 变量值<br>使用变量：@变量名<br>举例：</p>
+<pre class="line-numbers language-less" data-language="less"><code class="language-less">$length: 100px;
+$color: red;</code></pre>
+
+<p><strong>less中变量的类型：</strong></p>
+<ul>
+<li>数字类：10px；10</li>
+<li>字符串：<br>​        有引号字符串：”red”<br>​        无引号字符串：哈哈</li>
+<li>颜色类：<br>  颜色名称，如red；<br>  RGB格式，rgb(0,0,0)；<br>  十六进制，如#ffffff</li>
+<li>值列表类型：用逗号或空格分隔</li>
+</ul>
+<p><strong>变量使用原则</strong>：多次频繁出现的值设为变量，还有需要修改的值也可设为变量</p>
+<p> <strong>混合（Mixins）：</strong></p>
+<ul>
+<li>无参混合<br>声明：.name{} ；选择器中调用：.name</li>
+<li>带参混合<br>无默认值声明：.name(@param){} 调用：.name(paramValue);<br>有默认值声明： .name(@param:value){} 调用：.name(paramValue);paramValue可省略</li>
+</ul>
+<p>如果声明时没有默认值，则调用时必须赋值，否则报错<br>无参混合会在css中编译出同名的class选择器，有参的不会</p>
+<p><strong>示例</strong>：</p>
+<pre class="line-numbers language-less" data-language="less"><code class="language-less">.class&#123;
+    padding: 10px;
+&#125;
+@mixin hong&#123;
+    color: blue;
+&#125;
+#div1&#123;
+    width: $length;
+    background-color: red;
+    @extend.class;
+    border-#&#123;$left&#125;:10px solid blue ;
+    @include hong;
+&#125;</code></pre>
+
+<h4 id="less匹配模式"><a href="#less匹配模式" class="headerlink" title="less匹配模式"></a>less匹配模式</h4><p>使用混合进行匹配，类似if结构：<br><strong>声明：</strong>.name(条件一，参数){} .name(条件二，参数){} .name(条件三，参数){}<br><strong>调用：</strong>.name(条件值，参数值)<br><strong>匹配规则</strong>：根据调用时提供的条件值，寻找与之匹配的Mixins执行，其中@_表示永远需要执行的部分</p>
+<h4 id="less的运算与嵌套"><a href="#less的运算与嵌套" class="headerlink" title="less的运算与嵌套"></a>less的运算与嵌套</h4><p><strong>LESS中的运算</strong>：<br>使用运算符+、-、/、* 计算，可以带单位也可不带<br> 进行颜色（十六进制形式）运算时，红绿蓝分开计算，即每组两位之间可以进位，组间不可进位<br><strong>LESS中的嵌套</strong>：<br>保留html中的代码结构，嵌套默认是后代选择器，如果需要子代选择器，则在子代前面加&gt;<br>&amp;表示上一层，&amp;:hover表示上一层的hover事件，&amp;主要用来进行伪类事件的设置</p>
+<p><strong>代码嵌套示例</strong>：</p>
+<pre class="line-numbers language-less" data-language="less"><code class="language-less">section&#123;
+    p&#123;
+        color: red;
+        background-color: cyan;
+    &#125;
+    ul&#123;
+        padding: 0;
+        list-style: none;
+        li&#123;
+            float: left;
+            width: 100px;
+            margin: 10px;
+            border: &#123;
+                color: green;
+                style:solid;
+                width: 5px;
+            &#125;;
+            &amp;:hover&#123;
+                background-color: yellow;
+            &#125;
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+<h4 id="less注释方式"><a href="#less注释方式" class="headerlink" title="less注释方式"></a>less注释方式</h4><p>less的注释方式有两种：<br>一种是使用双斜杠（//）来注释，使用这种方式注释的内容不会被编译<br>另一种是使用/**/，但可以被编译</p>
+<h3 id="Sass的基础教程"><a href="#Sass的基础教程" class="headerlink" title="Sass的基础教程"></a>Sass的基础教程</h3><blockquote>
+<p>世界上最成熟、最稳定、最强大的专业级CSS扩展语言</p>
+</blockquote>
+<p>sass是最早的css预处理语言，有比less更为强大的功能。但因其一开始的缩进式语法并不能被开发者们接受，所以使用率不高，不过由于其强大的功能和Ruby on Rails 的大力推动，逐渐被更多开发者使用。</p>
+<p>sass是采用的Ruby语言编写的一款css预处理语言，它诞生于2007年，是最早成熟css预处理语言。最初它是为了配合haml而设计的，因此有着和haml一样的缩进式风格。</p>
+<p>sass从第三代开始，放弃了缩进式风格，并且完全向下兼容普通的css代码，这一代的sass也被称为scss。</p>
+<p><strong>特色功能 (Features)</strong></p>
+<ul>
+<li>完全兼容 CSS3</li>
+<li>在 CSS 基础上增加变量、嵌套 (nesting)、混合 (mixins) 等功能</li>
+<li>通过<em>函数</em>进行颜色值与属性值的运算</li>
+<li>提供*控制指令 (control directives)*等高级功能</li>
+<li>自定义输出格式</li>
+</ul>
+<h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><p>使用$变量名:变量值 来声明变量，即变量以$开头<br>如果变量需要在字符串中嵌套，则需要使用#{}包括，如</p>
+<pre class="line-numbers language-scss" data-language="scss"><code class="language-scss">$left:left;
+.div1 &#123;
+    border-#&#123;$left&#125;-radius: 5px;
+&#125;</code></pre>
+
+<h4 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h4><pre class="line-numbers language-scss" data-language="scss"><code class="language-scss">body &#123;
+    margin: (14px&#x2F;2);
+    top: 50px + 100px;
+    right: $var * 10%;
+&#125;</code></pre>
+
+<p>需要注意的是，计算时会将单位也进行运算，所以使用时需注意<strong>最终单位</strong>：100px*10px = 1000 px<sup>2</sup></p>
+<h4 id="嵌套"><a href="#嵌套" class="headerlink" title="嵌套"></a>嵌套</h4><ul>
+<li><p><strong>选择器嵌套</strong>　<code>ul&#123; li&#123;&#125; &#125;</code> 后代选择、<code>ul&#123; &gt;li&#123;&#125; &#125;</code> 子代选择、</p>
+<p>&amp;表示外层的父选择器 <code>div&#123; ul&#123; li&#123; &amp;==&quot;div ul li&quot; &#125; &#125; &#125;</code></p>
+</li>
+<li><p><strong>属性嵌套</strong>　　<code>p&#123;border:&#123;color: green;style:solid;width: 5px;&#125;&#125;</code>，注意里面的border要加上冒号</p>
+</li>
+<li><p><strong>伪类嵌套</strong>　　<code>ul&#123; li&#123; &amp;:hover&#123;&#125; &#125; &#125;</code></p>
+</li>
+</ul>
+<h4 id="混合、继承、占位符"><a href="#混合、继承、占位符" class="headerlink" title="混合、继承、占位符"></a>混合、继承、占位符</h4><p><strong>混合宏</strong>：<br>声明：@mixin name($param:value){} 调用：@include name(value);<br> 声明时可以有参可以无参，可以带默认值也可不带，但调用时必须符合声明规范，同less<br>优点：可以传参；缺点：会将混合宏中代码，copy到对应的选择器中，产生冗余代码<br><strong>继承</strong>：<br>声明：.class{} 调用:@extend .class;<br>优点：继承的相同代码，会提取到并集选择器中，减少冗余代码；<br>缺点：无法进行传参，会在CSS中生成一个同名class<br><strong>占位符</strong>：<br>声明：%class{} 调用：@extend %class;<br>优点：继承的相同代码，会提取到并集选择器中，减少冗余代码，不会在CSS中生成一个同名class；<br>缺点：无法进行传参<br><strong>综上，当需要传递参数时用混合宏，当有现成class时用继承，当不需要参数也不需要class时用占位符</strong></p>
+<h4 id="控制指令"><a href="#控制指令" class="headerlink" title="控制指令"></a>控制指令</h4><p><strong>if条件结构</strong>：<br> <code>@if条件&#123;&#125; @else&#123;&#125;</code><br><strong>for 循环结构</strong>:<br><code> @for $i from 1 to/through 10;</code> (to不包括10，through包括10 )<br><strong>whlie 循环结构</strong>：</p>
+<pre class="line-numbers language-none"><code class="language-none">$j;
+@while $j&lt;10&#123;.while #&#123;$j&#125;&#123;
+background-color: red;
+&#125;$j:$j+1;&#125;</code></pre>
+
+<p><strong>each循环遍历</strong><br><code>@each item in a,b,c,d&#123;&#125;</code></p>
+<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><p>Sass允许用户自己编写函数使用</p>
+<pre class="line-numbers language-scss" data-language="scss"><code class="language-scss">　　@function double($n) &#123;
+　　　　@return $n * 2;
+　　&#125;
+　　#sidebar &#123;
+　　　　width: double(5px);
+　　&#125;</code></pre>
+
+
+
+<h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><p>Sass和less一样，有两种注释方法</p>
+<p>一种是单行注释，<code>//注释一</code> 不会被输出到编译后的CSS文件中；<br>另一种是多行注释，<code>/*注释二*/</code> 这种注释会保留在编译后的文件中；<br>另外还有一种算是多行注释的升级版，<code>/*!注释三 重要注释*/</code> 这种注释即使是压缩模式编译，也会被保留，通常可以用于声明版权信息。</p>
+<h3 id="两种预处理语言的编译方式"><a href="#两种预处理语言的编译方式" class="headerlink" title="两种预处理语言的编译方式"></a>两种预处理语言的编译方式</h3><p>less和Sass的编译方式大同小异，他们可以通过下面几种方式进行编译：</p>
+<h4 id="1、命令行方式"><a href="#1、命令行方式" class="headerlink" title="1、命令行方式"></a>1、命令行方式</h4><p>使用这种方式编译需要先安装less和Sass，less可以通过npm安装，Sass的安装方式比较多，不仅可以通过npm安装，也可以通过Ruby安装，更多安装方式可以去<a href="https://sass-lang.com/install">官网</a>查看。安装成功后就能使用命令行直接编译文件了。</p>
+<p>less的编译命令</p>
+<pre class="line-numbers language-none"><code class="language-none">lessc styles.less styles.css</code></pre>
+
+<p>Sass的编译命令</p>
+<pre class="line-numbers language-none"><code class="language-none">sass test.scss test.css</code></pre>
+
+<p>SASS提供四个<a href="http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html#output_style">编译风格</a>的选项：</p>
+<ul>
+<li>nested：嵌套缩进的css代码，它是默认值。</li>
+<li>expanded：没有缩进的、扩展的css代码。</li>
+<li>compact：简洁格式的css代码。</li>
+<li>compressed：压缩后的css代码。</li>
+</ul>
+<p>生产环境当中，一般使用最后一个选项。</p>
+<pre class="line-numbers language-none"><code class="language-none">sass --style compressed test.sass test.css</code></pre>
+
+<p>命令行方式也可以对某个文件或者目录进行监听，在源文件产生变动时自动生成编译后版本，less可以通过安装一个插件watcher-lessc来监听编译，Sass直接使用命令行就能实现：</p>
+<pre class="line-numbers language-none"><code class="language-none">　　&#x2F;&#x2F; 监听一个文件
+　　sass --watch input.scss:output.css
+
+　　&#x2F;&#x2F; 监听一个文件夹目录
+　　sass --watch app&#x2F;sass:public&#x2F;stylesheets</code></pre>
+
+<h4 id="2、使用编译软件Koala编译"><a href="#2、使用编译软件Koala编译" class="headerlink" title="2、使用编译软件Koala编译"></a>2、使用编译软件Koala编译</h4><p>Koala是一个国产免费前端预处理器语言图形编译工具，支持Less、Sass、Compass、CoffeeScript，帮助web开发者更高效地使用它们进行开发。跨平台运行，完美兼容windows、linux、mac。</p>
+<p>前往<a href="http://koala-app.com/index-zh.html">官网</a>下载安装，安装完成打开显示如下界面：</p>
+<p><img data-src="" alt="img"></p>
+<p>点击左侧的+号添加需要编译的文件夹，也可以直接将文件夹拖动进来，添加完成后就可以对文件进行编译了，点击一个文件可以设置编译选项。编译时软件默认是将less文件编译到同级目录下，如果想要改变可以在文件上进行单个文件的改变；缺点是不能实现批量的改变。使用koala的好处是有错误提示，可以比较方便的获取错误信息。</p>
+<p><img data-src="" alt="img"></p>
+<h4 id="3、使用开发工具编译"><a href="#3、使用开发工具编译" class="headerlink" title="3、使用开发工具编译"></a>3、使用开发工具编译</h4><p>可以使用一些常用的开发工具或开发工具中的某些插件来直接自动编译，如webstorm、sublime插件SASS-Build、vscode插件easy sass等等，具体操作方法自行搜索。</p>
+<h4 id="4、使用JS文件"><a href="#4、使用JS文件" class="headerlink" title="4、使用JS文件"></a>4、使用JS文件</h4><p>这一条针对的是less文件，因为less基于js。去官网下载less.js文件，然后在文件中引入，或者直接使用CDN引入：</p>
+<pre class="line-numbers language-HTML" data-language="HTML"><code class="language-HTML">&lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;less&#x2F;test.less&quot; type&#x3D;&quot;text&#x2F;less&quot;&gt;
+&lt;script src&#x3D;&quot;&#x2F;&#x2F;cdnjs.cloudflare.com&#x2F;ajax&#x2F;libs&#x2F;less.js&#x2F;2.5.3&#x2F;less.min.js&quot;&gt;&lt;&#x2F;script&gt;</code></pre>
+
+<p>使用时注意以下几点：<br>link引入的是less文件，路径直接是less所在位置即可；<br>link内一定要注明type类型，因为默认为css；<br>顺序一定要是引入的less文件在less.js文件上面。</p>
+<h4 id="5、其他编译方式"><a href="#5、其他编译方式" class="headerlink" title="5、其他编译方式"></a>5、其他编译方式</h4><p>前端自动化软件codekit、Grunt打造前端自动化工作流grunt-sass、Gulp打造前端自动化工作流gulp-ruby-sass等，具体用法自行搜索。</p>
+<h3 id="less与Sass的区别"><a href="#less与Sass的区别" class="headerlink" title="less与Sass的区别"></a>less与Sass的区别</h3><table>
+<thead>
+<tr>
+<th align="center">区别</th>
+<th align="center">Sass</th>
+<th align="center">less</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">环境</td>
+<td align="center">Sass基于Ruby，需要安装Ruby。属于服务端处理。</td>
+<td align="center">Less和Sass在Ruby中构建相似，但它已被移植到JavaScript中。less编译通过引入less.js文件或通过编译软件编译成css文件再将css文件放入项目中。属于客户端处理。</td>
+</tr>
+<tr>
+<td align="center">声明变量</td>
+<td align="center">Sass使用$</td>
+<td align="center">Less使用@</td>
+</tr>
+<tr>
+<td align="center">输出格式</td>
+<td align="center">nested：嵌套缩进的css代码；expanded：展开的多行css代码；compact：简洁格式的css代码；compressed：压缩后的css代码</td>
+<td align="center">Less无输出格式</td>
+</tr>
+<tr>
+<td align="center">继承</td>
+<td align="center">sass的继承：@extend</td>
+<td align="center">less的继承：类似于mixins .block</td>
+</tr>
+</tbody></table>
+<p>以上是部分Sass和less的区别，仅供参考。</p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="http://lesscss.org/">less官网</a></p>
+<p><a href="https://less.bootcss.com/">less中文网</a></p>
+<p><a href="http://koala-app.com/index-zh.html">Koala官网</a></p>
+<p><a href="https://www.sass.hk/">Sass中文网</a></p>
+<p><a href="http://www.ruanyifeng.com/blog/2012/06/sass.html">SASS用法指南 - 阮一峰的网络日志</a></p>
+<p><a href="https://www.jianshu.com/p/96430f2e5161">sass和less的区别</a></p>
+<p><a href="https://blog.csdn.net/gaomengwang/article/details/80573915">Sass与Less区别</a></p>
+]]></content>
+      <tags>
+        <tag>CSS</tag>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网页移动开发的一些知识</title>
+    <url>/2020/01/mobile-develop/</url>
+    <content><![CDATA[<h3 id="关于像素的部分基础知识"><a href="#关于像素的部分基础知识" class="headerlink" title="关于像素的部分基础知识"></a>关于像素的部分基础知识</h3><p>移动网页开发中提到的像素主要有三种：CSS像素、物理像素、设备无关像素</p>
+<ul>
+<li>设备物理像素：设备上一个像素点<span id="more"></span></li>
+<li>设备无关像素：可以与物理像素通过dpr转换。当dpr为1时，设备无关像素=设备物理像素。</li>
+<li>CSS像素：CSS中使用的抽象概念。当页面没有缩放时，CSS像素=设备无关像素。</li>
+</ul>
+<p>其中，dpr（设备像素比） = 物理像素/设备无关像素（逻辑像素宽度*倍率 = 物理像素宽度）</p>
+<h3 id="Viewport"><a href="#Viewport" class="headerlink" title="Viewport"></a>Viewport</h3><h4 id="什么是-Viewport"><a href="#什么是-Viewport" class="headerlink" title="什么是 Viewport?"></a>什么是 Viewport?</h4><p>viewport 是用户网页的可视区域。viewport 翻译为中文可以叫做”视区、视口”。</p>
+<p>手机浏览器是把页面放在一个虚拟的”窗口”（viewport）中，通常这个虚拟的”窗口”（viewport）比屏幕宽，这样就不用把每个网页挤到很小的窗口中（这样会破坏没有针对手机浏览器优化的网页的布局），用户可以通过平移和缩放来看网页的不同部分。</p>
+<h4 id="设置Viewport"><a href="#设置Viewport" class="headerlink" title="设置Viewport"></a>设置Viewport</h4><ul>
+<li>width：控制 viewport 的大小，可以指定的一个值，如 600，或者特殊的值，如 device-width （为设备的宽度，单位为缩放为 100% 时的 CSS 的像素）。</li>
+<li>height：和 width 相对应，指定高度。</li>
+<li>initial-scale：初始缩放比例，也即是当页面第一次 load 的时候缩放比例。initial-scale=1.0：默认缩放比为1（目的：让CSS像素=设备无关像素）</li>
+<li>maximum-scale：允许用户缩放到的最大比例。</li>
+<li>minimum-scale：允许用户缩放到的最小比例。</li>
+<li>user-scalable：用户是否可以手动缩放。（貌似在iOS10中的sarifi浏览器失效）</li>
+</ul>
+<p>一个常用的针对移动网页优化过的页面的 viewport meta 标签大致如下：</p>
+<p><code>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no&quot;/&gt;</code></p>
+<img data-src="https://images2015.cnblogs.com/blog/1118132/201703/1118132-20170321091710799-377512174.png" class="viewport" width="650" height="350" title="viewport 的属性具体介绍" alt="viewport 的属性具体介绍">
+
+<center>viewport 的属性具体介绍</center>
+
+<p>附上一个比较的详细viewport讲解：<a href="https://www.runoob.com/w3cnote/viewport-deep-understanding.html">viewport 深入理解</a></p>
+<h3 id="其他移动端开发可能会用到标签设置"><a href="#其他移动端开发可能会用到标签设置" class="headerlink" title="其他移动端开发可能会用到标签设置"></a>其他移动端开发可能会用到标签设置</h3><p><strong>禁止设备将疑似手机号/邮箱,进行识别。取消点击拨打电话等事件</strong></p>
+<p><code>&lt;meta name=&quot;format-detection&quot;content=&quot;telephone=no,email=no&quot;/&gt;</code></p>
+<p><strong>iOS 添加到主屏幕时，WebAPP的标题</strong></p>
+<p><code>&lt;meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;我的第一个WebAPP&quot;&gt;</code></p>
+<p><strong>iOS 添加到主屏幕时，WebAPP的icon图标</strong></p>
+<p><code>&lt;link rel=&quot;apple-touch-icon-precomposed&quot; href=&quot;图片链接地址&quot; /&gt;</code></p>
+<p><strong>iOS 添加到主屏幕时，启用WebAPP全屏模式，删除顶端地址栏和底部工具栏</strong></p>
+<p><code>&lt;meta name=&quot;apple-mobile-web-app-capable&quot; content=&quot;yes&quot; /&gt;</code></p>
+<p><strong>iOS 添加到主屏幕时，WebAPP顶部状态的样式</strong><br>可选值：<br>black：黑色；default：默认值，白色；black-translucent(半透明)：网页内容充满整个屏幕，顶部状态栏会遮挡网页头部。</p>
+<p><code>&lt;meta name=&quot;apple-mobile-web-app-status-bar-style&quot; content=&quot;black-translucent&quot;&gt;</code></p>
+<p><strong>设置浏览器使用最新的IE和chrome去编译</strong> </p>
+<p>不是手机端专用，PC网页一般也需要设置</p>
+<p><code>&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;/&gt;</code></p>
+]]></content>
+      <tags>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>test</title>
+    <url>/2019/12/test/</url>
+    <content><![CDATA[<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new &quot;My New Post&quot;</code></pre>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+]]></content>
+      <categories>
+        <category>未分类</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo博客搭建</title>
+    <url>/2019/12/hexo/</url>
+    <content><![CDATA[<p>现在市面上的博客平台有很多，比方说博客园、简书、CSDN等等，功能完善，专注写作即可，而且还有社区，用户交流也很方便，但是这些平台都或多或少有一定限制，还有各种广告。由此，我们可以自己搭建一个博客网站，但是自己搭建又要买服务器还有域名，还要自己制作网站，而且还要定期进行维护，不光花钱还费时间，不过还有一个办法，就是把博客放到GitHub page上面，这样只要专注写作就行了，不需要定期维护，然后再套上Hexo这个博客框架，可以直接生成一个漂亮的网站，这样搭建一个博客就容易多了。<span id="more"></span></p>
+<p><strong>Hexo简介</strong><br>Hexo是一款基于Node.js的静态博客框架，依赖少易于安装使用，可以方便的生成静态网页托管在GitHub和Coding上，是搭建博客的首选框架。官网对Hexo的介绍是快速、简洁且高效的博客框架。</p>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><p><strong>安装Node.js</strong></p>
+<p>Node.js 为大多数平台提供了官方的安装程序。可以去官网<a href="https://nodejs.org/zh-cn/download/">下载 | Node.js</a>下载</p>
+<p>安装完成后打开命令行查看是否安装成功：</p>
+<pre class="line-numbers language-none"><code class="language-none">node -v
+npm -v</code></pre>
+
+<p><strong>安装Git</strong></p>
+<p>Git是目前世界上最先进的分布式版本控制系统，我们用它来管理Hexo博客文章，上传到GitHub。去<a href="https://git-scm.com/downloads">官网下载</a>对应系统的Git安装程序或查看命令行进行安装。</p>
+<p><strong>安装Hexo</strong></p>
+<p>在Node.js和Git都安装完成之后，安装Hexo，用命令行运行以下命令 <code>npm install -g hexo-cli</code>，之后可以用<code>hexo -v</code>查看版本来检查是否安装成功。</p>
+<h3 id="初始化Hexo并设置主题"><a href="#初始化Hexo并设置主题" class="headerlink" title="初始化Hexo并设置主题"></a>初始化Hexo并设置主题</h3><h4 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h4><p>安装 Hexo 完成后，依次执行以下命令，Hexo 将会在指定文件夹中新建所需要的文件，其中&lt;folder&gt;就是你想要作为博客初始化的文件夹。</p>
+<p><strong>注意</strong>：如果使用<strong>cmd命令行</strong>操作，会直接在<strong>我的文档（如Administrator）</strong>下新建这个文件夹进行初始化，如果不想新建在我的文档内，需要先用命令行切换到你想新建的位置下如<code>cd d:</code>，<code>cd hexo-blog</code>，然后再进行下面的初始化操作。如果是使用<strong>git bash</strong>进行的命令行操作，则可以直接在想要作为博客初始化的文件夹内右键，在弹出的菜单中点击<code>git bash here</code>进行操作即可。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hexo init &lt;folder&gt;
+cd &lt;folder&gt;
+npm install</code></pre>
+
+<p><code>hexo init &lt;folder&gt;</code> 中的&lt;folder&gt;是可选项，代表你想要初始化的文件夹，如果不写则默认在你当前打开的文件夹内初始化，比如你在<code>blog</code>文件夹内用<code>Git bash here</code> 打开命令行，再运行<code>hexo init</code> 这个命令，就会直接在<code>blog</code>这个文件夹内初始化，如果加上参数<code>hexo init hexo</code> 则会在<code>blog</code>文件夹内新建一个名为<code>hexo</code>的文件夹，然后在<code>hexo</code>这个文件夹内初始化。</p>
+<p>新建完成后，指定文件夹的目录如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">.
+├── _config.yml
+├── package.json
+├── scaffolds
+├── source
+|   ├── _drafts
+|   └── _posts
+└── themes</code></pre>
+
+<p>这时你可以在这个文件夹下用命令行<code>hexo server</code>来运行博客，在浏览器中访问<code>http://localhost:4000/</code>来查看效果。</p>
+<p>默认显示页面如下：</p>
+<p><img data-src="" alt="img"></p>
+<p>更多关于hexo的命令和设置可以去<a href="https://hexo.io/zh-cn/docs/">官网</a>查看。</p>
+<h4 id="设置主题"><a href="#设置主题" class="headerlink" title="设置主题"></a>设置主题</h4><p>Hexo默认的主题是landscape，更多主题可以去<a href="https://hexo.io/themes/">官网</a>挑选。</p>
+<p>主题的安装方式有两种：</p>
+<p>一种是去主题的GitHub项目上下载到本地，然后将主题文件夹复制到站点目录的<code>themes</code>文件夹下。<br>另一种方式是用命令行安装：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">cd &lt;your-hexo-folder&gt;
+git clone https:&#x2F;&#x2F;github.com&#x2F;iissnan&#x2F;hexo-theme-next themes&#x2F;next</code></pre>
+
+<p>虽然两种安装方式不同，但主题的配置方式是一样的，都是在博客的站点目录下的配置文件<code>_config.yml</code>中修改：</p>
+<pre class="line-numbers language-yml" data-language="yml"><code class="language-yml"># Extensions
+## Plugins: https:&#x2F;&#x2F;hexo.io&#x2F;plugins&#x2F;
+## Themes: https:&#x2F;&#x2F;hexo.io&#x2F;themes&#x2F;
+theme: &lt;主题文件夹的名称&gt;</code></pre>
+
+<p><strong>重点：</strong>这里需要注意，站点配置文件和主题配置文件是两个不同的配置文件。假设你的博客站点文件夹名字是<code>blog</code>，那么你的站点配置文件路径就是<code>blog\_config.yml</code>，而主题配置文件的路径则是<code>blog\themes\主题文件夹名\_config.yml</code>，修改配置时注意区分。</p>
+<h3 id="部署博客到GithubPages"><a href="#部署博客到GithubPages" class="headerlink" title="部署博客到GithubPages"></a>部署博客到GithubPages</h3><h4 id="创建GitHub仓库并添加SHH-key"><a href="#创建GitHub仓库并添加SHH-key" class="headerlink" title="创建GitHub仓库并添加SHH key"></a>创建GitHub仓库并添加SHH key</h4><p><strong>创建仓库</strong></p>
+<p>创建仓库之前，你要有一个GitHub账号，如果没有先去注册一个，之后在页面里找到<code>New repository</code>按钮，创建一个和你GitHub用户名一样的仓库，然后进行下一步。</p>
+<p><strong>添加SSH key</strong></p>
+<p>首先创建一个SSH key ，在命令行运行以下命令，创建过程中需要根据提示按三下回车：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ssh-keygen -t rsa -C &quot;你的邮箱地址&quot;</code></pre>
+
+<p>创建完成后在电脑上找到生成的秘钥，比如<code>C:\Users\Administrator\.ssh\id_rsa.pub</code>，打开这个文件，将里面内容复制出来，然后打开GitHub，点击你的头像，在setting中找到<code>SSH and GPG keys </code>这个选项，然后点击<code>New SSH key</code>把你刚刚复制的内容放进去。</p>
+<p>测试是否添加成功。在命令行中依次输入以下命令：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ssh -T git@github.com
+yes</code></pre>
+
+<p>当看到返回<code>You’ve successfully authenticated</code>即为成功。</p>
+<h4 id="将本地博客推送到GitHub仓库"><a href="#将本地博客推送到GitHub仓库" class="headerlink" title="将本地博客推送到GitHub仓库"></a>将本地博客推送到GitHub仓库</h4><p>安装hexo-deployer-git插件。在命令行运行以下命令：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">npm install hexo-deployer-git --save</code></pre>
+<p>然后打开站点配置文件<code>_config.yml</code>，把文件的最后修改为如下内容：</p>
+<pre class="line-numbers language-yml" data-language="yml"><code class="language-yml"># Deployment
+## Docs: https:&#x2F;&#x2F;hexo.io&#x2F;docs&#x2F;deployment.html
+deploy:
+  type: git
+  repo: git@github.com:&lt;你的Github用户名&gt;&#x2F;&lt;你的Github用户名&gt;.github.io.git
+  branch: master</code></pre>
+
+<p>接下来就可以把博客推送到GitHub Pages了，在命令行输入以下命令：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hexo clean
+hexo generate
+hexo deploy</code></pre>
+
+<p>其中 hexo clean是清除缓存文件和已生成的静态文件，也可以不加。<br>hexo generate 生成静态文章，可以用缩写 hexo g。<br>hexo deploy 部署网站，可以用缩写hexo d。</p>
+<p>注意deploy时可能要你输入username和password。</p>
+<p>返回<code>INFO Deploy done: git</code>即推送成功了，稍等几分钟就可以在浏览器访问<code>http://你的GitHub用户名.github.io</code></p>
+<p>至此，你的Hexo博客就已经搭建在GitHub Pages了。</p>
+<h4 id="绑定域名（可选）"><a href="#绑定域名（可选）" class="headerlink" title="绑定域名（可选）"></a>绑定域名（可选）</h4><p>略，具体操作看下面的参考链接。</p>
+<h3 id="网站设置和主题优化"><a href="#网站设置和主题优化" class="headerlink" title="网站设置和主题优化"></a>网站设置和主题优化</h3><p>这里的优化主要针对我用的主题-<a href="https://github.com/theme-next/hexo-theme-next">NexT</a>。</p>
+<h4 id="设置网站"><a href="#设置网站" class="headerlink" title="设置网站"></a>设置网站</h4><p>在站点配置文件<code>_config.yml</code>中修改：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># Site
+title: 你的博客名称
+subtitle: 副标题（可不设置）
+description: 描述，通常由于搜索引擎搜索，SEO优化等（可不设置）
+keywords: 关键字（可不设置）
+author: 作者
+language: zh-CN（设置语言）
+timezone: 时区（可不设置）</code></pre>
+
+<h4 id="修改永久链接的路径"><a href="#修改永久链接的路径" class="headerlink" title="修改永久链接的路径"></a>修改永久链接的路径</h4><p>在站点配置文件<code>_config.yml</code>中修改：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># URL
+## If your site is put in a subdirectory, set url as &#39;http:&#x2F;&#x2F;yoursite.com&#x2F;child&#39; and root as &#39;&#x2F;child&#x2F;&#39;
+permalink: :year&#x2F;:month&#x2F;:title&#x2F;</code></pre>
+
+<h4 id="跳过渲染某些文件"><a href="#跳过渲染某些文件" class="headerlink" title="跳过渲染某些文件"></a>跳过渲染某些文件</h4><p>在站点配置文件<code>_config.yml</code>中修改，为了显示某个自己做的网页，或者为了显示readme说明文件等等：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># Directory
+skip_render: 
+ - README.md
+ - test&#x2F;*
+ # 跳过文件夹下所有文件
+  - &quot;文件夹名&#x2F;*&quot;  
+ # 跳过子文件夹
+  - &quot;文件夹名&#x2F;子文件夹名&#x2F;*&quot;
+ # 跳过文件夹下所有子文件夹和文件
+  - &quot;文件夹名&#x2F;**&quot;   </code></pre>
+
+<h4 id="设置主题风格"><a href="#设置主题风格" class="headerlink" title="设置主题风格"></a>设置主题风格</h4><p>在主题配置文件<code>themes/next/_config.yml</code>中修改下面的代码，想用哪个就把那个前面的#去掉，给其他的加上#：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># Schemes
+scheme: Muse
+#scheme: Mist
+#scheme: Pisces
+#scheme: Gemini</code></pre>
+
+<h4 id="修改头像"><a href="#修改头像" class="headerlink" title="修改头像"></a>修改头像</h4><p>打开主题配置文件<code>themes/next/_config.yml</code>，找到下面的代码修改：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">avatar:
+  # Replace the default image and set the url here.
+  url: 图片链接</code></pre>
+
+<h4 id="文章信息设置"><a href="#文章信息设置" class="headerlink" title="文章信息设置"></a>文章信息设置</h4><p>还是在主题配置文件<code>themes/next/_config.yml</code>里面修改：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># Post meta display settings
+post_meta:
+  item_text: true
+  created_at: true
+  updated_at:
+    enable: true
+    another_day: true
+  categories: true</code></pre>
+
+<h4 id="回到顶部和文章阅读进度"><a href="#回到顶部和文章阅读进度" class="headerlink" title="回到顶部和文章阅读进度"></a>回到顶部和文章阅读进度</h4><p>修改主题配置文件<code>themes/next/_config.yml</code>：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">back2top:
+  enable: true
+  # Back to top in sidebar.
+  sidebar: false
+  # Scroll percent label in b2t button.
+  scrollpercent: false</code></pre>
+
+<h4 id="修改网站图标"><a href="#修改网站图标" class="headerlink" title="修改网站图标"></a>修改网站图标</h4><p>修改主题配置文件<code>themes/next/_config.yml</code>，把链接改为自己的：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">favicon:
+  small: &#x2F;images&#x2F;favicon-16x16-next.png
+  medium: &#x2F;images&#x2F;favicon-32x32-next.png
+  apple_touch_icon: &#x2F;images&#x2F;apple-touch-icon-next.png
+  safari_pinned_tab: &#x2F;images&#x2F;logo.svg
+  #android_manifest: &#x2F;images&#x2F;manifest.json
+  #ms_browserconfig: &#x2F;images&#x2F;browserconfig.xml</code></pre>
+
+<h4 id="修改网站页脚信息"><a href="#修改网站页脚信息" class="headerlink" title="修改网站页脚信息"></a>修改网站页脚信息</h4><p>修改主题配置文件<code>themes/next/_config.yml</code>，icon图标去上面注释里面给的网站找，然后把图标名字改成你想要的就行（比如user改成heart），<code>powered</code>和<code>theme</code>是设置底部页脚是否显示hexo版本和主题版本的。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">footer:
+  # Specify the date when the site was setup. If not defined, current year will be used.
+  #since: 2015
+
+  # Icon between year and copyright info.
+  icon:
+    # Icon name in Font Awesome. See: https:&#x2F;&#x2F;fontawesome.com&#x2F;v4.7.0&#x2F;icons&#x2F;
+    # &#96;heart&#96; is recommended with animation in red (#ff0000).
+    name: user
+    # If you want to animate the icon, set it to true.
+    animated: true
+    # Change the color of icon, using Hex Code.
+    color: &quot;#808080&quot;
+
+  powered:
+    # Hexo link (Powered by Hexo).
+    enable: true
+    # Version info of Hexo after Hexo link (vX.X.X).
+    version: true
+
+  theme:
+    # Theme &amp; scheme info link (Theme - NexT.scheme).
+    enable: true
+    # Version info of NexT after scheme info (vX.X.X).
+    version: true</code></pre>
+
+<p>更多可修改信息在配置文件中查看。</p>
+<h4 id="设置菜单"><a href="#设置菜单" class="headerlink" title="设置菜单"></a>设置菜单</h4><p>编辑主题配置文件<code>themes/next/_config.yml</code>，需要哪个就把哪个的注释去掉：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">menu:
+  home: &#x2F; || home
+  #about: &#x2F;about&#x2F; || user
+  #tags: &#x2F;tags&#x2F; || tags
+  #categories: &#x2F;categories&#x2F; || th
+  archives: &#x2F;archives&#x2F; || archive
+  #schedule: &#x2F;schedule&#x2F; || calendar
+  #sitemap: &#x2F;sitemap.xml || sitemap
+  #commonweal: &#x2F;404&#x2F; || heartbeat
+
+# Enable &#x2F; Disable menu icons &#x2F; item badges.
+menu_settings:
+  icons: true
+  badges: false</code></pre>
+
+<h4 id="点击图片查看大图"><a href="#点击图片查看大图" class="headerlink" title="点击图片查看大图"></a>点击图片查看大图</h4><p>编辑主题配置文件<code>themes/next/_config.yml</code>，有两种选择，任选其一就行，把false改成true</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># FancyBox is a tool that offers a nice and elegant way to add zooming functionality for images.
+# For more information: https:&#x2F;&#x2F;fancyapps.com&#x2F;fancybox
+fancybox: false
+
+# A JavaScript library for zooming images like Medium.
+# Do not enable both &#96;fancybox&#96; and &#96;mediumzoom&#96;.
+# For more information: https:&#x2F;&#x2F;github.com&#x2F;francoischalifour&#x2F;medium-zoom
+mediumzoom: false</code></pre>
+
+<h4 id="设置图片懒加载"><a href="#设置图片懒加载" class="headerlink" title="设置图片懒加载"></a>设置图片懒加载</h4><p>编辑主题配置文件<code>themes/next/_config.yml</code></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">lazyload: true</code></pre>
+
+<h4 id="设置动态网页背景"><a href="#设置动态网页背景" class="headerlink" title="设置动态网页背景"></a>设置动态网页背景</h4><p>编辑主题配置文件<code>themes/next/_config.yml</code></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># JavaScript 3D library.
+# Dependencies: https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-three
+three:
+  enable: false
+  three_waves: false
+  canvas_lines: false
+  canvas_sphere: false
+
+# Canvas-nest
+# Dependencies: https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-canvas-nest
+# For more information: https:&#x2F;&#x2F;github.com&#x2F;hustcc&#x2F;canvas-nest.js
+canvas_nest:
+  enable: false
+  onmobile: true # Display on mobile or not
+  color: &quot;0,0,255&quot; # RGB values, use &#96;,&#96; to separate
+  opacity: 0.5 # The opacity of line: 0~1
+  zIndex: -1 # z-index property of the background
+  count: 99 # The number of lines
+
+# Canvas-ribbon
+# Dependencies: https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-canvas-ribbon
+# For more information: https:&#x2F;&#x2F;github.com&#x2F;zproo&#x2F;canvas-ribbon
+canvas_ribbon:
+  enable: false
+  size: 300 # The width of the ribbon
+  alpha: 0.6 # The transparency of the ribbon
+  zIndex: -1 # The display level of the ribbon</code></pre>
+
+<h4 id="设置网站顶部加载进度条"><a href="#设置网站顶部加载进度条" class="headerlink" title="设置网站顶部加载进度条"></a>设置网站顶部加载进度条</h4><p>编辑主题配置文件<code>themes/next/_config.yml</code></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">pace:
+  enable: true</code></pre>
+
+<h4 id="自定义网页背景"><a href="#自定义网页背景" class="headerlink" title="自定义网页背景"></a>自定义网页背景</h4><p>首先在站点根目录的<code>source\_data</code>文件夹内新建一个名为<code>styles.styl</code>的文件，然后编辑主题配置文件：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">custom_file_path:
+  style: source&#x2F;_data&#x2F;styles.styl</code></pre>
+
+<p><strong>我们所有自定义的样式都会在<code>styles.styl</code>这个文件里添加</strong>。</p>
+<p>编辑<code>styles.styl</code>，添加如下代码，把URL里面的地址改为你的背景图片的链接即可：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">body&#123;
+    background:url(&#x2F;images&#x2F;bg.jpg);
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-position:center;
+&#125;</code></pre>
+
+<h4 id="自定义鼠标样式"><a href="#自定义鼠标样式" class="headerlink" title="自定义鼠标样式"></a>自定义鼠标样式</h4><p>还是在<code>styles.styl</code>里编辑，添加下面的代码：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">&#x2F;&#x2F; 鼠标样式
+  * &#123;
+      cursor: url(&quot;鼠标图标地址&quot;),auto!important
+  &#125;
+  :active &#123;
+      cursor: url(&quot;鼠标图标地址&quot;),auto!important
+  &#125;</code></pre>
+
+<h4 id="点击出现爱心效果"><a href="#点击出现爱心效果" class="headerlink" title="点击出现爱心效果"></a>点击出现爱心效果</h4><p>在主题文件夹内的<code>/source/js/src</code>下新建文件<code>click-effect.js</code>，接着把下面的内容复制粘贴到<code>click-effect.js</code>文件中。<br>代码如下：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">!function(e,t,a)&#123;function n()&#123;c(&quot;.heart&#123;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);&#125;.heart:after,.heart:before&#123;content: &#39;&#39;;width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;&#125;.heart:after&#123;top: -5px;&#125;.heart:before&#123;left: -5px;&#125;&quot;),o(),r()&#125;function r()&#123;for(var e&#x3D;0;e&lt;d.length;e++)d[e].alpha&lt;&#x3D;0?(t.body.removeChild(d[e].el),d.splice(e,1)):(d[e].y--,d[e].scale+&#x3D;.004,d[e].alpha-&#x3D;.013,d[e].el.style.cssText&#x3D;&quot;left:&quot;+d[e].x+&quot;px;top:&quot;+d[e].y+&quot;px;opacity:&quot;+d[e].alpha+&quot;;transform:scale(&quot;+d[e].scale+&quot;,&quot;+d[e].scale+&quot;) rotate(45deg);background:&quot;+d[e].color+&quot;;z-index:99999&quot;);requestAnimationFrame(r)&#125;function o()&#123;var t&#x3D;&quot;function&quot;&#x3D;&#x3D;typeof e.onclick&amp;&amp;e.onclick;e.onclick&#x3D;function(e)&#123;t&amp;&amp;t(),i(e)&#125;&#125;function i(e)&#123;var a&#x3D;t.createElement(&quot;div&quot;);a.className&#x3D;&quot;heart&quot;,d.push(&#123;el:a,x:e.clientX-5,y:e.clientY-5,scale:1,alpha:1,color:s()&#125;),t.body.appendChild(a)&#125;function c(e)&#123;var a&#x3D;t.createElement(&quot;style&quot;);a.type&#x3D;&quot;text&#x2F;css&quot;;try&#123;a.appendChild(t.createTextNode(e))&#125;catch(t)&#123;a.styleSheet.cssText&#x3D;e&#125;t.getElementsByTagName(&quot;head&quot;)[0].appendChild(a)&#125;function s()&#123;return&quot;rgb(&quot;+~~(255*Math.random())+&quot;,&quot;+~~(255*Math.random())+&quot;,&quot;+~~(255*Math.random())+&quot;)&quot;&#125;var d&#x3D;[];e.requestAnimationFrame&#x3D;function()&#123;return e.requestAnimationFrame||e.webkitRequestAnimationFrame||e.mozRequestAnimationFrame||e.oRequestAnimationFrame||e.msRequestAnimationFrame||function(e)&#123;setTimeout(e,1e3&#x2F;60)&#125;&#125;(),n()&#125;(window,document);</code></pre>
+
+<p>在主题文件夹的<code>\layout\_layout.swig</code>文件末尾添加：</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html">&lt;!-- 页面点击出现小桃心 --&gt;
+&lt;script type&#x3D;&quot;text&#x2F;javascript&quot; src&#x3D;&quot;&#x2F;js&#x2F;src&#x2F;clicklove.js&quot;&gt;&lt;&#x2F;script&gt;</code></pre>
+
+<h3 id="添加插件"><a href="#添加插件" class="headerlink" title="添加插件"></a>添加插件</h3><h4 id="添加搜索功能"><a href="#添加搜索功能" class="headerlink" title="添加搜索功能"></a>添加搜索功能</h4><p>这里搜索功能我用的是本地搜索，也有一些其他的搜索方法，比如Aloglia，使用前需要注册账号，具体操作因为没有实践所以跳过，下面说一下添加本地搜索功能的方法：</p>
+<ol>
+<li><p>安装 <code>hexo-generator-searchdb</code>，在站点的根目录下执行以下命令：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">npm install hexo-generator-searchdb --save</code></pre></li>
+<li><p>编辑站点配置文件<code>_config.yml</code>，新增以下内容到任意位置：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000</code></pre></li>
+<li><p>编辑主题配置文件<code>themes/next/_config.yml</code>，启用本地搜索功能：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># Local search
+local_search:
+  enable: true</code></pre></li>
+</ol>
+<h4 id="添加评论和统计功能"><a href="#添加评论和统计功能" class="headerlink" title="添加评论和统计功能"></a>添加评论和统计功能</h4><p>略，没有实际添加这两个功能，想添加的话看下面参考链接。</p>
+<h4 id="添加网页看板娘（Live2D）"><a href="#添加网页看板娘（Live2D）" class="headerlink" title="添加网页看板娘（Live2D）"></a>添加网页看板娘（Live2D）</h4><p>首先安装Live2D插件，在站点根目录下运行以下命令：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">npm install --save hexo-helper-live2d</code></pre>
+
+<p>然后选择自己喜欢的模型，复制名字。</p>
+<p>Epsilon2.1</p>
+<p><img data-src="" alt="img"></p>
+<p>Gantzert_Felixander</p>
+<p><img data-src="" alt="img"></p>
+<p>haru</p>
+<p><img data-src="" alt="img"></p>
+<p>miku</p>
+<p><img data-src="" alt="img"></p>
+<p>ni-j</p>
+<p><img data-src="" alt="img"></p>
+<p>nico</p>
+<p><img data-src="" alt="img"></p>
+<p>nietzche</p>
+<p><img data-src="" alt="img"></p>
+<p>nipsilon</p>
+<p><img data-src="" alt="img"></p>
+<p>nito</p>
+<p><img data-src="" alt="img"></p>
+<p>shizuku</p>
+<p><img data-src="" alt="img"></p>
+<p>tsumiki</p>
+<p><img data-src="" alt="img"></p>
+<p>wanko</p>
+<p><img data-src="" alt="img"></p>
+<p>z16</p>
+<p><img data-src="" alt="img"></p>
+<p>hibiki</p>
+<p><img data-src="" alt="img"></p>
+<p>koharu</p>
+<p><img data-src="" alt="img"></p>
+<p>haruto</p>
+<p><img data-src="" alt="img"></p>
+<p>Unitychan</p>
+<p><img data-src="" alt="img"></p>
+<p>tororo</p>
+<p><img data-src="" alt="img"></p>
+<p>hijiki</p>
+<p><img data-src="" alt="img"></p>
+<p>将下面的代码添加到站点配置文件<code>_config.yml</code>中，修改&lt;模型名字&gt;（有教程说放在主题配置文件中，但是实际测试放在主题文件中并不好用，不管使用哪个模型网页中都不生效，都显示默认的<code>shizuku</code>这个模型，但是把代码放在站点配置文件中就好用了，不知道是什么原因）</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># Live2D
+## https:&#x2F;&#x2F;github.com&#x2F;EYHN&#x2F;hexo-helper-live2d
+live2d:
+  # enable: true
+  enable: false
+  scriptFrom: local # 默认
+  pluginRootPath: live2dw&#x2F; # 插件在站点上的根目录(相对路径)
+  pluginJsPath: lib&#x2F; # 脚本文件相对与插件根目录路径
+  pluginModelPath: assets&#x2F; # 模型文件相对与插件根目录路径
+  # scriptFrom: jsdelivr # jsdelivr CDN
+  # scriptFrom: unpkg # unpkg CDN
+  # scriptFrom: https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;live2d-widget@3.x&#x2F;lib&#x2F;L2Dwidget.min.js # 你的自定义 url
+  tagMode: false # 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中
+  debug: false # 调试, 是否在控制台输出日志
+  model:
+    use: live2d-widget-model-&lt;模型名字&gt; # npm-module package name
+    # use: wanko # 博客根目录&#x2F;live2d_models&#x2F; 下的目录名
+    # use: .&#x2F;wives&#x2F;wanko # 相对于博客根目录的路径
+    # use: https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;live2d-widget-model-wanko@1.0.5&#x2F;assets&#x2F;wanko.model.json # 你的自定义 url
+    scale: 1
+    hHeadPos: 0.5
+    vHeadPos: 0.618
+  display:
+    superSample: 2
+    width: 250
+    height: 500
+    position: right
+    hOffset: 0
+    vOffset: -20
+  mobile:
+    show: false
+    scale: 0.5
+  react:
+    opacity: 0.7
+  dialog: 
+    enable: true
+    hitokoto: true</code></pre>
+
+<p>安装你选择的模型，在命令行运行下面的命令：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">npm install --save live2d-widget-model-&lt;你选择的模型名字&gt;</code></pre>
+
+<p>然后在命令行运行以下命令，在浏览器里访问<code>localhost:4000</code>查看效果</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</code></pre>
+
+<p>上面的配置都完成以后就可以开始写博客了。</p>
+<h3 id="利用GitHub备份博客源文件并且进行多终端操作"><a href="#利用GitHub备份博客源文件并且进行多终端操作" class="headerlink" title="利用GitHub备份博客源文件并且进行多终端操作"></a>利用GitHub备份博客源文件并且进行多终端操作</h3><p>在你换电脑或者重装系统的时候万一不小心把博客的站点文件夹删了或者弄丢了那就什么都没了，所以为了防止发生这样的情况，就可以用GitHub来保存博客的源文件。</p>
+<h4 id="用命令行操作"><a href="#用命令行操作" class="headerlink" title="用命令行操作"></a>用命令行操作</h4><p>具体操作是在你的GitHub中新建一个仓库或者在你的博客仓库内新建一个分支，个人推荐新建一个仓库，和博客的静态文件分开管理比较好，然后在本地找一个空文件夹，运行下面的命令：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">git clone git@github.com:你的项目地址</code></pre>
+
+<p>把仓库克隆到本地，然后把你的博客源文件全部复制过来，除了<code>.deploy_git</code>，注意复制过来的文件里面应该有一个叫<code>.gitignore</code>的文件，用来忽略一些不要提交到Git的文件，如果没有可以自己新建一个，在里面加上下面的内容：</p>
+<pre class="line-numbers language-none"><code class="language-none">.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules&#x2F;
+public&#x2F;
+.deploy*&#x2F;</code></pre>
+
+<p>如果还有其他自己不想提交的文件也可以加到这个文件中。</p>
+<p>然后再在命令行中执行以下命令：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">git add .
+git commit –m &quot;commit message&quot;
+git push </code></pre>
+
+<p>可以在网页中查看是否上传成功。</p>
+<p>当你换了电脑或者重装系统后想把博客下回来怎么操作？</p>
+<p>首先前面的都一样，下载安装node，Git，然后设置git全局邮箱和用户名，设置SHH，安装hexo，然后在任意一个文件夹内，执行<code>git clone git@你的博客源文件仓库地址</code>，进入克隆下来的文件夹，运行下面的命令：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">npm install
+npm install hexo-deployer-git --save</code></pre>
+
+<p>然后就可以继续写博客了，写完之后运行<code>hexo g &amp;&amp; hexo d</code>，就可以部署到GitHub Pages上了。而且现在可以每次写完博客都把源文件备份一下了：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">git add .
+git commit –m &quot;commit message&quot;
+git push </code></pre>
+
+<h4 id="用GitHub-Desktop操作"><a href="#用GitHub-Desktop操作" class="headerlink" title="用GitHub Desktop操作"></a>用GitHub Desktop操作</h4><p>下载安装GitHub Desktop然后登陆GitHub，把对应的作为保存博客源文件的仓库克隆到本地，然后把除了<code>.deploy_git</code>以外的博客源文件复制进来，注意有没有<code>.gitignore</code>这个文件，没有按上面方法加上，然后再写上备注信息，，提交推送到Git上就行了。</p>
+<h3 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h3><p><a href="https://www.simon96.online/2018/10/12/hexo-tutorial/">【持续更新】最全Hexo博客搭建+主题优化+插件配置+常用操作+错误分析</a></p>
+<p><a href="https://blog.csdn.net/sinat_37781304/article/details/82729029">hexo史上最全搭建教程</a></p>
+<p><a href="https://uchuhimo.me/2017/04/11/genesis/">如何使用 Hexo 和 GitHub Pages 搭建这个博客</a></p>
+<p><a href="https://hexo.io/zh-cn/docs/">Hexo中文文档</a></p>
+<p><a href="http://theme-next.iissnan.com/getting-started.html">开始使用-NexT使用文档</a></p>
+<p><a href="https://hexo-theme-next.netlify.com/docs/">Documention | NexT</a></p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【转】利用Three.js制作一个3D动画飞行场景</title>
+    <url>/2020/01/three-js-3D-TheAviator/</url>
+    <content><![CDATA[<p>一篇关于探讨使用 Three.js 创建 3D 动画场景的基础教程。</p>
+<p><img data-src="" alt="img"></p>
+<p><a href="http://tympanus.net/Tutorials/TheAviator/">DEMO</a>     <a href="http://tympanus.net/Tutorials/TheAviator/TheAviator.zip">源码下载</a></p>
+<p>今日，我们将使用 Three.js 创建一个简单的 3D 飞机飞行的动画场景。Three.js 是一个 3D 类库，它能让 WebGL 变得更加简单。由于 GSL 语法的复杂性，对于许多开发人员来说 WebGL 是一个未知的领域。但是有了 Three.js，在浏览器中 3D 的实现变得简单。<span id="more"></span></p>
+<blockquote>
+<p>(译者注：WebGL 是一项利用 JavaScriptAPI 渲染交互式 3D 电脑图形和 2D 图形的技术，可兼容任何的网页浏览器，无需加装插件。通过 WebGL 的技术，只需要编写网页代码即可实现 3D 图像的展示。GLSL-OpenGL Shading Language 也称作 GLslang ，是一个以 C 语言为基础的高阶着色语言。它是由 OpenGL ARB 所建立，提供开发者对绘图管线更多的直接控制，而无需使用汇编语言或硬件规格语言。详细麻烦谷歌或百度一下～)</p>
+</blockquote>
+<p>在本教程中，我们将创建一个简单的 3D 场景, 在两个主要的部分会有一些交互。在<a href="http://tympanus.net/Tutorials/TheAviator/part1.html">第一部分</a>，我们会讲解 Three.js 的基础和如何创建一个简单的场景。<a href="http://tympanus.net/Tutorials/TheAviator/part2.html">第二部分</a>会详细讲述如何优化模型，如何为场景中的不同元素增添气氛以及更流畅的运动效果。</p>
+<p>由于完整的<a href="http://tympanus.net/Tutorials/TheAviator/">游戏</a>超出了本教程的范围，但是你可以下载或 check out 源码。它包含了许多额外有趣的部分如：碰撞，抓硬币和增加得分。</p>
+<p>在本教程中，我们将重点学习 Three.js 中的一些基础概念。这些基础概念将带你走进 WebGL 这新领域！</p>
+<p><img data-src="" alt="img"></p>
+<p>事不宜迟，我们马上开始~</p>
+<h2 id="HTML-amp-CSS"><a href="#HTML-amp-CSS" class="headerlink" title="HTML &amp; CSS"></a>HTML &amp; CSS</h2><p>本教程主要采用 Three.js 类库，Three.js 让 WebGL 变得易于使用。从<a href="http://threejs.org/">官网</a>或 <a href="https://github.com/mrdoob/three.js/">GitHub repo</a> check out 获取关于 Three.js 更多的信息。</p>
+<p>第一样要做的事情就是在 HTML <header> 标签中引入 Three.js：</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot; src&#x3D;&quot;js&#x2F;three.js&quot;&gt;&lt;&#x2F;script&gt;</code></pre>
+
+<p>然后在 HTML 中需要添加一个元素作为容器。</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml">&lt;div id&#x3D;&quot;world&quot;&gt;&lt;&#x2F;div&gt;</code></pre>
+
+<p>你可以像下面那样写一些简单的样式，让它填满整个 viewport：<br> #world {<br> position: absolute;<br> width: 100%;<br> height: 100%;<br> overflow: hidden;<br> background: linear-gradient(#e4e0ba, #f7d9aa);<br> }<br> 正如你所见的一样，背景有些渐变的效果，就像天空。</p>
+<p>以上是标签和样式！</p>
+<h2 id="JavaScript"><a href="#JavaScript" class="headerlink" title="JavaScript"></a>JavaScript</h2><hr>
+<p>如果你已经掌握了一些 JavaScript 的基础知识，使用 Three.js 会变得相当简单。来~我们看看实现不同部分的代码。</p>
+<h3 id="The-Color-Palette"><a href="#The-Color-Palette" class="headerlink" title="The Color Palette"></a>The Color Palette</h3><p><img data-src="" alt="img"></p>
+<p>在开始场景编码之前，我觉得定义一个调色板是很有用的。因为在整个项目中会经常使用到。在这个项目中，我们会选择以下这些颜色：</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">var Colors &#x3D; &#123;
+   red:0xf25346,    
+   white:0xd8d0d1,  
+   brown:0x59332e,  
+   pink:0xF5986E,   
+   brownDark:0x23190f,  
+   blue:0x68c3c0
+&#125;;</code></pre>
+
+<h3 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h3><p>虽然 JavaScript 代码十分冗长，但是它的结构很简单。我们需要创建所有主要的函数并放入初始函数中：</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">window.addEventListener(&#39;load&#39;, init, false);
+function init() &#123;
+   &#x2F;&#x2F; 创建场景，相机和渲染器
+   createScene(); 
+   &#x2F;&#x2F; 添加光源
+   createLights(); 
+   &#x2F;&#x2F; 添加对象 
+   createPlane();   
+   createSea(); 
+   createSky(); 
+   &#x2F;&#x2F; 调用循环函数，在每帧更新对象的位置和渲染场景
+   loop();
+&#125;</code></pre>
+
+<h3 id="创建场景"><a href="#创建场景" class="headerlink" title="创建场景"></a>创建场景</h3><p>创建一个 Three.js 的项目，我们至少需要以下这些：</p>
+<ol>
+<li><strong>场景：</strong>把这看作一个舞台，将需要呈现的对象都添加进去。</li>
+<li><strong>相机：</strong>在这情况下，我们将使用透视相机，但它也可能是正投影相机。</li>
+<li><strong>渲染器：</strong>使用 WebGL 渲染器显示所有的场景。</li>
+<li><strong>渲染一个或多个对象：</strong> 在我们的例子中，我们会创建飞机，大海，天空（一些云）。</li>
+<li><strong>光源：</strong>有不同类型可用的光源。在我们的项目中，我们主要用到营造氛围的半球光和制造阴影的方向光。</li>
+</ol>
+<p><img data-src="" alt="img"></p>
+<p>在 createScene 函数中创建场景，相机以及渲染器。</p>
+<blockquote>
+<p>译者注：</p>
+</blockquote>
+<ul>
+<li><p>Three.js 场景只有一种，THREE.Scene 场景是所有物体的容器。</p>
+</li>
+<li><p>相机决定了场景中哪个角度的景色会显示出来。</p>
+</li>
+<li><p>渲染器决定了渲染的结果应该显示在页面的什么元素上，并以怎样的方式绘制。<br> 有了这三样东西，才能使用相机将对象渲染到页面中。</p>
+<p>var scene, camera, fieldOfView, aspectRatio, nearPlane,<br> farPlane, HEIGHT, WIDTH, renderer, container;<br> function createScene() {<br> // 获得屏幕的宽和高，<br> // 用它们设置相机的纵横比<br> // 还有渲染器的大小<br> HEIGHT = window.innerHeight;<br> WIDTH = window.innerWidth;</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart">&#x2F;&#x2F; 创建场景
+scene &#x3D; new THREE.Scene();       
+  
+&#x2F;&#x2F; 在场景中添加雾的效果；样式上使用和背景一样的颜色
+scene.fog &#x3D; new THREE.Fog(0xf7d9aa, 100, 950);
+  
+&#x2F;&#x2F; 创建相机
+aspectRatio &#x3D; WIDTH &#x2F; HEIGHT;   
+fieldOfView &#x3D; 60;   
+nearPlane &#x3D; 1;  
+farPlane &#x3D; 10000;
+&#x2F;**
+ * PerspectiveCamera 透视相机
+ * @param fieldOfView 视角
+ * @param aspectRatio 纵横比
+ * @param nearPlane 近平面
+ * @param farPlane 远平面
+ *&#x2F;
+camera &#x3D; new THREE.PerspectiveCamera(       
+  fieldOfView,
+  aspectRatio,
+  nearPlane,
+  farPlane
+  );
+  
+&#x2F;&#x2F; 设置相机的位置
+camera.position.x &#x3D; 0;  
+camera.position.z &#x3D; 200;    
+camera.position.y &#x3D; 100; 
+  
+&#x2F;&#x2F; 创建渲染器
+renderer &#x3D; new THREE.WebGLRenderer(&#123; 
+&#x2F;&#x2F; 在 css 中设置背景色透明显示渐变色
+  alpha: true, 
+&#x2F;&#x2F; 开启抗锯齿，但这样会降低性能。
+&#x2F;&#x2F; 不过，由于我们的项目基于低多边形的，那还好 :) 
+  antialias: true 
+&#125;);
+  
+&#x2F;&#x2F; 定义渲染器的尺寸；在这里它会填满整个屏幕
+renderer.setSize(WIDTH, HEIGHT); 
+  
+&#x2F;&#x2F; 打开渲染器的阴影地图
+renderer.shadowMap.enabled &#x3D; true; 
+  
+&#x2F;&#x2F; 在 HTML 创建的容器中添加渲染器的 DOM 元素
+container &#x3D; document.getElementById(&#39;world&#39;);   
+container.appendChild(renderer.domElement);
+  
+&#x2F;&#x2F; 监听屏幕，缩放屏幕更新相机和渲染器的尺寸
+window.addEventListener(&#39;resize&#39;, handleWindowResize, false);</code></pre>
+
+<p>}</p>
+</li>
+</ul>
+<p>由于屏幕的尺寸改变，我们需要更新渲染器的尺寸和相机的纵横比。</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">function handleWindowResize() &#123; 
+   &#x2F;&#x2F; 更新渲染器的高度和宽度以及相机的纵横比
+   HEIGHT &#x3D; window.innerHeight; 
+   WIDTH &#x3D; window.innerWidth;           
+   renderer.setSize(WIDTH, HEIGHT); 
+   camera.aspect &#x3D; WIDTH &#x2F; HEIGHT;        
+   camera.updateProjectionMatrix();
+&#125;</code></pre>
+
+<h3 id="光源"><a href="#光源" class="headerlink" title="光源"></a>光源</h3><p>当创建一个场景时，光源是最棘手的一部分。光源可以奠定整个场景的基调，所以要适当地选取。在这部分我们要尽量制造足以让对象可见的光源。</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">var hemisphereLight, shadowLight;
+function createLights() &#123;
+   &#x2F;&#x2F; 半球光就是渐变的光；
+   &#x2F;&#x2F; 第一个参数是天空的颜色，第二个参数是地上的颜色，第三个参数是光源的强度
+   hemisphereLight &#x3D; new THREE.HemisphereLight(0xaaaaaa,0x000000, .9);
+
+   &#x2F;&#x2F; 方向光是从一个特定的方向的照射
+   &#x2F;&#x2F; 类似太阳，即所有光源是平行的
+   &#x2F;&#x2F; 第一个参数是关系颜色，第二个参数是光源强度
+   shadowLight &#x3D; new THREE.DirectionalLight(0xffffff, .9);
+
+   &#x2F;&#x2F; 设置光源的方向。  
+   &#x2F;&#x2F; 位置不同，方向光作用于物体的面也不同，看到的颜色也不同
+   shadowLight.position.set(150, 350, 350);
+
+   &#x2F;&#x2F; 开启光源投影 
+   shadowLight.castShadow &#x3D; true;
+
+   &#x2F;&#x2F; 定义可见域的投射阴影
+   shadowLight.shadow.camera.left &#x3D; -400;
+   shadowLight.shadow.camera.right &#x3D; 400;
+   shadowLight.shadow.camera.top &#x3D; 400;
+   shadowLight.shadow.camera.bottom &#x3D; -400;
+   shadowLight.shadow.camera.near &#x3D; 1;
+   shadowLight.shadow.camera.far &#x3D; 1000;
+
+   &#x2F;&#x2F; 定义阴影的分辨率；虽然分辨率越高越好，但是需要付出更加昂贵的代价维持高性能的表现。
+   shadowLight.shadow.mapSize.width &#x3D; 2048;
+   shadowLight.shadow.mapSize.height &#x3D; 2048;
+
+   &#x2F;&#x2F; 为了使这些光源呈现效果，只需要将它们添加到场景中
+   scene.add(hemisphereLight);  
+   scene.add(shadowLight);
+&#125;</code></pre>
+
+<p>正如你所见，创建光源用到许多参数。不要再犹豫，大胆尝试用不同的颜色，强度的光源。你发现不同的光源在场景中能够营造有趣的氛围和环境。而且你会找到感觉：如何按照你的需求优化它们。</p>
+<h2 id="用-Three-js-创建对象"><a href="#用-Three-js-创建对象" class="headerlink" title="用 Three.js 创建对象"></a>用 Three.js 创建对象</h2><hr>
+<blockquote>
+<p>如果你熟悉使用 3D 建模软件，你可以先在软件中建立物体且能简单地将它们导入到你的 Three.js 项目中。在本教程中不涉及具体的解决方案。为了更好地了解它们具体是如何工作的。我们使用 Three.js 中现成的几何体创建对象。</p>
+</blockquote>
+<p>Three.js 中已经有大量的现成几何体如：立方体，球体，圆环面，圆柱体以及飞机原型。</p>
+<p>对于我们的项目，所有的对象只需要通过这些几何体组合而成。这非常适合低多边形的风格，而且我们可以不必在 3D 建模软件中创建对象。</p>
+<h3 id="用一个圆柱体代表大海"><a href="#用一个圆柱体代表大海" class="headerlink" title="用一个圆柱体代表大海"></a>用一个圆柱体代表大海</h3><p>我们开始创建大海模型，因为它是我们实现中最简单的对象。为了简单起见，我们将大海看作一个简单的圆柱体放置在屏幕的底部。之后我们再深入研究如何改善大海的外观。<br> 接着，让我们使大海看起来更具吸引力，海浪更加逼真。</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">&#x2F;&#x2F;首先定义一个大海对象
+Sea &#x3D; function()&#123;
+
+   &#x2F;&#x2F; 创建一个圆柱几何体
+   &#x2F;&#x2F; 参数为：顶面半径，底面半径，高度，半径分段，高度分段
+   var geom &#x3D; new THREE.CylinderGeometry(600,600,800,40,10);
+
+   &#x2F;&#x2F; 在 x 轴旋转几何体
+   geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI&#x2F;2));
+
+   &#x2F;&#x2F; 创建材质
+   var mat &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color:Colors.blue,
+       transparent:true,
+       opacity:.6,
+       shading:THREE.FlatShading,
+   &#125;);
+
+   &#x2F;&#x2F; 为了在 Three.js 创建一个物体，我们必须创建网格用来组合几何体和一些材质 
+   this.mesh &#x3D; new THREE.Mesh(geom, mat);
+
+   &#x2F;&#x2F; 允许大海对象接收阴影
+   this.mesh.receiveShadow &#x3D; true; 
+&#125;
+
+&#x2F;&#x2F;实例化大海对象，并添加至场景
+var sea;
+
+function createSea()&#123;
+   sea &#x3D; new Sea();
+
+   &#x2F;&#x2F; 在场景底部，稍微推挤一下
+   sea.mesh.position.y &#x3D; -600;
+
+   &#x2F;&#x2F; 添加大海的网格至场景
+   scene.add(sea.mesh);
+&#125;</code></pre>
+
+<p>总结一下创建对象，需要什么东西。<br> 我们需要：</p>
+<ol>
+<li>创建几何体</li>
+<li>创建材质</li>
+<li>将它们传入网格</li>
+<li>将网格添加至场景</li>
+</ol>
+<p>通过这些步骤，我们可以创建许多不同种类的几何体。现在，如果我们把它们组合起来，就可以创建更多复杂的形状。</p>
+<p>在以下步骤中，我们将精确地学习如何创建复杂的形状。</p>
+<h3 id="把简单的正方体组合建造复杂的形状"><a href="#把简单的正方体组合建造复杂的形状" class="headerlink" title="把简单的正方体组合建造复杂的形状"></a>把简单的正方体组合建造复杂的形状</h3><p>云的制作会有一点点复杂，因为他们是由若干个正方体组合而成的一个随机形状。</p>
+<p><img data-src="" alt="img"></p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">Cloud &#x3D; function()&#123;
+   &#x2F;&#x2F; 创建一个空的容器放置不同形状的云
+   this.mesh &#x3D; new THREE.Object3D();
+
+   &#x2F;&#x2F; 创建一个正方体
+   &#x2F;&#x2F; 这个形状会被复制创建云
+   var geom &#x3D; new THREE.BoxGeometry(20,20,20);
+
+   &#x2F;&#x2F; 创建材质；一个简单的白色材质就可以达到效果
+   var mat &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color:Colors.white,  
+   &#125;);
+
+   &#x2F;&#x2F; 随机多次复制几何体
+   var nBlocs &#x3D; 3+Math.floor(Math.random()*3);
+   for (var i&#x3D;0; i&lt;nBlocs; i++ )&#123;
+    
+       &#x2F;&#x2F; 通过复制几何体创建网格
+       var m &#x3D; new THREE.Mesh(geom, mat); 
+    
+       &#x2F;&#x2F; 随机设置每个正方体的位置和旋转角度
+       m.position.x &#x3D; i*15;
+       m.position.y &#x3D; Math.random()*10;
+       m.position.z &#x3D; Math.random()*10;
+       m.rotation.z &#x3D; Math.random()*Math.PI*2;
+       m.rotation.y &#x3D; Math.random()*Math.PI*2;
+    
+       &#x2F;&#x2F; 随机设置正方体的大小
+       var s &#x3D; .1 + Math.random()*.9;
+       m.scale.set(s,s,s);
+    
+       &#x2F;&#x2F; 允许每个正方体生成投影和接收阴影
+       m.castShadow &#x3D; true;
+       m.receiveShadow &#x3D; true;
+    
+       &#x2F;&#x2F; 将正方体添加至开始时我们创建的容器中
+       this.mesh.add(m);
+   &#125; 
+&#125;</code></pre>
+
+<p>现在，我们已经创建一朵云，我们通过复制它来创建天空，而且将其放置在 z 轴任意位置。</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">&#x2F;&#x2F; 定义一个天空对象
+Sky &#x3D; function()&#123;
+   &#x2F;&#x2F; 创建一个空的容器
+   this.mesh &#x3D; new THREE.Object3D();
+
+   &#x2F;&#x2F; 选取若干朵云散布在天空中
+   this.nClouds &#x3D; 20;
+
+   &#x2F;&#x2F; 把云均匀地散布
+   &#x2F;&#x2F; 我们需要根据统一的角度放置它们
+   var stepAngle &#x3D; Math.PI*2 &#x2F; this.nClouds;
+
+   &#x2F;&#x2F; 创建云对象
+   for(var i&#x3D;0; i&lt;this.nClouds; i++)&#123;
+       var c &#x3D; new Cloud();
+ 
+       &#x2F;&#x2F; 设置每朵云的旋转角度和位置
+       &#x2F;&#x2F; 因此我们使用了一点三角函数
+       var a &#x3D; stepAngle*i; &#x2F;&#x2F;这是云的最终角度
+       var h &#x3D; 750 + Math.random()*200; &#x2F;&#x2F; 这是轴的中心和云本身之间的距离
+
+       &#x2F;&#x2F; 三角函数！！！希望你还记得数学学过的东西 :)
+       &#x2F;&#x2F; 假如你不记得: 
+       &#x2F;&#x2F; 我们简单地把极坐标转换成笛卡坐标
+       c.mesh.position.y &#x3D; Math.sin(a)*h;
+       c.mesh.position.x &#x3D; Math.cos(a)*h;
+
+       &#x2F;&#x2F; 根据云的位置旋转它
+       c.mesh.rotation.z &#x3D; a + Math.PI&#x2F;2;
+
+       &#x2F;&#x2F; 为了有更好的效果，我们把云放置在场景中的随机深度位置
+       c.mesh.position.z &#x3D; -400-Math.random()*400;
+    
+       &#x2F;&#x2F; 而且我们为每朵云设置一个随机大小
+       var s &#x3D; 1+Math.random()*2;
+       c.mesh.scale.set(s,s,s);
+
+       &#x2F;&#x2F; 不要忘记将每朵云的网格添加到场景中
+       this.mesh.add(c.mesh); 
+   &#125;  
+&#125;
+
+&#x2F;&#x2F; 现在我们实例化天空对象，而且将它放置在屏幕中间稍微偏下的位置。
+
+var sky;
+
+function createSky()&#123;
+   sky &#x3D; new Sky();
+   sky.mesh.position.y &#x3D; -600;
+   scene.add(sky.mesh);
+&#125;</code></pre>
+
+<h3 id="更加复杂的形状：创建飞机模型"><a href="#更加复杂的形状：创建飞机模型" class="headerlink" title="更加复杂的形状：创建飞机模型"></a>更加复杂的形状：创建飞机模型</h3><p>坏消息是：创建飞机模型的代码有点复杂有点长。但是好消息是：为了创建它我们已经学习了所有应该知道的。这里所有都是关于组合和封装形状的代码。</p>
+<p><img data-src="" alt="img"></p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">var AirPlane &#x3D; function() &#123;
+
+   this.mesh &#x3D; new THREE.Object3D();
+
+   &#x2F;&#x2F; 创建机舱
+   var geomCockpit &#x3D; new THREE.BoxGeometry(60, 50, 50, 1, 1, 1);
+   var matCockpit &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color: Colors.red,
+       shading: THREE.FlatShading
+   &#125;);
+   var cockpit &#x3D; new THREE.Mesh(geomCockpit, matCockpit);
+   cockpit.castShadow &#x3D; true;
+   cockpit.receiveShadow &#x3D; true;
+   this.mesh.add(cockpit);
+
+   &#x2F;&#x2F; 创建引擎
+   var geomEngine &#x3D; new THREE.BoxGeometry(20, 50, 50, 1, 1, 1);
+   var matEngine &#x3D; new THREE.MeshPhongMaterial(&#123;
+         color: Colors.white,
+         shading: THREE.FlatShading
+   &#125;);
+   var engine &#x3D; new THREE.Mesh(geomEngine, matEngine);
+   engine.position.x &#x3D; 40;
+   engine.castShadow &#x3D; true;
+   engine.receiveShadow &#x3D; true;
+   this.mesh.add(engine);
+
+   &#x2F;&#x2F; 创建机尾
+   var geomTailPlane &#x3D; new THREE.BoxGeometry(15, 20, 5, 1, 1, 1);
+   var matTailPlane &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color: Colors.red,
+       shading: THREE.FlatShading
+   &#125;);
+   var tailPlane &#x3D; new THREE.Mesh(geomTailPlane, matTailPlane);
+   tailPlane.position.set(-35, 25, 0);
+   tailPlane.castShadow &#x3D; true;
+   tailPlane.receiveShadow &#x3D; true;
+   this.mesh.add(tailPlane);
+
+    &#x2F;&#x2F; 创建机翼
+   var geomSideWing &#x3D; new THREE.BoxGeometry(40, 8, 150, 1, 1, 1);
+   var matSideWing &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color: Colors.red,
+       shading: THREE.FlatShading
+   &#125;);
+   var sideWing &#x3D; new THREE.Mesh(geomSideWing, matSideWing);
+   sideWing.castShadow &#x3D; true;
+   sideWing.receiveShadow &#x3D; true;
+   this.mesh.add(sideWing);
+
+   &#x2F;&#x2F; 创建螺旋桨
+   var geomPropeller &#x3D; new THREE.BoxGeometry(20, 10, 10, 1, 1, 1);
+   var matPropeller &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color: Colors.brown,
+       shading: THREE.FlatShading
+   &#125;);
+   this.propeller &#x3D; new THREE.Mesh(geomPropeller, matPropeller);
+   this.propeller.castShadow &#x3D; true;
+   this.propeller.receiveShadow &#x3D; true;
+
+   &#x2F;&#x2F; 创建螺旋桨的桨叶
+   var geomBlade &#x3D; new THREE.BoxGeometry(1, 100, 20, 1, 1, 1);
+   var matBlade &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color: Colors.brownDark,
+       shading: THREE.FlatShading
+   &#125;);
+
+   var blade &#x3D; new THREE.Mesh(geomBlade, matBlade);
+   blade.position.set(8, 0, 0);
+   blade.castShadow &#x3D; true;
+   blade.receiveShadow &#x3D; true;
+   this.propeller.add(blade);
+   this.propeller.position.set(50, 0, 0);
+   this.mesh.add(this.propeller);
+&#125;;</code></pre>
+
+<blockquote>
+<p>这飞机看起来很简单吧？<br> 不要担心它现在的样子，接着我们将看到如何改进形状，让飞机更加好看!</p>
+</blockquote>
+<p>现在，我们可以实例化这飞机并添加到场景中：</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">var airplane;
+
+function createPlane()&#123; 
+   airplane &#x3D; new AirPlane();
+   airplane.mesh.scale.set(.25,.25,.25);
+   airplane.mesh.position.y &#x3D; 100;
+   scene.add(airplane.mesh);
+&#125;</code></pre>
+
+<h2 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h2><hr>
+<p>我们已经创建了几个对象并把它们添加到我们的场景中了，但是为啥运行游戏的时候什么都看不到呢？那是因为我们需要渲染场景，添加一下这句简单的代码：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">renderer.render(scene, camera);</code></pre>
+
+<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><hr>
+<p>通过使螺旋桨旋转并转动大海和云让我们的场景更具生命力。<br> 因此我们需要一个无限循环函数</p>
+<blockquote>
+<p>译者注：渲染有两种类型：实时渲染和离线渲染</p>
+</blockquote>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">function loop()&#123;
+   &#x2F;&#x2F; 使螺旋桨旋转并转动大海和云
+   airplane.propeller.rotation.x +&#x3D; 0.3;
+   sea.mesh.rotation.z +&#x3D; .005;
+   sky.mesh.rotation.z +&#x3D; .01;
+
+   &#x2F;&#x2F; 渲染场景
+   renderer.render(scene, camera);
+
+   &#x2F;&#x2F; 重新调用 render() 函数
+   requestAnimationFrame(loop);
+&#125;</code></pre>
+
+<p>正如你看到的一样，我们将渲染器的 render() 函数移动到 loop() 函数中。因为每次修改物体的位置或颜色之类的属性就需要重新调用一次 render() 函数。</p>
+<h2 id="随着鼠标的移动，添加交互"><a href="#随着鼠标的移动，添加交互" class="headerlink" title="随着鼠标的移动，添加交互"></a>随着鼠标的移动，添加交互</h2><hr>
+<p>在这刻，我们已经看见飞机在场景在中间，接下来我们还需要实现什么呢？就是监听鼠标的移动实现交互。</p>
+<p>当文档加载完成，我们就需要为文档添加监听器，检测鼠标是否有移动。因此，我们需要对初始化函数作出以下的修改。</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">function init(event)&#123;
+   createScene();
+   createLights();
+   createPlane();
+   createSea();
+   createSky();
+
+   &#x2F;&#x2F;添加监听器
+   document.addEventListener(&#39;mousemove&#39;, handleMouseMove, false);
+
+   loop();
+&#125;</code></pre>
+
+<p>另外，我们创建一个 mousemove 事件的事件处理函数。</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">var mousePos&#x3D;&#123;x:0, y:0&#125;;
+
+&#x2F;&#x2F; mousemove 事件处理函数
+
+function handleMouseMove(event) &#123;
+
+   &#x2F;&#x2F; 这里我把接收到的鼠标位置的值转换成归一化值，在-1与1之间变化 
+   &#x2F;&#x2F; 这是x轴的公式:
+
+   var tx &#x3D; -1 + (event.clientX &#x2F; WIDTH)*2;
+
+   &#x2F;&#x2F; 对于 y 轴，我们需要一个逆公式
+   &#x2F;&#x2F; 因为 2D 的 y 轴与 3D 的 y 轴方向相反
+
+   var ty &#x3D; 1 - (event.clientY &#x2F; HEIGHT)*2;
+   mousePos &#x3D; &#123;x:tx, y:ty&#125;;
+&#125;</code></pre>
+
+<p>现在获得鼠标的 x , y 坐标值，我们可以适当地移动飞机。</p>
+<p>我们需要修改循环函数并添加一个新功能去更新飞机的位置。</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">function loop()&#123;
+   sea.mesh.rotation.z +&#x3D; .005;
+   sky.mesh.rotation.z +&#x3D; .01;
+
+   &#x2F;&#x2F; 更新每帧的飞机
+   updatePlane();
+
+   renderer.render(scene, camera);
+   requestAnimationFrame(loop);
+&#125;
+
+function updatePlane()&#123;
+
+   &#x2F;&#x2F; 让我们在x轴上-100至100之间和y轴25至175之间移动飞机
+   &#x2F;&#x2F; 根据鼠标的位置在-1与1之间的范围，我们使用的 normalize 函数实现（如下）
+
+   var targetX &#x3D; normalize(mousePos.x, -1, 1, -100, 100);
+   var targetY &#x3D; normalize(mousePos.y, -1, 1, 25, 175);
+
+   &#x2F;&#x2F; 更新飞机的位置
+   airplane.mesh.position.y &#x3D; targetY;
+   airplane.mesh.position.x &#x3D; targetX;
+   airplane.propeller.rotation.x +&#x3D; 0.3;
+&#125;
+
+function normalize(v,vmin,vmax,tmin, tmax)&#123;
+
+   var nv &#x3D; Math.max(Math.min(v,vmax), vmin);
+   var dv &#x3D; vmax-vmin;
+   var pc &#x3D; (nv-vmin)&#x2F;dv;
+   var dt &#x3D; tmax-tmin;
+   var tv &#x3D; tmin + (pc*dt);
+   return tv;
+&#125;</code></pre>
+
+<p>恭喜你！到这里，已经实现了飞机随着鼠标的移动而移动。到目前为止，看看我们已经实现了什么功能：<a href="http://tympanus.net/Tutorials/TheAviator/part1.html">第一部分的 Demo</a></p>
+<h2 id="几乎完成！"><a href="#几乎完成！" class="headerlink" title="几乎完成！"></a>几乎完成！</h2><p>正如你所看见的，使用 Three.js 对创建 WebGL 内容有非常大的帮助。建立一个场景和渲染一些自定义对象不需要懂太多 WebGL 的知识。到目前为止，我们已经学会一些基础概念和你已经可以开始通过调整一些参数类似光源的强度，雾的颜色和物体的大小掌握了一些基本的诀窍。或许现在你已经很熟悉创建一些新的对象了。</p>
+<p><em>如果你想学习更加深入的技术，请继续阅读。因为你将会学习到如何改进 3D 场景，使飞机飞行得更加平稳，并模仿低多边形海浪对大海的影响。</em></p>
+<h2 id="一架更酷的飞机"><a href="#一架更酷的飞机" class="headerlink" title="一架更酷的飞机"></a>一架更酷的飞机</h2><p>好了~我们之前创建了非常基础的飞机。我们现在知道如何创建对象并组合它们，但是我们仍然需要学习如何修改几何体令其更加符合我们的需求。</p>
+<p>例如正方体，可以移动它的顶点。在我们的案例中，我们需要使它更加像驾驶舱。</p>
+<p>让我们看一下驾驶舱这部分的代码，还有看下我们是如何让他的背部变得更窄的：</p>
+<p><img data-src="" alt="img"></p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">&#x2F;&#x2F; 驾驶舱
+
+var geomCockpit &#x3D; new THREE.BoxGeometry(80,50,50,1,1,1);
+var matCockpit &#x3D; new THREE.MeshPhongMaterial(&#123;color:Colors.red, shading:THREE.FlatShading&#125;);
+
+&#x2F;&#x2F; 我们可以通过访问形状中顶点数组中一组特定的顶点
+&#x2F;&#x2F; 然后移动它的 x, y, z 属性:
+geomCockpit.vertices[4].y-&#x3D;10;
+geomCockpit.vertices[4].z+&#x3D;20;
+geomCockpit.vertices[5].y-&#x3D;10;
+geomCockpit.vertices[5].z-&#x3D;20;
+geomCockpit.vertices[6].y+&#x3D;30;
+geomCockpit.vertices[6].z+&#x3D;20;
+geomCockpit.vertices[7].y+&#x3D;30;
+geomCockpit.vertices[7].z-&#x3D;20;
+
+var cockpit &#x3D; new THREE.Mesh(geomCockpit, matCockpit);
+cockpit.castShadow &#x3D; true;
+cockpit.receiveShadow &#x3D; true;
+this.mesh.add(cockpit);</code></pre>
+
+<p>这就是如何操纵一个形状以适应我们的需求的一个例子。</p>
+<p><em>如果你看到飞机的完整代码，你会看到几个对象：更像窗口的对象和更美观的螺旋桨。没有什么复杂的东西，试着调整相关的值找找感觉，制造属于你自己的飞机。</em></p>
+<h2 id="但是，是谁在开飞机呢？"><a href="#但是，是谁在开飞机呢？" class="headerlink" title="但是，是谁在开飞机呢？"></a>但是，是谁在开飞机呢？</h2><hr>
+<p>为我们的飞机添加一个飞行员，就好像添加几个盒子一样容易。</p>
+<p>但是我们只需要一个酷酷的飞行员，头发要很飘逸的！感觉它好像很难实现的样子，但是由于我们开始的时候是在低多边形的场景下开始的，所以这就变得简单多了！尝试通过几个盒子模拟创建飘逸的头发，同时会给予一种独特的感觉。</p>
+<p><img data-src="" alt="img"></p>
+<p>让我们看看源码：</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">var Pilot &#x3D; function()&#123;
+   this.mesh &#x3D; new THREE.Object3D();
+   this.mesh.name &#x3D; &quot;pilot&quot;;
+
+   &#x2F;&#x2F; angleHairs是用于后面头发的动画的属性 
+   this.angleHairs&#x3D;0;
+
+   &#x2F;&#x2F; 飞行员的身体
+   var bodyGeom &#x3D; new THREE.BoxGeometry(15,15,15);
+   var bodyMat &#x3D; new THREE.MeshPhongMaterial(&#123;color:Colors.brown, shading:THREE.FlatShading&#125;);
+   var body &#x3D; new THREE.Mesh(bodyGeom, bodyMat);
+   body.position.set(2,-12,0);
+   this.mesh.add(body);
+
+   &#x2F;&#x2F; 飞行员的脸部
+   var faceGeom &#x3D; new THREE.BoxGeometry(10,10,10);
+   var faceMat &#x3D; new THREE.MeshLambertMaterial(&#123;color:Colors.pink&#125;);
+   var face &#x3D; new THREE.Mesh(faceGeom, faceMat);
+   this.mesh.add(face);
+
+   &#x2F;&#x2F; 飞行员的头发
+   var hairGeom &#x3D; new THREE.BoxGeometry(4,4,4);
+   var hairMat &#x3D; new THREE.MeshLambertMaterial(&#123;color:Colors.brown&#125;);
+   var hair &#x3D; new THREE.Mesh(hairGeom, hairMat);
+   &#x2F;&#x2F; 调整头发的形状至底部的边界，这将使它更容易扩展。
+   hair.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0,2,0));
+
+   &#x2F;&#x2F; 创建一个头发的容器
+   var hairs &#x3D; new THREE.Object3D();
+
+   &#x2F;&#x2F; 创建一个头发顶部的容器（这会有动画效果）
+   this.hairsTop &#x3D; new THREE.Object3D();
+
+   &#x2F;&#x2F; 创建头顶的头发并放置他们在一个3*4的网格中
+   for (var i&#x3D;0; i&lt;12; i++)&#123;
+       var h &#x3D; hair.clone();
+       var col &#x3D; i%3;
+       var row &#x3D; Math.floor(i&#x2F;3);
+       var startPosZ &#x3D; -4;
+       var startPosX &#x3D; -4;
+       h.position.set(startPosX + row*4, 0, startPosZ + col*4);
+       this.hairsTop.add(h);
+   &#125;
+   hairs.add(this.hairsTop);
+
+   &#x2F;&#x2F; 创建脸庞的头发
+   var hairSideGeom &#x3D; new THREE.BoxGeometry(12,4,2);
+   hairSideGeom.applyMatrix(new THREE.Matrix4().makeTranslation(-6,0,0));
+   var hairSideR &#x3D; new THREE.Mesh(hairSideGeom, hairMat);
+   var hairSideL &#x3D; hairSideR.clone();
+   hairSideR.position.set(8,-2,6);
+   hairSideL.position.set(8,-2,-6);
+   hairs.add(hairSideR);
+   hairs.add(hairSideL);
+
+   &#x2F;&#x2F; 创建后脑勺的头发
+   var hairBackGeom &#x3D; new THREE.BoxGeometry(2,8,10);
+   var hairBack &#x3D; new THREE.Mesh(hairBackGeom, hairMat);
+   hairBack.position.set(-1,-4,0)
+   hairs.add(hairBack);
+   hairs.position.set(-5,5,0);
+
+   this.mesh.add(hairs);
+
+   var glassGeom &#x3D; new THREE.BoxGeometry(5,5,5);
+   var glassMat &#x3D; new THREE.MeshLambertMaterial(&#123;color:Colors.brown&#125;);
+   var glassR &#x3D; new THREE.Mesh(glassGeom,glassMat);
+   glassR.position.set(6,0,3);
+   var glassL &#x3D; glassR.clone();
+   glassL.position.z &#x3D; -glassR.position.z;
+
+   var glassAGeom &#x3D; new THREE.BoxGeometry(11,1,11);
+   var glassA &#x3D; new THREE.Mesh(glassAGeom, glassMat);
+   this.mesh.add(glassR);
+   this.mesh.add(glassL);
+   this.mesh.add(glassA);
+
+   var earGeom &#x3D; new THREE.BoxGeometry(2,3,2);
+   var earL &#x3D; new THREE.Mesh(earGeom,faceMat);
+   earL.position.set(0,0,-6);
+   var earR &#x3D; earL.clone();
+   earR.position.set(0,0,6);
+   this.mesh.add(earL);
+   this.mesh.add(earR);
+ &#125;
+
+&#x2F;&#x2F; 移动头发
+Pilot.prototype.updateHairs &#x3D; function()&#123;
+
+   &#x2F;&#x2F; 获得头发
+   var hairs &#x3D; this.hairsTop.children;
+
+   &#x2F;&#x2F; 根据 angleHairs 的角度更新头发
+   var l &#x3D; hairs.length;
+   for (var i&#x3D;0; i&lt;l; i++)&#123;
+       var h &#x3D; hairs[i];
+       &#x2F;&#x2F; 每根头发将周期性的基础上原始大小的75%至100%之间作调整。
+       h.scale.y &#x3D; .75 + Math.cos(this.angleHairs+i&#x2F;3)*.25;
+   &#125;
+   &#x2F;&#x2F; 在下一帧增加角度
+   this.angleHairs +&#x3D; 0.16;
+&#125;</code></pre>
+
+<p><img data-src="" alt="img"></p>
+<p>现在让头发动起来，只需要在循环函数里添加以下这句代码。</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">airplane.pilot.updateHairs();</code></pre>
+
+<h2 id="制作海浪"><a href="#制作海浪" class="headerlink" title="制作海浪"></a>制作海浪</h2><hr>
+<p>或许你已经注意到这大海不像真的大海那样，但更像被压路机压平的表面。</p>
+<p>它需要一些海浪。这需要结合我们之前用到的两项技术来完成：</p>
+<ul>
+<li><p>操纵几何体的顶点就像我们处理飞机的驾驶舱那样</p>
+</li>
+<li><p>每个顶点执行循环移动就像我们移动飞行员的头发一样</p>
+<p>为了制造海浪，我们将围绕圆柱体的初始位置对每个顶点旋转。通过给它们一个随机旋转速度和一个随机距离（旋转半径）。很抱歉，这里还是需要用到一些三角函数！</p>
+<p><img data-src="" alt="img"></p>
+</li>
+</ul>
+<p>让我们对大海作出一些修改：</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">Sea &#x3D; function()&#123;
+   var geom &#x3D; new THREE.CylinderGeometry(600,600,800,40,10);
+   geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI&#x2F;2));
+
+   &#x2F;&#x2F; 重点：通过合并顶点，我们确保海浪的连续性
+   geom.mergeVertices();
+
+   &#x2F;&#x2F; 获得顶点
+   var l &#x3D; geom.vertices.length;
+
+   &#x2F;&#x2F; 创建一个新的数组存储与每个顶点关联的值：
+   this.waves &#x3D; [];
+
+   for (var i&#x3D;0; i&lt;l; i++)&#123;
+       &#x2F;&#x2F; 获取每个顶点
+       var v &#x3D; geom.vertices[i];
+
+       &#x2F;&#x2F; 存储一些关联的数值
+       this.waves.push(&#123;y:v.y,
+                        x:v.x,
+                        z:v.z,
+                        &#x2F;&#x2F; 随机角度
+                        ang:Math.random()*Math.PI*2,
+                        &#x2F;&#x2F; 随机距离
+                        amp:5 + Math.random()*15,
+                        &#x2F;&#x2F; 在0.016至0.048度&#x2F;帧之间的随机速度
+                        speed:0.016 + Math.random()*0.032
+       &#125;);
+   &#125;;
+   var mat &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color:Colors.blue,
+       transparent:true,
+       opacity:.8,
+       shading:THREE.FlatShading,
+   &#125;);
+
+   this.mesh &#x3D; new THREE.Mesh(geom, mat);
+   this.mesh.receiveShadow &#x3D; true;
+&#125;
+
+&#x2F;&#x2F; 现在我们创建一个在每帧可以调用的函数，用于更新顶点的位置来模拟海浪。
+
+Sea.prototype.moveWaves &#x3D; function ()&#123;
+
+   &#x2F;&#x2F; 获取顶点
+   var verts &#x3D; this.mesh.geometry.vertices;
+   var l &#x3D; verts.length;
+
+   for (var i&#x3D;0; i&lt;l; i++)&#123;
+       var v &#x3D; verts[i];
+
+       &#x2F;&#x2F; 获取关联的值
+       var vprops &#x3D; this.waves[i];
+
+       &#x2F;&#x2F; 更新顶点的位置
+       v.x &#x3D; vprops.x + Math.cos(vprops.ang)*vprops.amp;
+       v.y &#x3D; vprops.y + Math.sin(vprops.ang)*vprops.amp;
+
+       &#x2F;&#x2F; 下一帧自增一个角度
+       vprops.ang +&#x3D; vprops.speed;
+   &#125;
+
+   &#x2F;&#x2F; 告诉渲染器代表大海的几何体发生改变
+   &#x2F;&#x2F; 事实上，为了维持最好的性能
+   &#x2F;&#x2F; Three.js 会缓存几何体和忽略一些修改
+   &#x2F;&#x2F; 除非加上这句
+   this.mesh.geometry.verticesNeedUpdate&#x3D;true;
+
+   sea.mesh.rotation.z +&#x3D; .005;
+&#125;</code></pre>
+
+<p><img data-src="" alt="img"></p>
+<p>就好像我们对飞行员的头发做的那样，我们在循环函数中添加以下这句代码：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">sea.moveWaves();</code></pre>
+
+<p>现在好好欣赏海浪吧！</p>
+<h2 id="改善场景中的光源"><a href="#改善场景中的光源" class="headerlink" title="改善场景中的光源"></a>改善场景中的光源</h2><hr>
+<p>在教程中的第一部分，我们已经创建了一些光源。但是想为场景添加更好的气氛，并使阴影更加柔和。为了实现它，我们打算使用环境光源。</p>
+<p>在 createLight 函数中，我们添加以下几行代码：</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">&#x2F;&#x2F; 环境光源修改场景中的全局颜色和使阴影更加柔和
+ambientLight &#x3D; new THREE.AmbientLight(0xdc8874, .5);scene.add(ambientLight);</code></pre>
+
+<p>别再犹豫了！调节环境光源的颜色和强度，它会为你的场景增添独特的润色。</p>
+<h2 id="一次平稳的飞行"><a href="#一次平稳的飞行" class="headerlink" title="一次平稳的飞行"></a>一次平稳的飞行</h2><hr>
+<p>我们的小小飞机已经随着我们的鼠标移动。但它总感觉不像真正的飞行。当飞机改变它的飞行高度，如何改变它的位置和方向时更加流畅就完美了。在教程的最后一点，我们将实现它。</p>
+<p>一个简单的方法就是让它移动到目标位置，通过添加一点点距离让它在每一帧与目标位置分离。</p>
+<p>基本上，相关的代码会这样（这是一个通用的公式，不要马上添加到你的代码中）：</p>
+<pre class="line-numbers language-undefined" data-language="undefined"><code class="language-undefined">currentPosition +&#x3D; (finalPosition - currentPosition)*fraction;</code></pre>
+
+<p>更现实点来说，飞机旋转也可以根据运动的方向。如果飞机很快的向上移动，它应该很快地沿着逆时针方向旋转；如果飞机慢慢向下移动，它应该慢慢地沿着顺时针方向旋转；为了准确地实现它，我们应该把旋转比例值简单地分配给在目标和飞机位置之间的剩余距离。</p>
+<p>在我们的代码里，updatePlane 函数需要像以下这样：</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">function updatePlane()&#123;
+   var targetY &#x3D; normalize(mousePos.y,-.75,.75,25, 175);
+   var targetX &#x3D; normalize(mousePos.x,-.75,.75,-100, 100);
+
+   &#x2F;&#x2F; 在每帧通过添加剩余距离的一小部分的值移动飞机
+   airplane.mesh.position.y +&#x3D; (targetY-airplane.mesh.position.y)*0.1;
+
+   &#x2F;&#x2F; 剩余的距离按比例转动飞机
+   airplane.mesh.rotation.z &#x3D; (targetY-airplane.mesh.position.y)*0.0128;
+   airplane.mesh.rotation.x &#x3D; (airplane.mesh.position.y-targetY)*0.0064;
+
+   airplane.propeller.rotation.x +&#x3D; 0.3;
+&#125;</code></pre>
+
+<p>现在飞机的移动看起来更加自然和真实。通过修改一下小数值，你可以使用飞机随着鼠标的移动响应速度更加快或更加慢。</p>
+<p>看下我们场景中的最后一个阶段：<a href="http://tympanus.net/Tutorials/TheAviator/part2.html">第二部分 Demo</a></p>
+<p>很好！！！</p>
+<h2 id="接着要干嘛呢？"><a href="#接着要干嘛呢？" class="headerlink" title="接着要干嘛呢？"></a>接着要干嘛呢？</h2><hr>
+<p>如果你看到这，你已经学会 Three.js 中的通用的一些技术了，能够让你创建您的第一个场景。现在你知道如何通过原始几何体创建物体，如何激活它们，以及如何设置一个场景中的光源，你已经知道如何改进你的对象的外观和运动，还有如何调整环境氛围。</p>
+<p>下一步已经超出本文范围了，由于它涉及到更多复杂的技术，它是实现一个<a href="http://tympanus.net/Tutorials/TheAviator/">游戏</a>，大概思路是碰撞，收集点数，液位控制。下载源码，看看实现的思路；你会看到到目前为止你学到过的概念和一些高阶的知识点，你可以研究一下和玩一下。请注意这游戏已经优化了以便桌面使用。</p>
+<p><img data-src="" alt="img"></p>
+<p>但愿，这篇教程帮助你熟悉Three.js和激发你实现属于你自己的项目。让我看到你的创造力；我希望看到你做出什么来~</p>
+<p><a href="http://tympanus.net/Tutorials/TheAviator/">DEMO</a>   <a href="http://tympanus.net/Tutorials/TheAviator/TheAviator.zip">源码下载</a></p>
+<p><strong>本文转自</strong> <a href="https://www.jianshu.com/p/92771817c73f">译文：一个采用 Three.js 的 3D 动画场景制作：飞行者</a>，作者：LeeChingYin</p>
+<p><strong>英文原文链接：</strong><a href="https://tympanus.net/codrops/2016/04/26/the-aviator-animating-basic-3d-scene-threejs/">The Making of “The Aviator”: Animating a Basic 3D Scene with Three.js</a></p>
+]]></content>
+      <tags>
+        <tag>web</tag>
+      </tags>
+  </entry>
+</search>

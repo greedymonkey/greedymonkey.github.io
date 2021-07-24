@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/greedymonkey/image/master/%E5%A4%B4%E5%83%8F%E5%9B%BE%E6%A0%87/favicon%2032x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/greedymonkey/image/master/%E5%A4%B4%E5%83%8F%E5%9B%BE%E6%A0%87/favicon%2016x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css" integrity="sha256-no0c5ccDODBwp+9hSmV5VvPpKwHCpbVzXHexIkupM6U=" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":true,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="一篇关于探讨使用 Three.js 创建 3D 动画场景的基础教程。  DEMO     源码下载 今日，我们将使用 Three.js 创建一个简单的 3D 飞机飞行的动画场景。Three.js 是一个 3D 类库，它能让 WebGL 变得更加简单。由于 GSL 语法的复杂性，对于许多开发人员来说 WebGL 是一个未知的领域。但是有了 Three.js，在浏览器中 3D 的实现变得简单。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【转】利用Three.js制作一个3D动画飞行场景">
+<meta property="og:url" content="http://yoursite.com/2020/01/three-js-3D-TheAviator/index.html">
+<meta property="og:site_name" content="魔法海螺">
+<meta property="og:description" content="一篇关于探讨使用 Three.js 创建 3D 动画场景的基础教程。  DEMO     源码下载 今日，我们将使用 Three.js 创建一个简单的 3D 飞机飞行的动画场景。Three.js 是一个 3D 类库，它能让 WebGL 变得更加简单。由于 GSL 语法的复杂性，对于许多开发人员来说 WebGL 是一个未知的领域。但是有了 Three.js，在浏览器中 3D 的实现变得简单。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-10T01:41:34.000Z">
+<meta property="article:modified_time" content="2020-01-10T01:41:34.000Z">
+<meta property="article:author" content="GreedyMonkey">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2020/01/three-js-3D-TheAviator/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2020/01/three-js-3D-TheAviator/","path":"2020/01/three-js-3D-TheAviator/","title":"【转】利用Three.js制作一个3D动画飞行场景"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>【转】利用Three.js制作一个3D动画飞行场景 | 魔法海螺</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">魔法海螺</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML-amp-CSS"><span class="nav-number">1.</span> <span class="nav-text">HTML &amp; CSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript"><span class="nav-number">2.</span> <span class="nav-text">JavaScript</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Color-Palette"><span class="nav-number">2.1.</span> <span class="nav-text">The Color Palette</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84"><span class="nav-number">2.2.</span> <span class="nav-text">代码结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%9C%BA%E6%99%AF"><span class="nav-number">2.3.</span> <span class="nav-text">创建场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%89%E6%BA%90"><span class="nav-number">2.4.</span> <span class="nav-text">光源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8-Three-js-%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.</span> <span class="nav-text">用 Three.js 创建对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E4%B8%80%E4%B8%AA%E5%9C%86%E6%9F%B1%E4%BD%93%E4%BB%A3%E8%A1%A8%E5%A4%A7%E6%B5%B7"><span class="nav-number">3.1.</span> <span class="nav-text">用一个圆柱体代表大海</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%8A%E7%AE%80%E5%8D%95%E7%9A%84%E6%AD%A3%E6%96%B9%E4%BD%93%E7%BB%84%E5%90%88%E5%BB%BA%E9%80%A0%E5%A4%8D%E6%9D%82%E7%9A%84%E5%BD%A2%E7%8A%B6"><span class="nav-number">3.2.</span> <span class="nav-text">把简单的正方体组合建造复杂的形状</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E5%8A%A0%E5%A4%8D%E6%9D%82%E7%9A%84%E5%BD%A2%E7%8A%B6%EF%BC%9A%E5%88%9B%E5%BB%BA%E9%A3%9E%E6%9C%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.3.</span> <span class="nav-text">更加复杂的形状：创建飞机模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93"><span class="nav-number">4.</span> <span class="nav-text">渲染</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB"><span class="nav-number">5.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%8F%E7%9D%80%E9%BC%A0%E6%A0%87%E7%9A%84%E7%A7%BB%E5%8A%A8%EF%BC%8C%E6%B7%BB%E5%8A%A0%E4%BA%A4%E4%BA%92"><span class="nav-number">6.</span> <span class="nav-text">随着鼠标的移动，添加交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E4%B9%8E%E5%AE%8C%E6%88%90%EF%BC%81"><span class="nav-number">7.</span> <span class="nav-text">几乎完成！</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E6%9E%B6%E6%9B%B4%E9%85%B7%E7%9A%84%E9%A3%9E%E6%9C%BA"><span class="nav-number">8.</span> <span class="nav-text">一架更酷的飞机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%86%E6%98%AF%EF%BC%8C%E6%98%AF%E8%B0%81%E5%9C%A8%E5%BC%80%E9%A3%9E%E6%9C%BA%E5%91%A2%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">但是，是谁在开飞机呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C%E6%B5%B7%E6%B5%AA"><span class="nav-number">10.</span> <span class="nav-text">制作海浪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B9%E5%96%84%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E5%85%89%E6%BA%90"><span class="nav-number">11.</span> <span class="nav-text">改善场景中的光源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E6%AC%A1%E5%B9%B3%E7%A8%B3%E7%9A%84%E9%A3%9E%E8%A1%8C"><span class="nav-number">12.</span> <span class="nav-text">一次平稳的飞行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E7%9D%80%E8%A6%81%E5%B9%B2%E5%98%9B%E5%91%A2%EF%BC%9F"><span class="nav-number">13.</span> <span class="nav-text">接着要干嘛呢？</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">GreedyMonkey</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/greedymonkey" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;greedymonkey" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/three-js-3D-TheAviator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GreedyMonkey">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="魔法海螺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【转】利用Three.js制作一个3D动画飞行场景
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-01-10 09:41:34" itemprop="dateCreated datePublished" datetime="2020-01-10T09:41:34+08:00">2020-01-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>一篇关于探讨使用 Three.js 创建 3D 动画场景的基础教程。</p>
+<p><img data-src="" alt="img"></p>
+<p><a target="_blank" rel="noopener" href="http://tympanus.net/Tutorials/TheAviator/">DEMO</a>     <a target="_blank" rel="noopener" href="http://tympanus.net/Tutorials/TheAviator/TheAviator.zip">源码下载</a></p>
+<p>今日，我们将使用 Three.js 创建一个简单的 3D 飞机飞行的动画场景。Three.js 是一个 3D 类库，它能让 WebGL 变得更加简单。由于 GSL 语法的复杂性，对于许多开发人员来说 WebGL 是一个未知的领域。但是有了 Three.js，在浏览器中 3D 的实现变得简单。<span id="more"></span></p>
+<blockquote>
+<p>(译者注：WebGL 是一项利用 JavaScriptAPI 渲染交互式 3D 电脑图形和 2D 图形的技术，可兼容任何的网页浏览器，无需加装插件。通过 WebGL 的技术，只需要编写网页代码即可实现 3D 图像的展示。GLSL-OpenGL Shading Language 也称作 GLslang ，是一个以 C 语言为基础的高阶着色语言。它是由 OpenGL ARB 所建立，提供开发者对绘图管线更多的直接控制，而无需使用汇编语言或硬件规格语言。详细麻烦谷歌或百度一下～)</p>
+</blockquote>
+<p>在本教程中，我们将创建一个简单的 3D 场景, 在两个主要的部分会有一些交互。在<a target="_blank" rel="noopener" href="http://tympanus.net/Tutorials/TheAviator/part1.html">第一部分</a>，我们会讲解 Three.js 的基础和如何创建一个简单的场景。<a target="_blank" rel="noopener" href="http://tympanus.net/Tutorials/TheAviator/part2.html">第二部分</a>会详细讲述如何优化模型，如何为场景中的不同元素增添气氛以及更流畅的运动效果。</p>
+<p>由于完整的<a target="_blank" rel="noopener" href="http://tympanus.net/Tutorials/TheAviator/">游戏</a>超出了本教程的范围，但是你可以下载或 check out 源码。它包含了许多额外有趣的部分如：碰撞，抓硬币和增加得分。</p>
+<p>在本教程中，我们将重点学习 Three.js 中的一些基础概念。这些基础概念将带你走进 WebGL 这新领域！</p>
+<p><img data-src="" alt="img"></p>
+<p>事不宜迟，我们马上开始~</p>
+<h2 id="HTML-amp-CSS"><a href="#HTML-amp-CSS" class="headerlink" title="HTML &amp; CSS"></a>HTML &amp; CSS</h2><p>本教程主要采用 Three.js 类库，Three.js 让 WebGL 变得易于使用。从<a target="_blank" rel="noopener" href="http://threejs.org/">官网</a>或 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/">GitHub repo</a> check out 获取关于 Three.js 更多的信息。</p>
+<p>第一样要做的事情就是在 HTML <header> 标签中引入 Three.js：</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot; src&#x3D;&quot;js&#x2F;three.js&quot;&gt;&lt;&#x2F;script&gt;</code></pre>
+
+<p>然后在 HTML 中需要添加一个元素作为容器。</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml">&lt;div id&#x3D;&quot;world&quot;&gt;&lt;&#x2F;div&gt;</code></pre>
+
+<p>你可以像下面那样写一些简单的样式，让它填满整个 viewport：<br> #world {<br> position: absolute;<br> width: 100%;<br> height: 100%;<br> overflow: hidden;<br> background: linear-gradient(#e4e0ba, #f7d9aa);<br> }<br> 正如你所见的一样，背景有些渐变的效果，就像天空。</p>
+<p>以上是标签和样式！</p>
+<h2 id="JavaScript"><a href="#JavaScript" class="headerlink" title="JavaScript"></a>JavaScript</h2><hr>
+<p>如果你已经掌握了一些 JavaScript 的基础知识，使用 Three.js 会变得相当简单。来~我们看看实现不同部分的代码。</p>
+<h3 id="The-Color-Palette"><a href="#The-Color-Palette" class="headerlink" title="The Color Palette"></a>The Color Palette</h3><p><img data-src="" alt="img"></p>
+<p>在开始场景编码之前，我觉得定义一个调色板是很有用的。因为在整个项目中会经常使用到。在这个项目中，我们会选择以下这些颜色：</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">var Colors &#x3D; &#123;
+   red:0xf25346,    
+   white:0xd8d0d1,  
+   brown:0x59332e,  
+   pink:0xF5986E,   
+   brownDark:0x23190f,  
+   blue:0x68c3c0
+&#125;;</code></pre>
+
+<h3 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h3><p>虽然 JavaScript 代码十分冗长，但是它的结构很简单。我们需要创建所有主要的函数并放入初始函数中：</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">window.addEventListener(&#39;load&#39;, init, false);
+function init() &#123;
+   &#x2F;&#x2F; 创建场景，相机和渲染器
+   createScene(); 
+   &#x2F;&#x2F; 添加光源
+   createLights(); 
+   &#x2F;&#x2F; 添加对象 
+   createPlane();   
+   createSea(); 
+   createSky(); 
+   &#x2F;&#x2F; 调用循环函数，在每帧更新对象的位置和渲染场景
+   loop();
+&#125;</code></pre>
+
+<h3 id="创建场景"><a href="#创建场景" class="headerlink" title="创建场景"></a>创建场景</h3><p>创建一个 Three.js 的项目，我们至少需要以下这些：</p>
+<ol>
+<li><strong>场景：</strong>把这看作一个舞台，将需要呈现的对象都添加进去。</li>
+<li><strong>相机：</strong>在这情况下，我们将使用透视相机，但它也可能是正投影相机。</li>
+<li><strong>渲染器：</strong>使用 WebGL 渲染器显示所有的场景。</li>
+<li><strong>渲染一个或多个对象：</strong> 在我们的例子中，我们会创建飞机，大海，天空（一些云）。</li>
+<li><strong>光源：</strong>有不同类型可用的光源。在我们的项目中，我们主要用到营造氛围的半球光和制造阴影的方向光。</li>
+</ol>
+<p><img data-src="" alt="img"></p>
+<p>在 createScene 函数中创建场景，相机以及渲染器。</p>
+<blockquote>
+<p>译者注：</p>
+</blockquote>
+<ul>
+<li><p>Three.js 场景只有一种，THREE.Scene 场景是所有物体的容器。</p>
+</li>
+<li><p>相机决定了场景中哪个角度的景色会显示出来。</p>
+</li>
+<li><p>渲染器决定了渲染的结果应该显示在页面的什么元素上，并以怎样的方式绘制。<br> 有了这三样东西，才能使用相机将对象渲染到页面中。</p>
+<p>var scene, camera, fieldOfView, aspectRatio, nearPlane,<br> farPlane, HEIGHT, WIDTH, renderer, container;<br> function createScene() {<br> // 获得屏幕的宽和高，<br> // 用它们设置相机的纵横比<br> // 还有渲染器的大小<br> HEIGHT = window.innerHeight;<br> WIDTH = window.innerWidth;</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart">&#x2F;&#x2F; 创建场景
+scene &#x3D; new THREE.Scene();       
+  
+&#x2F;&#x2F; 在场景中添加雾的效果；样式上使用和背景一样的颜色
+scene.fog &#x3D; new THREE.Fog(0xf7d9aa, 100, 950);
+  
+&#x2F;&#x2F; 创建相机
+aspectRatio &#x3D; WIDTH &#x2F; HEIGHT;   
+fieldOfView &#x3D; 60;   
+nearPlane &#x3D; 1;  
+farPlane &#x3D; 10000;
+&#x2F;**
+ * PerspectiveCamera 透视相机
+ * @param fieldOfView 视角
+ * @param aspectRatio 纵横比
+ * @param nearPlane 近平面
+ * @param farPlane 远平面
+ *&#x2F;
+camera &#x3D; new THREE.PerspectiveCamera(       
+  fieldOfView,
+  aspectRatio,
+  nearPlane,
+  farPlane
+  );
+  
+&#x2F;&#x2F; 设置相机的位置
+camera.position.x &#x3D; 0;  
+camera.position.z &#x3D; 200;    
+camera.position.y &#x3D; 100; 
+  
+&#x2F;&#x2F; 创建渲染器
+renderer &#x3D; new THREE.WebGLRenderer(&#123; 
+&#x2F;&#x2F; 在 css 中设置背景色透明显示渐变色
+  alpha: true, 
+&#x2F;&#x2F; 开启抗锯齿，但这样会降低性能。
+&#x2F;&#x2F; 不过，由于我们的项目基于低多边形的，那还好 :) 
+  antialias: true 
+&#125;);
+  
+&#x2F;&#x2F; 定义渲染器的尺寸；在这里它会填满整个屏幕
+renderer.setSize(WIDTH, HEIGHT); 
+  
+&#x2F;&#x2F; 打开渲染器的阴影地图
+renderer.shadowMap.enabled &#x3D; true; 
+  
+&#x2F;&#x2F; 在 HTML 创建的容器中添加渲染器的 DOM 元素
+container &#x3D; document.getElementById(&#39;world&#39;);   
+container.appendChild(renderer.domElement);
+  
+&#x2F;&#x2F; 监听屏幕，缩放屏幕更新相机和渲染器的尺寸
+window.addEventListener(&#39;resize&#39;, handleWindowResize, false);</code></pre>
+
+<p>}</p>
+</li>
+</ul>
+<p>由于屏幕的尺寸改变，我们需要更新渲染器的尺寸和相机的纵横比。</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">function handleWindowResize() &#123; 
+   &#x2F;&#x2F; 更新渲染器的高度和宽度以及相机的纵横比
+   HEIGHT &#x3D; window.innerHeight; 
+   WIDTH &#x3D; window.innerWidth;           
+   renderer.setSize(WIDTH, HEIGHT); 
+   camera.aspect &#x3D; WIDTH &#x2F; HEIGHT;        
+   camera.updateProjectionMatrix();
+&#125;</code></pre>
+
+<h3 id="光源"><a href="#光源" class="headerlink" title="光源"></a>光源</h3><p>当创建一个场景时，光源是最棘手的一部分。光源可以奠定整个场景的基调，所以要适当地选取。在这部分我们要尽量制造足以让对象可见的光源。</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">var hemisphereLight, shadowLight;
+function createLights() &#123;
+   &#x2F;&#x2F; 半球光就是渐变的光；
+   &#x2F;&#x2F; 第一个参数是天空的颜色，第二个参数是地上的颜色，第三个参数是光源的强度
+   hemisphereLight &#x3D; new THREE.HemisphereLight(0xaaaaaa,0x000000, .9);
+
+   &#x2F;&#x2F; 方向光是从一个特定的方向的照射
+   &#x2F;&#x2F; 类似太阳，即所有光源是平行的
+   &#x2F;&#x2F; 第一个参数是关系颜色，第二个参数是光源强度
+   shadowLight &#x3D; new THREE.DirectionalLight(0xffffff, .9);
+
+   &#x2F;&#x2F; 设置光源的方向。  
+   &#x2F;&#x2F; 位置不同，方向光作用于物体的面也不同，看到的颜色也不同
+   shadowLight.position.set(150, 350, 350);
+
+   &#x2F;&#x2F; 开启光源投影 
+   shadowLight.castShadow &#x3D; true;
+
+   &#x2F;&#x2F; 定义可见域的投射阴影
+   shadowLight.shadow.camera.left &#x3D; -400;
+   shadowLight.shadow.camera.right &#x3D; 400;
+   shadowLight.shadow.camera.top &#x3D; 400;
+   shadowLight.shadow.camera.bottom &#x3D; -400;
+   shadowLight.shadow.camera.near &#x3D; 1;
+   shadowLight.shadow.camera.far &#x3D; 1000;
+
+   &#x2F;&#x2F; 定义阴影的分辨率；虽然分辨率越高越好，但是需要付出更加昂贵的代价维持高性能的表现。
+   shadowLight.shadow.mapSize.width &#x3D; 2048;
+   shadowLight.shadow.mapSize.height &#x3D; 2048;
+
+   &#x2F;&#x2F; 为了使这些光源呈现效果，只需要将它们添加到场景中
+   scene.add(hemisphereLight);  
+   scene.add(shadowLight);
+&#125;</code></pre>
+
+<p>正如你所见，创建光源用到许多参数。不要再犹豫，大胆尝试用不同的颜色，强度的光源。你发现不同的光源在场景中能够营造有趣的氛围和环境。而且你会找到感觉：如何按照你的需求优化它们。</p>
+<h2 id="用-Three-js-创建对象"><a href="#用-Three-js-创建对象" class="headerlink" title="用 Three.js 创建对象"></a>用 Three.js 创建对象</h2><hr>
+<blockquote>
+<p>如果你熟悉使用 3D 建模软件，你可以先在软件中建立物体且能简单地将它们导入到你的 Three.js 项目中。在本教程中不涉及具体的解决方案。为了更好地了解它们具体是如何工作的。我们使用 Three.js 中现成的几何体创建对象。</p>
+</blockquote>
+<p>Three.js 中已经有大量的现成几何体如：立方体，球体，圆环面，圆柱体以及飞机原型。</p>
+<p>对于我们的项目，所有的对象只需要通过这些几何体组合而成。这非常适合低多边形的风格，而且我们可以不必在 3D 建模软件中创建对象。</p>
+<h3 id="用一个圆柱体代表大海"><a href="#用一个圆柱体代表大海" class="headerlink" title="用一个圆柱体代表大海"></a>用一个圆柱体代表大海</h3><p>我们开始创建大海模型，因为它是我们实现中最简单的对象。为了简单起见，我们将大海看作一个简单的圆柱体放置在屏幕的底部。之后我们再深入研究如何改善大海的外观。<br> 接着，让我们使大海看起来更具吸引力，海浪更加逼真。</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">&#x2F;&#x2F;首先定义一个大海对象
+Sea &#x3D; function()&#123;
+
+   &#x2F;&#x2F; 创建一个圆柱几何体
+   &#x2F;&#x2F; 参数为：顶面半径，底面半径，高度，半径分段，高度分段
+   var geom &#x3D; new THREE.CylinderGeometry(600,600,800,40,10);
+
+   &#x2F;&#x2F; 在 x 轴旋转几何体
+   geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI&#x2F;2));
+
+   &#x2F;&#x2F; 创建材质
+   var mat &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color:Colors.blue,
+       transparent:true,
+       opacity:.6,
+       shading:THREE.FlatShading,
+   &#125;);
+
+   &#x2F;&#x2F; 为了在 Three.js 创建一个物体，我们必须创建网格用来组合几何体和一些材质 
+   this.mesh &#x3D; new THREE.Mesh(geom, mat);
+
+   &#x2F;&#x2F; 允许大海对象接收阴影
+   this.mesh.receiveShadow &#x3D; true; 
+&#125;
+
+&#x2F;&#x2F;实例化大海对象，并添加至场景
+var sea;
+
+function createSea()&#123;
+   sea &#x3D; new Sea();
+
+   &#x2F;&#x2F; 在场景底部，稍微推挤一下
+   sea.mesh.position.y &#x3D; -600;
+
+   &#x2F;&#x2F; 添加大海的网格至场景
+   scene.add(sea.mesh);
+&#125;</code></pre>
+
+<p>总结一下创建对象，需要什么东西。<br> 我们需要：</p>
+<ol>
+<li>创建几何体</li>
+<li>创建材质</li>
+<li>将它们传入网格</li>
+<li>将网格添加至场景</li>
+</ol>
+<p>通过这些步骤，我们可以创建许多不同种类的几何体。现在，如果我们把它们组合起来，就可以创建更多复杂的形状。</p>
+<p>在以下步骤中，我们将精确地学习如何创建复杂的形状。</p>
+<h3 id="把简单的正方体组合建造复杂的形状"><a href="#把简单的正方体组合建造复杂的形状" class="headerlink" title="把简单的正方体组合建造复杂的形状"></a>把简单的正方体组合建造复杂的形状</h3><p>云的制作会有一点点复杂，因为他们是由若干个正方体组合而成的一个随机形状。</p>
+<p><img data-src="" alt="img"></p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">Cloud &#x3D; function()&#123;
+   &#x2F;&#x2F; 创建一个空的容器放置不同形状的云
+   this.mesh &#x3D; new THREE.Object3D();
+
+   &#x2F;&#x2F; 创建一个正方体
+   &#x2F;&#x2F; 这个形状会被复制创建云
+   var geom &#x3D; new THREE.BoxGeometry(20,20,20);
+
+   &#x2F;&#x2F; 创建材质；一个简单的白色材质就可以达到效果
+   var mat &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color:Colors.white,  
+   &#125;);
+
+   &#x2F;&#x2F; 随机多次复制几何体
+   var nBlocs &#x3D; 3+Math.floor(Math.random()*3);
+   for (var i&#x3D;0; i&lt;nBlocs; i++ )&#123;
+    
+       &#x2F;&#x2F; 通过复制几何体创建网格
+       var m &#x3D; new THREE.Mesh(geom, mat); 
+    
+       &#x2F;&#x2F; 随机设置每个正方体的位置和旋转角度
+       m.position.x &#x3D; i*15;
+       m.position.y &#x3D; Math.random()*10;
+       m.position.z &#x3D; Math.random()*10;
+       m.rotation.z &#x3D; Math.random()*Math.PI*2;
+       m.rotation.y &#x3D; Math.random()*Math.PI*2;
+    
+       &#x2F;&#x2F; 随机设置正方体的大小
+       var s &#x3D; .1 + Math.random()*.9;
+       m.scale.set(s,s,s);
+    
+       &#x2F;&#x2F; 允许每个正方体生成投影和接收阴影
+       m.castShadow &#x3D; true;
+       m.receiveShadow &#x3D; true;
+    
+       &#x2F;&#x2F; 将正方体添加至开始时我们创建的容器中
+       this.mesh.add(m);
+   &#125; 
+&#125;</code></pre>
+
+<p>现在，我们已经创建一朵云，我们通过复制它来创建天空，而且将其放置在 z 轴任意位置。</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">&#x2F;&#x2F; 定义一个天空对象
+Sky &#x3D; function()&#123;
+   &#x2F;&#x2F; 创建一个空的容器
+   this.mesh &#x3D; new THREE.Object3D();
+
+   &#x2F;&#x2F; 选取若干朵云散布在天空中
+   this.nClouds &#x3D; 20;
+
+   &#x2F;&#x2F; 把云均匀地散布
+   &#x2F;&#x2F; 我们需要根据统一的角度放置它们
+   var stepAngle &#x3D; Math.PI*2 &#x2F; this.nClouds;
+
+   &#x2F;&#x2F; 创建云对象
+   for(var i&#x3D;0; i&lt;this.nClouds; i++)&#123;
+       var c &#x3D; new Cloud();
+ 
+       &#x2F;&#x2F; 设置每朵云的旋转角度和位置
+       &#x2F;&#x2F; 因此我们使用了一点三角函数
+       var a &#x3D; stepAngle*i; &#x2F;&#x2F;这是云的最终角度
+       var h &#x3D; 750 + Math.random()*200; &#x2F;&#x2F; 这是轴的中心和云本身之间的距离
+
+       &#x2F;&#x2F; 三角函数！！！希望你还记得数学学过的东西 :)
+       &#x2F;&#x2F; 假如你不记得: 
+       &#x2F;&#x2F; 我们简单地把极坐标转换成笛卡坐标
+       c.mesh.position.y &#x3D; Math.sin(a)*h;
+       c.mesh.position.x &#x3D; Math.cos(a)*h;
+
+       &#x2F;&#x2F; 根据云的位置旋转它
+       c.mesh.rotation.z &#x3D; a + Math.PI&#x2F;2;
+
+       &#x2F;&#x2F; 为了有更好的效果，我们把云放置在场景中的随机深度位置
+       c.mesh.position.z &#x3D; -400-Math.random()*400;
+    
+       &#x2F;&#x2F; 而且我们为每朵云设置一个随机大小
+       var s &#x3D; 1+Math.random()*2;
+       c.mesh.scale.set(s,s,s);
+
+       &#x2F;&#x2F; 不要忘记将每朵云的网格添加到场景中
+       this.mesh.add(c.mesh); 
+   &#125;  
+&#125;
+
+&#x2F;&#x2F; 现在我们实例化天空对象，而且将它放置在屏幕中间稍微偏下的位置。
+
+var sky;
+
+function createSky()&#123;
+   sky &#x3D; new Sky();
+   sky.mesh.position.y &#x3D; -600;
+   scene.add(sky.mesh);
+&#125;</code></pre>
+
+<h3 id="更加复杂的形状：创建飞机模型"><a href="#更加复杂的形状：创建飞机模型" class="headerlink" title="更加复杂的形状：创建飞机模型"></a>更加复杂的形状：创建飞机模型</h3><p>坏消息是：创建飞机模型的代码有点复杂有点长。但是好消息是：为了创建它我们已经学习了所有应该知道的。这里所有都是关于组合和封装形状的代码。</p>
+<p><img data-src="" alt="img"></p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">var AirPlane &#x3D; function() &#123;
+
+   this.mesh &#x3D; new THREE.Object3D();
+
+   &#x2F;&#x2F; 创建机舱
+   var geomCockpit &#x3D; new THREE.BoxGeometry(60, 50, 50, 1, 1, 1);
+   var matCockpit &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color: Colors.red,
+       shading: THREE.FlatShading
+   &#125;);
+   var cockpit &#x3D; new THREE.Mesh(geomCockpit, matCockpit);
+   cockpit.castShadow &#x3D; true;
+   cockpit.receiveShadow &#x3D; true;
+   this.mesh.add(cockpit);
+
+   &#x2F;&#x2F; 创建引擎
+   var geomEngine &#x3D; new THREE.BoxGeometry(20, 50, 50, 1, 1, 1);
+   var matEngine &#x3D; new THREE.MeshPhongMaterial(&#123;
+         color: Colors.white,
+         shading: THREE.FlatShading
+   &#125;);
+   var engine &#x3D; new THREE.Mesh(geomEngine, matEngine);
+   engine.position.x &#x3D; 40;
+   engine.castShadow &#x3D; true;
+   engine.receiveShadow &#x3D; true;
+   this.mesh.add(engine);
+
+   &#x2F;&#x2F; 创建机尾
+   var geomTailPlane &#x3D; new THREE.BoxGeometry(15, 20, 5, 1, 1, 1);
+   var matTailPlane &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color: Colors.red,
+       shading: THREE.FlatShading
+   &#125;);
+   var tailPlane &#x3D; new THREE.Mesh(geomTailPlane, matTailPlane);
+   tailPlane.position.set(-35, 25, 0);
+   tailPlane.castShadow &#x3D; true;
+   tailPlane.receiveShadow &#x3D; true;
+   this.mesh.add(tailPlane);
+
+    &#x2F;&#x2F; 创建机翼
+   var geomSideWing &#x3D; new THREE.BoxGeometry(40, 8, 150, 1, 1, 1);
+   var matSideWing &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color: Colors.red,
+       shading: THREE.FlatShading
+   &#125;);
+   var sideWing &#x3D; new THREE.Mesh(geomSideWing, matSideWing);
+   sideWing.castShadow &#x3D; true;
+   sideWing.receiveShadow &#x3D; true;
+   this.mesh.add(sideWing);
+
+   &#x2F;&#x2F; 创建螺旋桨
+   var geomPropeller &#x3D; new THREE.BoxGeometry(20, 10, 10, 1, 1, 1);
+   var matPropeller &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color: Colors.brown,
+       shading: THREE.FlatShading
+   &#125;);
+   this.propeller &#x3D; new THREE.Mesh(geomPropeller, matPropeller);
+   this.propeller.castShadow &#x3D; true;
+   this.propeller.receiveShadow &#x3D; true;
+
+   &#x2F;&#x2F; 创建螺旋桨的桨叶
+   var geomBlade &#x3D; new THREE.BoxGeometry(1, 100, 20, 1, 1, 1);
+   var matBlade &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color: Colors.brownDark,
+       shading: THREE.FlatShading
+   &#125;);
+
+   var blade &#x3D; new THREE.Mesh(geomBlade, matBlade);
+   blade.position.set(8, 0, 0);
+   blade.castShadow &#x3D; true;
+   blade.receiveShadow &#x3D; true;
+   this.propeller.add(blade);
+   this.propeller.position.set(50, 0, 0);
+   this.mesh.add(this.propeller);
+&#125;;</code></pre>
+
+<blockquote>
+<p>这飞机看起来很简单吧？<br> 不要担心它现在的样子，接着我们将看到如何改进形状，让飞机更加好看!</p>
+</blockquote>
+<p>现在，我们可以实例化这飞机并添加到场景中：</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">var airplane;
+
+function createPlane()&#123; 
+   airplane &#x3D; new AirPlane();
+   airplane.mesh.scale.set(.25,.25,.25);
+   airplane.mesh.position.y &#x3D; 100;
+   scene.add(airplane.mesh);
+&#125;</code></pre>
+
+<h2 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h2><hr>
+<p>我们已经创建了几个对象并把它们添加到我们的场景中了，但是为啥运行游戏的时候什么都看不到呢？那是因为我们需要渲染场景，添加一下这句简单的代码：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">renderer.render(scene, camera);</code></pre>
+
+<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><hr>
+<p>通过使螺旋桨旋转并转动大海和云让我们的场景更具生命力。<br> 因此我们需要一个无限循环函数</p>
+<blockquote>
+<p>译者注：渲染有两种类型：实时渲染和离线渲染</p>
+</blockquote>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">function loop()&#123;
+   &#x2F;&#x2F; 使螺旋桨旋转并转动大海和云
+   airplane.propeller.rotation.x +&#x3D; 0.3;
+   sea.mesh.rotation.z +&#x3D; .005;
+   sky.mesh.rotation.z +&#x3D; .01;
+
+   &#x2F;&#x2F; 渲染场景
+   renderer.render(scene, camera);
+
+   &#x2F;&#x2F; 重新调用 render() 函数
+   requestAnimationFrame(loop);
+&#125;</code></pre>
+
+<p>正如你看到的一样，我们将渲染器的 render() 函数移动到 loop() 函数中。因为每次修改物体的位置或颜色之类的属性就需要重新调用一次 render() 函数。</p>
+<h2 id="随着鼠标的移动，添加交互"><a href="#随着鼠标的移动，添加交互" class="headerlink" title="随着鼠标的移动，添加交互"></a>随着鼠标的移动，添加交互</h2><hr>
+<p>在这刻，我们已经看见飞机在场景在中间，接下来我们还需要实现什么呢？就是监听鼠标的移动实现交互。</p>
+<p>当文档加载完成，我们就需要为文档添加监听器，检测鼠标是否有移动。因此，我们需要对初始化函数作出以下的修改。</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">function init(event)&#123;
+   createScene();
+   createLights();
+   createPlane();
+   createSea();
+   createSky();
+
+   &#x2F;&#x2F;添加监听器
+   document.addEventListener(&#39;mousemove&#39;, handleMouseMove, false);
+
+   loop();
+&#125;</code></pre>
+
+<p>另外，我们创建一个 mousemove 事件的事件处理函数。</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">var mousePos&#x3D;&#123;x:0, y:0&#125;;
+
+&#x2F;&#x2F; mousemove 事件处理函数
+
+function handleMouseMove(event) &#123;
+
+   &#x2F;&#x2F; 这里我把接收到的鼠标位置的值转换成归一化值，在-1与1之间变化 
+   &#x2F;&#x2F; 这是x轴的公式:
+
+   var tx &#x3D; -1 + (event.clientX &#x2F; WIDTH)*2;
+
+   &#x2F;&#x2F; 对于 y 轴，我们需要一个逆公式
+   &#x2F;&#x2F; 因为 2D 的 y 轴与 3D 的 y 轴方向相反
+
+   var ty &#x3D; 1 - (event.clientY &#x2F; HEIGHT)*2;
+   mousePos &#x3D; &#123;x:tx, y:ty&#125;;
+&#125;</code></pre>
+
+<p>现在获得鼠标的 x , y 坐标值，我们可以适当地移动飞机。</p>
+<p>我们需要修改循环函数并添加一个新功能去更新飞机的位置。</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">function loop()&#123;
+   sea.mesh.rotation.z +&#x3D; .005;
+   sky.mesh.rotation.z +&#x3D; .01;
+
+   &#x2F;&#x2F; 更新每帧的飞机
+   updatePlane();
+
+   renderer.render(scene, camera);
+   requestAnimationFrame(loop);
+&#125;
+
+function updatePlane()&#123;
+
+   &#x2F;&#x2F; 让我们在x轴上-100至100之间和y轴25至175之间移动飞机
+   &#x2F;&#x2F; 根据鼠标的位置在-1与1之间的范围，我们使用的 normalize 函数实现（如下）
+
+   var targetX &#x3D; normalize(mousePos.x, -1, 1, -100, 100);
+   var targetY &#x3D; normalize(mousePos.y, -1, 1, 25, 175);
+
+   &#x2F;&#x2F; 更新飞机的位置
+   airplane.mesh.position.y &#x3D; targetY;
+   airplane.mesh.position.x &#x3D; targetX;
+   airplane.propeller.rotation.x +&#x3D; 0.3;
+&#125;
+
+function normalize(v,vmin,vmax,tmin, tmax)&#123;
+
+   var nv &#x3D; Math.max(Math.min(v,vmax), vmin);
+   var dv &#x3D; vmax-vmin;
+   var pc &#x3D; (nv-vmin)&#x2F;dv;
+   var dt &#x3D; tmax-tmin;
+   var tv &#x3D; tmin + (pc*dt);
+   return tv;
+&#125;</code></pre>
+
+<p>恭喜你！到这里，已经实现了飞机随着鼠标的移动而移动。到目前为止，看看我们已经实现了什么功能：<a target="_blank" rel="noopener" href="http://tympanus.net/Tutorials/TheAviator/part1.html">第一部分的 Demo</a></p>
+<h2 id="几乎完成！"><a href="#几乎完成！" class="headerlink" title="几乎完成！"></a>几乎完成！</h2><p>正如你所看见的，使用 Three.js 对创建 WebGL 内容有非常大的帮助。建立一个场景和渲染一些自定义对象不需要懂太多 WebGL 的知识。到目前为止，我们已经学会一些基础概念和你已经可以开始通过调整一些参数类似光源的强度，雾的颜色和物体的大小掌握了一些基本的诀窍。或许现在你已经很熟悉创建一些新的对象了。</p>
+<p><em>如果你想学习更加深入的技术，请继续阅读。因为你将会学习到如何改进 3D 场景，使飞机飞行得更加平稳，并模仿低多边形海浪对大海的影响。</em></p>
+<h2 id="一架更酷的飞机"><a href="#一架更酷的飞机" class="headerlink" title="一架更酷的飞机"></a>一架更酷的飞机</h2><p>好了~我们之前创建了非常基础的飞机。我们现在知道如何创建对象并组合它们，但是我们仍然需要学习如何修改几何体令其更加符合我们的需求。</p>
+<p>例如正方体，可以移动它的顶点。在我们的案例中，我们需要使它更加像驾驶舱。</p>
+<p>让我们看一下驾驶舱这部分的代码，还有看下我们是如何让他的背部变得更窄的：</p>
+<p><img data-src="" alt="img"></p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">&#x2F;&#x2F; 驾驶舱
+
+var geomCockpit &#x3D; new THREE.BoxGeometry(80,50,50,1,1,1);
+var matCockpit &#x3D; new THREE.MeshPhongMaterial(&#123;color:Colors.red, shading:THREE.FlatShading&#125;);
+
+&#x2F;&#x2F; 我们可以通过访问形状中顶点数组中一组特定的顶点
+&#x2F;&#x2F; 然后移动它的 x, y, z 属性:
+geomCockpit.vertices[4].y-&#x3D;10;
+geomCockpit.vertices[4].z+&#x3D;20;
+geomCockpit.vertices[5].y-&#x3D;10;
+geomCockpit.vertices[5].z-&#x3D;20;
+geomCockpit.vertices[6].y+&#x3D;30;
+geomCockpit.vertices[6].z+&#x3D;20;
+geomCockpit.vertices[7].y+&#x3D;30;
+geomCockpit.vertices[7].z-&#x3D;20;
+
+var cockpit &#x3D; new THREE.Mesh(geomCockpit, matCockpit);
+cockpit.castShadow &#x3D; true;
+cockpit.receiveShadow &#x3D; true;
+this.mesh.add(cockpit);</code></pre>
+
+<p>这就是如何操纵一个形状以适应我们的需求的一个例子。</p>
+<p><em>如果你看到飞机的完整代码，你会看到几个对象：更像窗口的对象和更美观的螺旋桨。没有什么复杂的东西，试着调整相关的值找找感觉，制造属于你自己的飞机。</em></p>
+<h2 id="但是，是谁在开飞机呢？"><a href="#但是，是谁在开飞机呢？" class="headerlink" title="但是，是谁在开飞机呢？"></a>但是，是谁在开飞机呢？</h2><hr>
+<p>为我们的飞机添加一个飞行员，就好像添加几个盒子一样容易。</p>
+<p>但是我们只需要一个酷酷的飞行员，头发要很飘逸的！感觉它好像很难实现的样子，但是由于我们开始的时候是在低多边形的场景下开始的，所以这就变得简单多了！尝试通过几个盒子模拟创建飘逸的头发，同时会给予一种独特的感觉。</p>
+<p><img data-src="" alt="img"></p>
+<p>让我们看看源码：</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">var Pilot &#x3D; function()&#123;
+   this.mesh &#x3D; new THREE.Object3D();
+   this.mesh.name &#x3D; &quot;pilot&quot;;
+
+   &#x2F;&#x2F; angleHairs是用于后面头发的动画的属性 
+   this.angleHairs&#x3D;0;
+
+   &#x2F;&#x2F; 飞行员的身体
+   var bodyGeom &#x3D; new THREE.BoxGeometry(15,15,15);
+   var bodyMat &#x3D; new THREE.MeshPhongMaterial(&#123;color:Colors.brown, shading:THREE.FlatShading&#125;);
+   var body &#x3D; new THREE.Mesh(bodyGeom, bodyMat);
+   body.position.set(2,-12,0);
+   this.mesh.add(body);
+
+   &#x2F;&#x2F; 飞行员的脸部
+   var faceGeom &#x3D; new THREE.BoxGeometry(10,10,10);
+   var faceMat &#x3D; new THREE.MeshLambertMaterial(&#123;color:Colors.pink&#125;);
+   var face &#x3D; new THREE.Mesh(faceGeom, faceMat);
+   this.mesh.add(face);
+
+   &#x2F;&#x2F; 飞行员的头发
+   var hairGeom &#x3D; new THREE.BoxGeometry(4,4,4);
+   var hairMat &#x3D; new THREE.MeshLambertMaterial(&#123;color:Colors.brown&#125;);
+   var hair &#x3D; new THREE.Mesh(hairGeom, hairMat);
+   &#x2F;&#x2F; 调整头发的形状至底部的边界，这将使它更容易扩展。
+   hair.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0,2,0));
+
+   &#x2F;&#x2F; 创建一个头发的容器
+   var hairs &#x3D; new THREE.Object3D();
+
+   &#x2F;&#x2F; 创建一个头发顶部的容器（这会有动画效果）
+   this.hairsTop &#x3D; new THREE.Object3D();
+
+   &#x2F;&#x2F; 创建头顶的头发并放置他们在一个3*4的网格中
+   for (var i&#x3D;0; i&lt;12; i++)&#123;
+       var h &#x3D; hair.clone();
+       var col &#x3D; i%3;
+       var row &#x3D; Math.floor(i&#x2F;3);
+       var startPosZ &#x3D; -4;
+       var startPosX &#x3D; -4;
+       h.position.set(startPosX + row*4, 0, startPosZ + col*4);
+       this.hairsTop.add(h);
+   &#125;
+   hairs.add(this.hairsTop);
+
+   &#x2F;&#x2F; 创建脸庞的头发
+   var hairSideGeom &#x3D; new THREE.BoxGeometry(12,4,2);
+   hairSideGeom.applyMatrix(new THREE.Matrix4().makeTranslation(-6,0,0));
+   var hairSideR &#x3D; new THREE.Mesh(hairSideGeom, hairMat);
+   var hairSideL &#x3D; hairSideR.clone();
+   hairSideR.position.set(8,-2,6);
+   hairSideL.position.set(8,-2,-6);
+   hairs.add(hairSideR);
+   hairs.add(hairSideL);
+
+   &#x2F;&#x2F; 创建后脑勺的头发
+   var hairBackGeom &#x3D; new THREE.BoxGeometry(2,8,10);
+   var hairBack &#x3D; new THREE.Mesh(hairBackGeom, hairMat);
+   hairBack.position.set(-1,-4,0)
+   hairs.add(hairBack);
+   hairs.position.set(-5,5,0);
+
+   this.mesh.add(hairs);
+
+   var glassGeom &#x3D; new THREE.BoxGeometry(5,5,5);
+   var glassMat &#x3D; new THREE.MeshLambertMaterial(&#123;color:Colors.brown&#125;);
+   var glassR &#x3D; new THREE.Mesh(glassGeom,glassMat);
+   glassR.position.set(6,0,3);
+   var glassL &#x3D; glassR.clone();
+   glassL.position.z &#x3D; -glassR.position.z;
+
+   var glassAGeom &#x3D; new THREE.BoxGeometry(11,1,11);
+   var glassA &#x3D; new THREE.Mesh(glassAGeom, glassMat);
+   this.mesh.add(glassR);
+   this.mesh.add(glassL);
+   this.mesh.add(glassA);
+
+   var earGeom &#x3D; new THREE.BoxGeometry(2,3,2);
+   var earL &#x3D; new THREE.Mesh(earGeom,faceMat);
+   earL.position.set(0,0,-6);
+   var earR &#x3D; earL.clone();
+   earR.position.set(0,0,6);
+   this.mesh.add(earL);
+   this.mesh.add(earR);
+ &#125;
+
+&#x2F;&#x2F; 移动头发
+Pilot.prototype.updateHairs &#x3D; function()&#123;
+
+   &#x2F;&#x2F; 获得头发
+   var hairs &#x3D; this.hairsTop.children;
+
+   &#x2F;&#x2F; 根据 angleHairs 的角度更新头发
+   var l &#x3D; hairs.length;
+   for (var i&#x3D;0; i&lt;l; i++)&#123;
+       var h &#x3D; hairs[i];
+       &#x2F;&#x2F; 每根头发将周期性的基础上原始大小的75%至100%之间作调整。
+       h.scale.y &#x3D; .75 + Math.cos(this.angleHairs+i&#x2F;3)*.25;
+   &#125;
+   &#x2F;&#x2F; 在下一帧增加角度
+   this.angleHairs +&#x3D; 0.16;
+&#125;</code></pre>
+
+<p><img data-src="" alt="img"></p>
+<p>现在让头发动起来，只需要在循环函数里添加以下这句代码。</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">airplane.pilot.updateHairs();</code></pre>
+
+<h2 id="制作海浪"><a href="#制作海浪" class="headerlink" title="制作海浪"></a>制作海浪</h2><hr>
+<p>或许你已经注意到这大海不像真的大海那样，但更像被压路机压平的表面。</p>
+<p>它需要一些海浪。这需要结合我们之前用到的两项技术来完成：</p>
+<ul>
+<li><p>操纵几何体的顶点就像我们处理飞机的驾驶舱那样</p>
+</li>
+<li><p>每个顶点执行循环移动就像我们移动飞行员的头发一样</p>
+<p>为了制造海浪，我们将围绕圆柱体的初始位置对每个顶点旋转。通过给它们一个随机旋转速度和一个随机距离（旋转半径）。很抱歉，这里还是需要用到一些三角函数！</p>
+<p><img data-src="" alt="img"></p>
+</li>
+</ul>
+<p>让我们对大海作出一些修改：</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">Sea &#x3D; function()&#123;
+   var geom &#x3D; new THREE.CylinderGeometry(600,600,800,40,10);
+   geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI&#x2F;2));
+
+   &#x2F;&#x2F; 重点：通过合并顶点，我们确保海浪的连续性
+   geom.mergeVertices();
+
+   &#x2F;&#x2F; 获得顶点
+   var l &#x3D; geom.vertices.length;
+
+   &#x2F;&#x2F; 创建一个新的数组存储与每个顶点关联的值：
+   this.waves &#x3D; [];
+
+   for (var i&#x3D;0; i&lt;l; i++)&#123;
+       &#x2F;&#x2F; 获取每个顶点
+       var v &#x3D; geom.vertices[i];
+
+       &#x2F;&#x2F; 存储一些关联的数值
+       this.waves.push(&#123;y:v.y,
+                        x:v.x,
+                        z:v.z,
+                        &#x2F;&#x2F; 随机角度
+                        ang:Math.random()*Math.PI*2,
+                        &#x2F;&#x2F; 随机距离
+                        amp:5 + Math.random()*15,
+                        &#x2F;&#x2F; 在0.016至0.048度&#x2F;帧之间的随机速度
+                        speed:0.016 + Math.random()*0.032
+       &#125;);
+   &#125;;
+   var mat &#x3D; new THREE.MeshPhongMaterial(&#123;
+       color:Colors.blue,
+       transparent:true,
+       opacity:.8,
+       shading:THREE.FlatShading,
+   &#125;);
+
+   this.mesh &#x3D; new THREE.Mesh(geom, mat);
+   this.mesh.receiveShadow &#x3D; true;
+&#125;
+
+&#x2F;&#x2F; 现在我们创建一个在每帧可以调用的函数，用于更新顶点的位置来模拟海浪。
+
+Sea.prototype.moveWaves &#x3D; function ()&#123;
+
+   &#x2F;&#x2F; 获取顶点
+   var verts &#x3D; this.mesh.geometry.vertices;
+   var l &#x3D; verts.length;
+
+   for (var i&#x3D;0; i&lt;l; i++)&#123;
+       var v &#x3D; verts[i];
+
+       &#x2F;&#x2F; 获取关联的值
+       var vprops &#x3D; this.waves[i];
+
+       &#x2F;&#x2F; 更新顶点的位置
+       v.x &#x3D; vprops.x + Math.cos(vprops.ang)*vprops.amp;
+       v.y &#x3D; vprops.y + Math.sin(vprops.ang)*vprops.amp;
+
+       &#x2F;&#x2F; 下一帧自增一个角度
+       vprops.ang +&#x3D; vprops.speed;
+   &#125;
+
+   &#x2F;&#x2F; 告诉渲染器代表大海的几何体发生改变
+   &#x2F;&#x2F; 事实上，为了维持最好的性能
+   &#x2F;&#x2F; Three.js 会缓存几何体和忽略一些修改
+   &#x2F;&#x2F; 除非加上这句
+   this.mesh.geometry.verticesNeedUpdate&#x3D;true;
+
+   sea.mesh.rotation.z +&#x3D; .005;
+&#125;</code></pre>
+
+<p><img data-src="" alt="img"></p>
+<p>就好像我们对飞行员的头发做的那样，我们在循环函数中添加以下这句代码：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">sea.moveWaves();</code></pre>
+
+<p>现在好好欣赏海浪吧！</p>
+<h2 id="改善场景中的光源"><a href="#改善场景中的光源" class="headerlink" title="改善场景中的光源"></a>改善场景中的光源</h2><hr>
+<p>在教程中的第一部分，我们已经创建了一些光源。但是想为场景添加更好的气氛，并使阴影更加柔和。为了实现它，我们打算使用环境光源。</p>
+<p>在 createLight 函数中，我们添加以下几行代码：</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">&#x2F;&#x2F; 环境光源修改场景中的全局颜色和使阴影更加柔和
+ambientLight &#x3D; new THREE.AmbientLight(0xdc8874, .5);scene.add(ambientLight);</code></pre>
+
+<p>别再犹豫了！调节环境光源的颜色和强度，它会为你的场景增添独特的润色。</p>
+<h2 id="一次平稳的飞行"><a href="#一次平稳的飞行" class="headerlink" title="一次平稳的飞行"></a>一次平稳的飞行</h2><hr>
+<p>我们的小小飞机已经随着我们的鼠标移动。但它总感觉不像真正的飞行。当飞机改变它的飞行高度，如何改变它的位置和方向时更加流畅就完美了。在教程的最后一点，我们将实现它。</p>
+<p>一个简单的方法就是让它移动到目标位置，通过添加一点点距离让它在每一帧与目标位置分离。</p>
+<p>基本上，相关的代码会这样（这是一个通用的公式，不要马上添加到你的代码中）：</p>
+<pre class="line-numbers language-undefined" data-language="undefined"><code class="language-undefined">currentPosition +&#x3D; (finalPosition - currentPosition)*fraction;</code></pre>
+
+<p>更现实点来说，飞机旋转也可以根据运动的方向。如果飞机很快的向上移动，它应该很快地沿着逆时针方向旋转；如果飞机慢慢向下移动，它应该慢慢地沿着顺时针方向旋转；为了准确地实现它，我们应该把旋转比例值简单地分配给在目标和飞机位置之间的剩余距离。</p>
+<p>在我们的代码里，updatePlane 函数需要像以下这样：</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">function updatePlane()&#123;
+   var targetY &#x3D; normalize(mousePos.y,-.75,.75,25, 175);
+   var targetX &#x3D; normalize(mousePos.x,-.75,.75,-100, 100);
+
+   &#x2F;&#x2F; 在每帧通过添加剩余距离的一小部分的值移动飞机
+   airplane.mesh.position.y +&#x3D; (targetY-airplane.mesh.position.y)*0.1;
+
+   &#x2F;&#x2F; 剩余的距离按比例转动飞机
+   airplane.mesh.rotation.z &#x3D; (targetY-airplane.mesh.position.y)*0.0128;
+   airplane.mesh.rotation.x &#x3D; (airplane.mesh.position.y-targetY)*0.0064;
+
+   airplane.propeller.rotation.x +&#x3D; 0.3;
+&#125;</code></pre>
+
+<p>现在飞机的移动看起来更加自然和真实。通过修改一下小数值，你可以使用飞机随着鼠标的移动响应速度更加快或更加慢。</p>
+<p>看下我们场景中的最后一个阶段：<a target="_blank" rel="noopener" href="http://tympanus.net/Tutorials/TheAviator/part2.html">第二部分 Demo</a></p>
+<p>很好！！！</p>
+<h2 id="接着要干嘛呢？"><a href="#接着要干嘛呢？" class="headerlink" title="接着要干嘛呢？"></a>接着要干嘛呢？</h2><hr>
+<p>如果你看到这，你已经学会 Three.js 中的通用的一些技术了，能够让你创建您的第一个场景。现在你知道如何通过原始几何体创建物体，如何激活它们，以及如何设置一个场景中的光源，你已经知道如何改进你的对象的外观和运动，还有如何调整环境氛围。</p>
+<p>下一步已经超出本文范围了，由于它涉及到更多复杂的技术，它是实现一个<a target="_blank" rel="noopener" href="http://tympanus.net/Tutorials/TheAviator/">游戏</a>，大概思路是碰撞，收集点数，液位控制。下载源码，看看实现的思路；你会看到到目前为止你学到过的概念和一些高阶的知识点，你可以研究一下和玩一下。请注意这游戏已经优化了以便桌面使用。</p>
+<p><img data-src="" alt="img"></p>
+<p>但愿，这篇教程帮助你熟悉Three.js和激发你实现属于你自己的项目。让我看到你的创造力；我希望看到你做出什么来~</p>
+<p><a target="_blank" rel="noopener" href="http://tympanus.net/Tutorials/TheAviator/">DEMO</a>   <a target="_blank" rel="noopener" href="http://tympanus.net/Tutorials/TheAviator/TheAviator.zip">源码下载</a></p>
+<p><strong>本文转自</strong> <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/92771817c73f">译文：一个采用 Three.js 的 3D 动画场景制作：飞行者</a>，作者：LeeChingYin</p>
+<p><strong>英文原文链接：</strong><a target="_blank" rel="noopener" href="https://tympanus.net/codrops/2016/04/26/the-aviator-animating-basic-3d-scene-threejs/">The Making of “The Aviator”: Animating a Basic 3D Scene with Three.js</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/web/" rel="tag"><i class="fa fa-tag"></i> web</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/01/less-sass/" rel="prev" title="CSS预处理语言less和Sass基础教程">
+                  <i class="fa fa-chevron-left"></i> CSS预处理语言less和Sass基础教程
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/01/js-practice/" rel="next" title="JS 常见循环、分支、嵌套练习">
+                  JS 常见循环、分支、嵌套练习 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC81MDYxMi8yNzA5NQ=="></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GreedyMonkey</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="200" alpha="0.5" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/components/prism-core.min.js" integrity="sha256-dz05jjFU9qYuMvQQlE6iWDtNAnEsmu6uMb1vWhKdkEM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha256-sttoa+EIAvFFfeeIkmPn8ypyOOb6no2sZ2NbxtBXgqU=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha256-K837BwIyiXo5k/9fCYgqUyA14bN4/Ve9P2SIT0KmZD0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script class="next-config" data-name="nprogress" type="application/json">{"enable":true,"spinner":true}</script>
+  <script src="/js/third-party/nprogress.js"></script>
+
+  
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://yoursite.com/2020/01/three-js-3D-TheAviator/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<script src="/js/third-party/comments/livere.js"></script>
+
+</body>
+</html>

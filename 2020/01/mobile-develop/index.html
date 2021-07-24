@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/greedymonkey/image/master/%E5%A4%B4%E5%83%8F%E5%9B%BE%E6%A0%87/favicon%2032x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/greedymonkey/image/master/%E5%A4%B4%E5%83%8F%E5%9B%BE%E6%A0%87/favicon%2016x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css" integrity="sha256-no0c5ccDODBwp+9hSmV5VvPpKwHCpbVzXHexIkupM6U=" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":true,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="关于像素的部分基础知识移动网页开发中提到的像素主要有三种：CSS像素、物理像素、设备无关像素  设备物理像素：设备上一个像素点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网页移动开发的一些知识">
+<meta property="og:url" content="http://yoursite.com/2020/01/mobile-develop/index.html">
+<meta property="og:site_name" content="魔法海螺">
+<meta property="og:description" content="关于像素的部分基础知识移动网页开发中提到的像素主要有三种：CSS像素、物理像素、设备无关像素  设备物理像素：设备上一个像素点">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/1118132/201703/1118132-20170321091710799-377512174.png">
+<meta property="article:published_time" content="2020-01-06T07:04:14.000Z">
+<meta property="article:modified_time" content="2020-01-06T07:04:14.000Z">
+<meta property="article:author" content="GreedyMonkey">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images2015.cnblogs.com/blog/1118132/201703/1118132-20170321091710799-377512174.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2020/01/mobile-develop/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2020/01/mobile-develop/","path":"2020/01/mobile-develop/","title":"网页移动开发的一些知识"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>网页移动开发的一些知识 | 魔法海螺</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">魔法海螺</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%83%8F%E7%B4%A0%E7%9A%84%E9%83%A8%E5%88%86%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">关于像素的部分基础知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Viewport"><span class="nav-number">2.</span> <span class="nav-text">Viewport</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91%E5%8F%AF%E8%83%BD%E4%BC%9A%E7%94%A8%E5%88%B0%E6%A0%87%E7%AD%BE%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">其他移动端开发可能会用到标签设置</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">GreedyMonkey</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/greedymonkey" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;greedymonkey" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/mobile-develop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GreedyMonkey">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="魔法海螺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网页移动开发的一些知识
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-01-06 15:04:14" itemprop="dateCreated datePublished" datetime="2020-01-06T15:04:14+08:00">2020-01-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="关于像素的部分基础知识"><a href="#关于像素的部分基础知识" class="headerlink" title="关于像素的部分基础知识"></a>关于像素的部分基础知识</h3><p>移动网页开发中提到的像素主要有三种：CSS像素、物理像素、设备无关像素</p>
+<ul>
+<li>设备物理像素：设备上一个像素点<span id="more"></span></li>
+<li>设备无关像素：可以与物理像素通过dpr转换。当dpr为1时，设备无关像素=设备物理像素。</li>
+<li>CSS像素：CSS中使用的抽象概念。当页面没有缩放时，CSS像素=设备无关像素。</li>
+</ul>
+<p>其中，dpr（设备像素比） = 物理像素/设备无关像素（逻辑像素宽度*倍率 = 物理像素宽度）</p>
+<h3 id="Viewport"><a href="#Viewport" class="headerlink" title="Viewport"></a>Viewport</h3><h4 id="什么是-Viewport"><a href="#什么是-Viewport" class="headerlink" title="什么是 Viewport?"></a>什么是 Viewport?</h4><p>viewport 是用户网页的可视区域。viewport 翻译为中文可以叫做”视区、视口”。</p>
+<p>手机浏览器是把页面放在一个虚拟的”窗口”（viewport）中，通常这个虚拟的”窗口”（viewport）比屏幕宽，这样就不用把每个网页挤到很小的窗口中（这样会破坏没有针对手机浏览器优化的网页的布局），用户可以通过平移和缩放来看网页的不同部分。</p>
+<h4 id="设置Viewport"><a href="#设置Viewport" class="headerlink" title="设置Viewport"></a>设置Viewport</h4><ul>
+<li>width：控制 viewport 的大小，可以指定的一个值，如 600，或者特殊的值，如 device-width （为设备的宽度，单位为缩放为 100% 时的 CSS 的像素）。</li>
+<li>height：和 width 相对应，指定高度。</li>
+<li>initial-scale：初始缩放比例，也即是当页面第一次 load 的时候缩放比例。initial-scale=1.0：默认缩放比为1（目的：让CSS像素=设备无关像素）</li>
+<li>maximum-scale：允许用户缩放到的最大比例。</li>
+<li>minimum-scale：允许用户缩放到的最小比例。</li>
+<li>user-scalable：用户是否可以手动缩放。（貌似在iOS10中的sarifi浏览器失效）</li>
+</ul>
+<p>一个常用的针对移动网页优化过的页面的 viewport meta 标签大致如下：</p>
+<p><code>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no&quot;/&gt;</code></p>
+<img data-src="https://images2015.cnblogs.com/blog/1118132/201703/1118132-20170321091710799-377512174.png" class="viewport" width="650" height="350" title="viewport 的属性具体介绍" alt="viewport 的属性具体介绍">
+
+<center>viewport 的属性具体介绍</center>
+
+<p>附上一个比较的详细viewport讲解：<a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/viewport-deep-understanding.html">viewport 深入理解</a></p>
+<h3 id="其他移动端开发可能会用到标签设置"><a href="#其他移动端开发可能会用到标签设置" class="headerlink" title="其他移动端开发可能会用到标签设置"></a>其他移动端开发可能会用到标签设置</h3><p><strong>禁止设备将疑似手机号/邮箱,进行识别。取消点击拨打电话等事件</strong></p>
+<p><code>&lt;meta name=&quot;format-detection&quot;content=&quot;telephone=no,email=no&quot;/&gt;</code></p>
+<p><strong>iOS 添加到主屏幕时，WebAPP的标题</strong></p>
+<p><code>&lt;meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;我的第一个WebAPP&quot;&gt;</code></p>
+<p><strong>iOS 添加到主屏幕时，WebAPP的icon图标</strong></p>
+<p><code>&lt;link rel=&quot;apple-touch-icon-precomposed&quot; href=&quot;图片链接地址&quot; /&gt;</code></p>
+<p><strong>iOS 添加到主屏幕时，启用WebAPP全屏模式，删除顶端地址栏和底部工具栏</strong></p>
+<p><code>&lt;meta name=&quot;apple-mobile-web-app-capable&quot; content=&quot;yes&quot; /&gt;</code></p>
+<p><strong>iOS 添加到主屏幕时，WebAPP顶部状态的样式</strong><br>可选值：<br>black：黑色；default：默认值，白色；black-translucent(半透明)：网页内容充满整个屏幕，顶部状态栏会遮挡网页头部。</p>
+<p><code>&lt;meta name=&quot;apple-mobile-web-app-status-bar-style&quot; content=&quot;black-translucent&quot;&gt;</code></p>
+<p><strong>设置浏览器使用最新的IE和chrome去编译</strong> </p>
+<p>不是手机端专用，PC网页一般也需要设置</p>
+<p><code>&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;/&gt;</code></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/web/" rel="tag"><i class="fa fa-tag"></i> web</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/banner/" rel="prev" title="banner图滚动的两种方式">
+                  <i class="fa fa-chevron-left"></i> banner图滚动的两种方式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/01/flex-layout/" rel="next" title="【转】弹性盒子（Flex Box）布局语法教程">
+                  【转】弹性盒子（Flex Box）布局语法教程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC81MDYxMi8yNzA5NQ=="></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GreedyMonkey</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="200" alpha="0.5" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/components/prism-core.min.js" integrity="sha256-dz05jjFU9qYuMvQQlE6iWDtNAnEsmu6uMb1vWhKdkEM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha256-sttoa+EIAvFFfeeIkmPn8ypyOOb6no2sZ2NbxtBXgqU=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha256-K837BwIyiXo5k/9fCYgqUyA14bN4/Ve9P2SIT0KmZD0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script class="next-config" data-name="nprogress" type="application/json">{"enable":true,"spinner":true}</script>
+  <script src="/js/third-party/nprogress.js"></script>
+
+  
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://yoursite.com/2020/01/mobile-develop/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<script src="/js/third-party/comments/livere.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/greedymonkey/image/master/%E5%A4%B4%E5%83%8F%E5%9B%BE%E6%A0%87/favicon%2032x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/greedymonkey/image/master/%E5%A4%B4%E5%83%8F%E5%9B%BE%E6%A0%87/favicon%2016x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css" integrity="sha256-no0c5ccDODBwp+9hSmV5VvPpKwHCpbVzXHexIkupM6U=" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":true,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="因为CSS是一门描述性语言，代码中基本没有逻辑性，所以会存在大量重复代码，不便于维护和扩展。因此CSS预处理器就诞生了：less和Sass都是CSS的预处理语言，先用预编译语言进行样式设计，然后再进行编译，生成CSS文件来使用，这些语言的出现让CSS编写起来更加方便快捷，更易于维护。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS预处理语言less和Sass基础教程">
+<meta property="og:url" content="http://yoursite.com/2020/01/less-sass/index.html">
+<meta property="og:site_name" content="魔法海螺">
+<meta property="og:description" content="因为CSS是一门描述性语言，代码中基本没有逻辑性，所以会存在大量重复代码，不便于维护和扩展。因此CSS预处理器就诞生了：less和Sass都是CSS的预处理语言，先用预编译语言进行样式设计，然后再进行编译，生成CSS文件来使用，这些语言的出现让CSS编写起来更加方便快捷，更易于维护。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-09T02:30:18.000Z">
+<meta property="article:modified_time" content="2020-01-09T02:30:18.000Z">
+<meta property="article:author" content="GreedyMonkey">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2020/01/less-sass/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2020/01/less-sass/","path":"2020/01/less-sass/","title":"CSS预处理语言less和Sass基础教程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CSS预处理语言less和Sass基础教程 | 魔法海螺</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">魔法海螺</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#less%E7%9A%84%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">less的基础教程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sass%E7%9A%84%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">Sass的基础教程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80%E7%9A%84%E7%BC%96%E8%AF%91%E6%96%B9%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">两种预处理语言的编译方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less%E4%B8%8ESass%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">4.</span> <span class="nav-text">less与Sass的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">5.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">GreedyMonkey</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/greedymonkey" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;greedymonkey" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/less-sass/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GreedyMonkey">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="魔法海螺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSS预处理语言less和Sass基础教程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-01-09 10:30:18" itemprop="dateCreated datePublished" datetime="2020-01-09T10:30:18+08:00">2020-01-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>因为CSS是一门描述性语言，代码中基本没有逻辑性，所以会存在大量重复代码，不便于维护和扩展。因此CSS预处理器就诞生了：less和Sass都是CSS的预处理语言，先用预编译语言进行样式设计，然后再进行编译，生成CSS文件来使用，这些语言的出现让CSS编写起来更加方便快捷，更易于维护。<span id="more"></span></p>
+<h3 id="less的基础教程"><a href="#less的基础教程" class="headerlink" title="less的基础教程"></a>less的基础教程</h3><p>Less 是一门 CSS 预处理语言，它扩展了 CSS 语言，增加了变量、Mixin、函数等特性，使 CSS 更易维护和扩展。<br>Less 可以运行在 Node 或浏览器端。</p>
+<h4 id="less变量"><a href="#less变量" class="headerlink" title="less变量"></a>less变量</h4><p>声明变量：使用@变量名: 变量值<br>使用变量：@变量名<br>举例：</p>
+<pre class="line-numbers language-less" data-language="less"><code class="language-less">$length: 100px;
+$color: red;</code></pre>
+
+<p><strong>less中变量的类型：</strong></p>
+<ul>
+<li>数字类：10px；10</li>
+<li>字符串：<br>​        有引号字符串：”red”<br>​        无引号字符串：哈哈</li>
+<li>颜色类：<br>  颜色名称，如red；<br>  RGB格式，rgb(0,0,0)；<br>  十六进制，如#ffffff</li>
+<li>值列表类型：用逗号或空格分隔</li>
+</ul>
+<p><strong>变量使用原则</strong>：多次频繁出现的值设为变量，还有需要修改的值也可设为变量</p>
+<p> <strong>混合（Mixins）：</strong></p>
+<ul>
+<li>无参混合<br>声明：.name{} ；选择器中调用：.name</li>
+<li>带参混合<br>无默认值声明：.name(@param){} 调用：.name(paramValue);<br>有默认值声明： .name(@param:value){} 调用：.name(paramValue);paramValue可省略</li>
+</ul>
+<p>如果声明时没有默认值，则调用时必须赋值，否则报错<br>无参混合会在css中编译出同名的class选择器，有参的不会</p>
+<p><strong>示例</strong>：</p>
+<pre class="line-numbers language-less" data-language="less"><code class="language-less">.class&#123;
+    padding: 10px;
+&#125;
+@mixin hong&#123;
+    color: blue;
+&#125;
+#div1&#123;
+    width: $length;
+    background-color: red;
+    @extend.class;
+    border-#&#123;$left&#125;:10px solid blue ;
+    @include hong;
+&#125;</code></pre>
+
+<h4 id="less匹配模式"><a href="#less匹配模式" class="headerlink" title="less匹配模式"></a>less匹配模式</h4><p>使用混合进行匹配，类似if结构：<br><strong>声明：</strong>.name(条件一，参数){} .name(条件二，参数){} .name(条件三，参数){}<br><strong>调用：</strong>.name(条件值，参数值)<br><strong>匹配规则</strong>：根据调用时提供的条件值，寻找与之匹配的Mixins执行，其中@_表示永远需要执行的部分</p>
+<h4 id="less的运算与嵌套"><a href="#less的运算与嵌套" class="headerlink" title="less的运算与嵌套"></a>less的运算与嵌套</h4><p><strong>LESS中的运算</strong>：<br>使用运算符+、-、/、* 计算，可以带单位也可不带<br> 进行颜色（十六进制形式）运算时，红绿蓝分开计算，即每组两位之间可以进位，组间不可进位<br><strong>LESS中的嵌套</strong>：<br>保留html中的代码结构，嵌套默认是后代选择器，如果需要子代选择器，则在子代前面加&gt;<br>&amp;表示上一层，&amp;:hover表示上一层的hover事件，&amp;主要用来进行伪类事件的设置</p>
+<p><strong>代码嵌套示例</strong>：</p>
+<pre class="line-numbers language-less" data-language="less"><code class="language-less">section&#123;
+    p&#123;
+        color: red;
+        background-color: cyan;
+    &#125;
+    ul&#123;
+        padding: 0;
+        list-style: none;
+        li&#123;
+            float: left;
+            width: 100px;
+            margin: 10px;
+            border: &#123;
+                color: green;
+                style:solid;
+                width: 5px;
+            &#125;;
+            &amp;:hover&#123;
+                background-color: yellow;
+            &#125;
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+<h4 id="less注释方式"><a href="#less注释方式" class="headerlink" title="less注释方式"></a>less注释方式</h4><p>less的注释方式有两种：<br>一种是使用双斜杠（//）来注释，使用这种方式注释的内容不会被编译<br>另一种是使用/**/，但可以被编译</p>
+<h3 id="Sass的基础教程"><a href="#Sass的基础教程" class="headerlink" title="Sass的基础教程"></a>Sass的基础教程</h3><blockquote>
+<p>世界上最成熟、最稳定、最强大的专业级CSS扩展语言</p>
+</blockquote>
+<p>sass是最早的css预处理语言，有比less更为强大的功能。但因其一开始的缩进式语法并不能被开发者们接受，所以使用率不高，不过由于其强大的功能和Ruby on Rails 的大力推动，逐渐被更多开发者使用。</p>
+<p>sass是采用的Ruby语言编写的一款css预处理语言，它诞生于2007年，是最早成熟css预处理语言。最初它是为了配合haml而设计的，因此有着和haml一样的缩进式风格。</p>
+<p>sass从第三代开始，放弃了缩进式风格，并且完全向下兼容普通的css代码，这一代的sass也被称为scss。</p>
+<p><strong>特色功能 (Features)</strong></p>
+<ul>
+<li>完全兼容 CSS3</li>
+<li>在 CSS 基础上增加变量、嵌套 (nesting)、混合 (mixins) 等功能</li>
+<li>通过<em>函数</em>进行颜色值与属性值的运算</li>
+<li>提供*控制指令 (control directives)*等高级功能</li>
+<li>自定义输出格式</li>
+</ul>
+<h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><p>使用$变量名:变量值 来声明变量，即变量以$开头<br>如果变量需要在字符串中嵌套，则需要使用#{}包括，如</p>
+<pre class="line-numbers language-scss" data-language="scss"><code class="language-scss">$left:left;
+.div1 &#123;
+    border-#&#123;$left&#125;-radius: 5px;
+&#125;</code></pre>
+
+<h4 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h4><pre class="line-numbers language-scss" data-language="scss"><code class="language-scss">body &#123;
+    margin: (14px&#x2F;2);
+    top: 50px + 100px;
+    right: $var * 10%;
+&#125;</code></pre>
+
+<p>需要注意的是，计算时会将单位也进行运算，所以使用时需注意<strong>最终单位</strong>：100px*10px = 1000 px<sup>2</sup></p>
+<h4 id="嵌套"><a href="#嵌套" class="headerlink" title="嵌套"></a>嵌套</h4><ul>
+<li><p><strong>选择器嵌套</strong>　<code>ul&#123; li&#123;&#125; &#125;</code> 后代选择、<code>ul&#123; &gt;li&#123;&#125; &#125;</code> 子代选择、</p>
+<p>&amp;表示外层的父选择器 <code>div&#123; ul&#123; li&#123; &amp;==&quot;div ul li&quot; &#125; &#125; &#125;</code></p>
+</li>
+<li><p><strong>属性嵌套</strong>　　<code>p&#123;border:&#123;color: green;style:solid;width: 5px;&#125;&#125;</code>，注意里面的border要加上冒号</p>
+</li>
+<li><p><strong>伪类嵌套</strong>　　<code>ul&#123; li&#123; &amp;:hover&#123;&#125; &#125; &#125;</code></p>
+</li>
+</ul>
+<h4 id="混合、继承、占位符"><a href="#混合、继承、占位符" class="headerlink" title="混合、继承、占位符"></a>混合、继承、占位符</h4><p><strong>混合宏</strong>：<br>声明：@mixin name($param:value){} 调用：@include name(value);<br> 声明时可以有参可以无参，可以带默认值也可不带，但调用时必须符合声明规范，同less<br>优点：可以传参；缺点：会将混合宏中代码，copy到对应的选择器中，产生冗余代码<br><strong>继承</strong>：<br>声明：.class{} 调用:@extend .class;<br>优点：继承的相同代码，会提取到并集选择器中，减少冗余代码；<br>缺点：无法进行传参，会在CSS中生成一个同名class<br><strong>占位符</strong>：<br>声明：%class{} 调用：@extend %class;<br>优点：继承的相同代码，会提取到并集选择器中，减少冗余代码，不会在CSS中生成一个同名class；<br>缺点：无法进行传参<br><strong>综上，当需要传递参数时用混合宏，当有现成class时用继承，当不需要参数也不需要class时用占位符</strong></p>
+<h4 id="控制指令"><a href="#控制指令" class="headerlink" title="控制指令"></a>控制指令</h4><p><strong>if条件结构</strong>：<br> <code>@if条件&#123;&#125; @else&#123;&#125;</code><br><strong>for 循环结构</strong>:<br><code> @for $i from 1 to/through 10;</code> (to不包括10，through包括10 )<br><strong>whlie 循环结构</strong>：</p>
+<pre class="line-numbers language-none"><code class="language-none">$j;
+@while $j&lt;10&#123;.while #&#123;$j&#125;&#123;
+background-color: red;
+&#125;$j:$j+1;&#125;</code></pre>
+
+<p><strong>each循环遍历</strong><br><code>@each item in a,b,c,d&#123;&#125;</code></p>
+<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><p>Sass允许用户自己编写函数使用</p>
+<pre class="line-numbers language-scss" data-language="scss"><code class="language-scss">　　@function double($n) &#123;
+　　　　@return $n * 2;
+　　&#125;
+　　#sidebar &#123;
+　　　　width: double(5px);
+　　&#125;</code></pre>
+
+
+
+<h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><p>Sass和less一样，有两种注释方法</p>
+<p>一种是单行注释，<code>//注释一</code> 不会被输出到编译后的CSS文件中；<br>另一种是多行注释，<code>/*注释二*/</code> 这种注释会保留在编译后的文件中；<br>另外还有一种算是多行注释的升级版，<code>/*!注释三 重要注释*/</code> 这种注释即使是压缩模式编译，也会被保留，通常可以用于声明版权信息。</p>
+<h3 id="两种预处理语言的编译方式"><a href="#两种预处理语言的编译方式" class="headerlink" title="两种预处理语言的编译方式"></a>两种预处理语言的编译方式</h3><p>less和Sass的编译方式大同小异，他们可以通过下面几种方式进行编译：</p>
+<h4 id="1、命令行方式"><a href="#1、命令行方式" class="headerlink" title="1、命令行方式"></a>1、命令行方式</h4><p>使用这种方式编译需要先安装less和Sass，less可以通过npm安装，Sass的安装方式比较多，不仅可以通过npm安装，也可以通过Ruby安装，更多安装方式可以去<a target="_blank" rel="noopener" href="https://sass-lang.com/install">官网</a>查看。安装成功后就能使用命令行直接编译文件了。</p>
+<p>less的编译命令</p>
+<pre class="line-numbers language-none"><code class="language-none">lessc styles.less styles.css</code></pre>
+
+<p>Sass的编译命令</p>
+<pre class="line-numbers language-none"><code class="language-none">sass test.scss test.css</code></pre>
+
+<p>SASS提供四个<a target="_blank" rel="noopener" href="http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html#output_style">编译风格</a>的选项：</p>
+<ul>
+<li>nested：嵌套缩进的css代码，它是默认值。</li>
+<li>expanded：没有缩进的、扩展的css代码。</li>
+<li>compact：简洁格式的css代码。</li>
+<li>compressed：压缩后的css代码。</li>
+</ul>
+<p>生产环境当中，一般使用最后一个选项。</p>
+<pre class="line-numbers language-none"><code class="language-none">sass --style compressed test.sass test.css</code></pre>
+
+<p>命令行方式也可以对某个文件或者目录进行监听，在源文件产生变动时自动生成编译后版本，less可以通过安装一个插件watcher-lessc来监听编译，Sass直接使用命令行就能实现：</p>
+<pre class="line-numbers language-none"><code class="language-none">　　&#x2F;&#x2F; 监听一个文件
+　　sass --watch input.scss:output.css
+
+　　&#x2F;&#x2F; 监听一个文件夹目录
+　　sass --watch app&#x2F;sass:public&#x2F;stylesheets</code></pre>
+
+<h4 id="2、使用编译软件Koala编译"><a href="#2、使用编译软件Koala编译" class="headerlink" title="2、使用编译软件Koala编译"></a>2、使用编译软件Koala编译</h4><p>Koala是一个国产免费前端预处理器语言图形编译工具，支持Less、Sass、Compass、CoffeeScript，帮助web开发者更高效地使用它们进行开发。跨平台运行，完美兼容windows、linux、mac。</p>
+<p>前往<a target="_blank" rel="noopener" href="http://koala-app.com/index-zh.html">官网</a>下载安装，安装完成打开显示如下界面：</p>
+<p><img data-src="" alt="img"></p>
+<p>点击左侧的+号添加需要编译的文件夹，也可以直接将文件夹拖动进来，添加完成后就可以对文件进行编译了，点击一个文件可以设置编译选项。编译时软件默认是将less文件编译到同级目录下，如果想要改变可以在文件上进行单个文件的改变；缺点是不能实现批量的改变。使用koala的好处是有错误提示，可以比较方便的获取错误信息。</p>
+<p><img data-src="" alt="img"></p>
+<h4 id="3、使用开发工具编译"><a href="#3、使用开发工具编译" class="headerlink" title="3、使用开发工具编译"></a>3、使用开发工具编译</h4><p>可以使用一些常用的开发工具或开发工具中的某些插件来直接自动编译，如webstorm、sublime插件SASS-Build、vscode插件easy sass等等，具体操作方法自行搜索。</p>
+<h4 id="4、使用JS文件"><a href="#4、使用JS文件" class="headerlink" title="4、使用JS文件"></a>4、使用JS文件</h4><p>这一条针对的是less文件，因为less基于js。去官网下载less.js文件，然后在文件中引入，或者直接使用CDN引入：</p>
+<pre class="line-numbers language-HTML" data-language="HTML"><code class="language-HTML">&lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;less&#x2F;test.less&quot; type&#x3D;&quot;text&#x2F;less&quot;&gt;
+&lt;script src&#x3D;&quot;&#x2F;&#x2F;cdnjs.cloudflare.com&#x2F;ajax&#x2F;libs&#x2F;less.js&#x2F;2.5.3&#x2F;less.min.js&quot;&gt;&lt;&#x2F;script&gt;</code></pre>
+
+<p>使用时注意以下几点：<br>link引入的是less文件，路径直接是less所在位置即可；<br>link内一定要注明type类型，因为默认为css；<br>顺序一定要是引入的less文件在less.js文件上面。</p>
+<h4 id="5、其他编译方式"><a href="#5、其他编译方式" class="headerlink" title="5、其他编译方式"></a>5、其他编译方式</h4><p>前端自动化软件codekit、Grunt打造前端自动化工作流grunt-sass、Gulp打造前端自动化工作流gulp-ruby-sass等，具体用法自行搜索。</p>
+<h3 id="less与Sass的区别"><a href="#less与Sass的区别" class="headerlink" title="less与Sass的区别"></a>less与Sass的区别</h3><table>
+<thead>
+<tr>
+<th align="center">区别</th>
+<th align="center">Sass</th>
+<th align="center">less</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">环境</td>
+<td align="center">Sass基于Ruby，需要安装Ruby。属于服务端处理。</td>
+<td align="center">Less和Sass在Ruby中构建相似，但它已被移植到JavaScript中。less编译通过引入less.js文件或通过编译软件编译成css文件再将css文件放入项目中。属于客户端处理。</td>
+</tr>
+<tr>
+<td align="center">声明变量</td>
+<td align="center">Sass使用$</td>
+<td align="center">Less使用@</td>
+</tr>
+<tr>
+<td align="center">输出格式</td>
+<td align="center">nested：嵌套缩进的css代码；expanded：展开的多行css代码；compact：简洁格式的css代码；compressed：压缩后的css代码</td>
+<td align="center">Less无输出格式</td>
+</tr>
+<tr>
+<td align="center">继承</td>
+<td align="center">sass的继承：@extend</td>
+<td align="center">less的继承：类似于mixins .block</td>
+</tr>
+</tbody></table>
+<p>以上是部分Sass和less的区别，仅供参考。</p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a target="_blank" rel="noopener" href="http://lesscss.org/">less官网</a></p>
+<p><a target="_blank" rel="noopener" href="https://less.bootcss.com/">less中文网</a></p>
+<p><a target="_blank" rel="noopener" href="http://koala-app.com/index-zh.html">Koala官网</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.sass.hk/">Sass中文网</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2012/06/sass.html">SASS用法指南 - 阮一峰的网络日志</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/96430f2e5161">sass和less的区别</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gaomengwang/article/details/80573915">Sass与Less区别</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CSS/" rel="tag"><i class="fa fa-tag"></i> CSS</a>
+              <a href="/tags/web/" rel="tag"><i class="fa fa-tag"></i> web</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/01/gufeng/" rel="prev" title="【转】恶俗古风自动生成器">
+                  <i class="fa fa-chevron-left"></i> 【转】恶俗古风自动生成器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/01/three-js-3D-TheAviator/" rel="next" title="【转】利用Three.js制作一个3D动画飞行场景">
+                  【转】利用Three.js制作一个3D动画飞行场景 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC81MDYxMi8yNzA5NQ=="></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GreedyMonkey</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="200" alpha="0.5" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/components/prism-core.min.js" integrity="sha256-dz05jjFU9qYuMvQQlE6iWDtNAnEsmu6uMb1vWhKdkEM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha256-sttoa+EIAvFFfeeIkmPn8ypyOOb6no2sZ2NbxtBXgqU=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha256-K837BwIyiXo5k/9fCYgqUyA14bN4/Ve9P2SIT0KmZD0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script class="next-config" data-name="nprogress" type="application/json">{"enable":true,"spinner":true}</script>
+  <script src="/js/third-party/nprogress.js"></script>
+
+  
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://yoursite.com/2020/01/less-sass/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<script src="/js/third-party/comments/livere.js"></script>
+
+</body>
+</html>

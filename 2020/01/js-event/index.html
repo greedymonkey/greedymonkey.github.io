@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/greedymonkey/image/master/%E5%A4%B4%E5%83%8F%E5%9B%BE%E6%A0%87/favicon%2032x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/greedymonkey/image/master/%E5%A4%B4%E5%83%8F%E5%9B%BE%E6%A0%87/favicon%2016x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css" integrity="sha256-no0c5ccDODBwp+9hSmV5VvPpKwHCpbVzXHexIkupM6U=" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":true,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="事件JavaScript事件其实是发生在HTML元素上的事件，可以是浏览器行为，也可以是用户行为。 以下是 HTML 事件的实例：  HTML 页面完成加载 HTML input 的内容被更改时 HTML 按钮被点击  在事件触发时，可以用JavaScript 执行一些代码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript事件">
+<meta property="og:url" content="http://yoursite.com/2020/01/js-event/index.html">
+<meta property="og:site_name" content="魔法海螺">
+<meta property="og:description" content="事件JavaScript事件其实是发生在HTML元素上的事件，可以是浏览器行为，也可以是用户行为。 以下是 HTML 事件的实例：  HTML 页面完成加载 HTML input 的内容被更改时 HTML 按钮被点击  在事件触发时，可以用JavaScript 执行一些代码。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-13T05:25:40.000Z">
+<meta property="article:modified_time" content="2020-01-13T05:25:40.000Z">
+<meta property="article:author" content="GreedyMonkey">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="JS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2020/01/js-event/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2020/01/js-event/","path":"2020/01/js-event/","title":"JavaScript事件"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaScript事件 | 魔法海螺</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">魔法海螺</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM%E6%A8%A1%E5%9E%8B%E4%B8%8E%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">DOM模型与事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JS%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6%E6%B5%81"><span class="nav-number">3.</span> <span class="nav-text">JS中的事件流</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">GreedyMonkey</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/greedymonkey" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;greedymonkey" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/js-event/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GreedyMonkey">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="魔法海螺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript事件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-01-13 13:25:40" itemprop="dateCreated datePublished" datetime="2020-01-13T13:25:40+08:00">2020-01-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><p>JavaScript事件其实是发生在HTML元素上的事件，可以是浏览器行为，也可以是用户行为。</p>
+<p>以下是 HTML 事件的实例：</p>
+<ul>
+<li>HTML 页面完成加载</li>
+<li>HTML input 的内容被更改时</li>
+<li>HTML 按钮被点击</li>
+</ul>
+<p>在事件触发时，可以用JavaScript 执行一些代码。<span id="more"></span><br>HTML 元素中可以添加事件属性，事件通常与函数结合使用，函数不会在事件发生前被执行 (如用户点击按钮)。<br>HTML的事件有鼠标事件、键盘事件、表单事件、动画事件、拖动事件等等很多种，更多事件可以去<a target="_blank" rel="noopener" href="https://www.runoob.com/jsref/dom-obj-event.html">这里</a>查看。</p>
+<p>下面说一下关于<strong>键盘事件</strong>的几个问题：</p>
+<p>1、执行顺序：keydown-keypress-keyup<br>2、长按时，会循环执行keydown-keypress<br>3、有keydown事件，不一定有keyup事件（事件触发过程中，鼠标移走点击别的地方，可能没有keyup事件）<br>4、keypress事件只能捕获字母、数字、符号键（空格和回车也是），不能捕获功能键，<br>keydown和keyup基本可以捕获所有功能键（特殊除外）<br>keypress 区分大小写，keydown和keyup不区分；<br>keydown和keyup区分主键盘和小键盘，keypress不区分<br>keypress 只能捕获单键，keydown和keyup可以捕获组合键</p>
+<p><strong>确定键盘触发按键的方法：</strong><br>在触发函数中，传入参数e，代表按键事件；<br>通过e.keyCode确认按键ASCII码值，进而确定按键；<br>兼容浏览器系统的写法：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">var evn &#x3D; e||event; &#x2F;&#x2F;取到键盘事件
+var code &#x3D; evn.keyCode||evn.which||evn.charCode; &#x2F;&#x2F;取到按键编码</code></pre>
+
+<h3 id="DOM模型与事件"><a href="#DOM模型与事件" class="headerlink" title="DOM模型与事件"></a>DOM模型与事件</h3><h4 id="DOM模型："><a href="#DOM模型：" class="headerlink" title="DOM模型："></a>DOM模型：</h4><p>在HTML中，每个元素都是一个节点，文档的所有节点组成了DOM 树，DOM又分为几个级别，分别是：</p>
+<p>DOM1：DOM1 级由两个模块组成：DOM核心（DOM Core）和DOM HTML。</p>
+<p>DOM2：<br>在DOM1的基础上扩充了:<br>1、鼠标和用户界面事件、范围、遍历等细分模块<br>2、通过对象接口增加了对CSS（Cascading Style Sheets，层叠样式表）的支持<br>3、DOM核心模块也经过扩展开始支持XML 命名空间</p>
+<p>DOM3：<br>1、以统一方式加载和保存文档的方法——在DOM 加载和保存（DOM Load and Save）模块中定义<br> 2、验证文档的方法——在DOM 验证（DOM Validation）模块中定义<br> 3、开始支持XML 1.0 规范</p>
+<p>DOM0：首先确定的是在DOM标准中并没有DOM 0级的。我们所说的DOM0事件模型其实就是指的是还没有DOM规范的时候给起 的一个名字，DOM0通过on来绑定事件；而DOM2通过addEventListener来绑定事件，DOM2有捕获、目标、冒泡三个事件阶段。</p>
+<p>下面具体说一下DOM0事件模型和DOM2事件模型：</p>
+<h4 id="DOM0事件模型"><a href="#DOM0事件模型" class="headerlink" title="DOM0事件模型"></a>DOM0事件模型</h4><p>DOM0模型分为两种：</p>
+<p>一种是<strong>内联模型：</strong>直接将函数名作为html标签的某个事件属性的属性值<br>eg：<code>&lt;button onclick=&quot;func()&quot;&gt;&lt;/button&gt;</code><br><strong>缺点：</strong>违反了W3C关于html与JS分离的基本原则<br>另一种是<strong>脚本模型：</strong>在JS脚本中通过事件属性进行绑定<br>eg：<code>window.onload = function()&#123;&#125;</code><br>局限性：同一节点只能绑定一个同类型事件</p>
+<h4 id="DOM2事件模型"><a href="#DOM2事件模型" class="headerlink" title="DOM2事件模型"></a>DOM2事件模型</h4><p><strong>1、添加事件绑定：</strong><br>IE10之前：<code>btn.attachEvent(&quot;onclick&quot;,函数);</code><br>其他浏览器：<code>btn.addEventListener(&quot;click&quot;,函数,true/false)</code><br>　　其中，第一个参数为事件<br>　　第三个参数：false为默认，表示事件冒泡；true表示事件捕获<br>兼容写法：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">if(btn.attachEvent)&#123;
+　　btn.attachEvent();
+&#125;else&#123;
+　　btn.addEventListener();
+&#125;</code></pre>
+
+<p><strong>优点：同一节点可以添加多个同类型事件的监听器</strong><br><strong>2、取消事件绑定：</strong><br>注：如果要取消事件绑定，那么在绑定事件时，<br>回调函数必须使用有名函数，而不能使用匿名函数，<br>因为在取消事件绑定时，需要传入函数名：<br><code>.removeEventListener(&quot;click&quot;,函数名)</code><br><code>.datachEvent(&quot;onclick&quot;,函数名)</code></p>
+<p>由此可以看出，DOM0和DOM2一个很大区别是DOM0模型的元素绑定多个click最后只执行最后一个click，前面的会被后面的覆盖掉；而DOM2模型的元素绑定可以多个click，不会被覆盖，都会被执行。</p>
+<h3 id="JS中的事件流"><a href="#JS中的事件流" class="headerlink" title="JS中的事件流"></a>JS中的事件流</h3><p><img data-src="" alt="img"></p>
+<p>这里有六个套在一起的div，下面解释冒泡和捕获时会用到：</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html">&lt;div id&#x3D;&quot;div1&quot; style&#x3D;&quot;height: 600px;width: 600px;background-color: aqua;&quot;&gt;第一层
+  &lt;div id&#x3D;&quot;div2&quot; style&#x3D;&quot;height: 500px;width: 500px;background-color: blueviolet;&quot;&gt;第二层
+    &lt;div id&#x3D;&quot;div3&quot; style&#x3D;&quot;height: 400px;width: 400px;background-color: chartreuse;&quot;&gt;第三层
+      &lt;div id&#x3D;&quot;div4&quot; style&#x3D;&quot;height: 300px;width: 300px;background-color: darkorange;&quot;&gt;第四层
+        &lt;div id&#x3D;&quot;div5&quot; style&#x3D;&quot;height: 200px;width: 200px;background-color: firebrick;&quot;&gt;第五层
+          &lt;div id&#x3D;&quot;div6&quot; style&#x3D;&quot;height: 100px;width: 100px;background-color: gray;&quot;&gt;第六层&lt;&#x2F;div&gt;
+        &lt;&#x2F;div&gt;
+      &lt;&#x2F;div&gt;
+    &lt;&#x2F;div&gt;
+  &lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;</code></pre>
+
+<p>1、<strong>事件冒泡：</strong><br>当某DOM元素触发某事件时，会从当前DOM元素开始，逐个触发其祖先元素的同类型事件，直到DOM根节点<br>DOM0模型均为事件冒泡，IE中使用<code>.attachEvent()</code>添加的事件均为冒泡；<br>其他浏览器使用<code>.addEventListener()</code>添加的事件当第三个参数为false时，为冒泡</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">&lt;script&gt;
+  var div1 &#x3D; document.getElementById(&#39;div1&#39;),
+  div2 &#x3D; document.getElementById(&#39;div2&#39;),
+  div3 &#x3D; document.getElementById(&#39;div3&#39;),
+  div4 &#x3D; document.getElementById(&#39;div4&#39;),
+  div5 &#x3D; document.getElementById(&#39;div5&#39;),
+  div6 &#x3D; document.getElementById(&#39;div6&#39;);
+  div1.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第一层&quot;)
+  &#125;, false);
+  div2.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第二层&quot;)
+  &#125;, false);
+  div3.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第三层&quot;)
+  &#125;, false);
+  div4.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第四层&quot;)
+  &#125;, false);
+  div5.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第五层&quot;)
+  &#125;, false);
+  div6.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第六层&quot;)
+  &#125;, false);
+&lt;&#x2F;script&gt;</code></pre>
+
+<p>点击中间最小的第六层div时，控制台打印出的结果是这样的：</p>
+<p><img data-src="" alt="img"></p>
+<p>2、<strong>事件捕获：</strong><br>当某DOM元素触发某事件时，会从DOM根节点开始，逐个触发器祖先元素的同类型事件，直到触发到当前元素为止<br>只有使用<code>.addEventListener()</code>添加事件并设置第三个参数为true时才为捕获</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">&lt;script&gt;
+  var div1 &#x3D; document.getElementById(&#39;div1&#39;),
+  div2 &#x3D; document.getElementById(&#39;div2&#39;),
+  div3 &#x3D; document.getElementById(&#39;div3&#39;),
+  div4 &#x3D; document.getElementById(&#39;div4&#39;),
+  div5 &#x3D; document.getElementById(&#39;div5&#39;),
+  div6 &#x3D; document.getElementById(&#39;div6&#39;);
+  div1.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第一层&quot;)
+  &#125;, true);
+  div2.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第二层&quot;)
+  &#125;, true);
+  div3.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第三层&quot;)
+  &#125;, true);
+  div4.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第四层&quot;)
+  &#125;, true);
+  div5.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第五层&quot;)
+  &#125;, true);
+  div6.addEventListener(&#39;click&#39;, function () &#123;
+    console.log(&quot;第六层&quot;)
+  &#125;, true);
+&lt;&#x2F;script&gt;</code></pre>
+
+<p>点击中间最小的第六层div时，控制台打印出的结果是这样的：</p>
+<p><img data-src="" alt="img"></p>
+<p>3、<strong>阻断事件冒泡\捕获：</strong><br>阻断捕获只会触发根节点；<br>IE浏览器中将<code>e.cancleBubble</code>属性设为<code>true</code>，<br>其他浏览器调用<code>e.stopPropagation();</code>方法<br>兼容写法:</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">function myParagraphEventHandler(e) &#123;
+　　e &#x3D; e || window.event;
+　　if (e.stopPropagation) &#123;
+　　e.stopPropagation(); &#x2F;&#x2F;IE以外 
+　　&#125; else &#123;
+　　e.cancelBubble &#x3D; true; &#x2F;&#x2F;IE 
+　　&#125;
+&#125;</code></pre>
+
+<p><strong>4、取消事件的默认行为：</strong><br>IE浏览器中：将<code>e.returnValue</code>属性设为<code>false</code>；<br>其他浏览器：调用<code>e.preventDefault();</code>方法<br>兼容写法：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">function eventHandler(e) &#123;
+　　e &#x3D; e || window.event;
+　　&#x2F;&#x2F; 防止默认行为 
+　　if (e.preventDefault) &#123;
+　　e.preventDefault(); &#x2F;&#x2F;IE以外 
+　　&#125; else &#123;
+　　e.returnValue &#x3D; false; &#x2F;&#x2F;IE 
+　　&#125;
+&#125;</code></pre>
+
+<p>参考链接：</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/eee5e4a54048">DOM分级详解</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/greedymonkey/p/6704249.html">JS中的事件</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/soyxiaobi/p/9498357.html">彻底弄懂JS事件委托的概念和作用</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jb51.net/article/99094.htm">DOM 事件的深入浅出（一）</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/web/" rel="tag"><i class="fa fa-tag"></i> web</a>
+              <a href="/tags/JS/" rel="tag"><i class="fa fa-tag"></i> JS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/01/js-practice/" rel="prev" title="JS 常见循环、分支、嵌套练习">
+                  <i class="fa fa-chevron-left"></i> JS 常见循环、分支、嵌套练习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/01/js-object/" rel="next" title="JS面向对象基础">
+                  JS面向对象基础 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC81MDYxMi8yNzA5NQ=="></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GreedyMonkey</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="200" alpha="0.5" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/components/prism-core.min.js" integrity="sha256-dz05jjFU9qYuMvQQlE6iWDtNAnEsmu6uMb1vWhKdkEM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha256-sttoa+EIAvFFfeeIkmPn8ypyOOb6no2sZ2NbxtBXgqU=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha256-K837BwIyiXo5k/9fCYgqUyA14bN4/Ve9P2SIT0KmZD0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script class="next-config" data-name="nprogress" type="application/json">{"enable":true,"spinner":true}</script>
+  <script src="/js/third-party/nprogress.js"></script>
+
+  
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://yoursite.com/2020/01/js-event/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<script src="/js/third-party/comments/livere.js"></script>
+
+</body>
+</html>
